@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    prefix: classpath:dev/
+    suffix: .html
+
+server:
+  port: 2810
+
+---
+spring:
+  profiles: dev
+  thymeleaf:
+    prefix: classpath:dev/
+    suffix: .html
+
+

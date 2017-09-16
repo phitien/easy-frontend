@@ -3,6 +3,7 @@ npm-debug.log*
 pids
 *.pid
 *.seed
+*.iml
 lib-cov
 coverage
 .nyc_output
