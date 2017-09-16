@@ -15,9 +15,12 @@ jspm_packages
 .node_repl_history
 .idea
 .DS_Store
+package-lock.json
 public
 build
 target
+apps/*
+!apps/demo
 config/index.jsx
 src/main/resources/*
 !src/main/resources/application.yml
