@@ -13,7 +13,7 @@ if (argv.find(i => i == '-v' || i == '--v' || i == '-version' || i == '--version
 //List all commands
 else if (argv.length == 0 || argv.find(i => i == '-?' || i == '--?' || i == '-help' || i == '--help')) help(config)
 //install command implementation
-else if (argv.find(i => i == 'install' || i == 'i')) install(config)
+else if (argv.find(i => i == 'install' || i == 'i' || i == 'update' || i == 'u')) install(config)
 //uninstall command implementation
 else if (argv.find(i => i == 'uninstall' || i == 'un')) uninstall(config)
 //Commands implementations
