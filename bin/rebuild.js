@@ -11,7 +11,7 @@ module.exports = exports = function(config) {
                     if (err) console.log(`EZY Error: Could not update EZY command`, err)
                     console.log(stdout.trim())
                     console.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
-                    console.log(`Please restart this session or try source ~/.bash_profile`)
+                    if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) console.log(`Please restart this session or try source ~/.bash_profile`)
                     process.exit(0)
                 })
             })
@@ -22,7 +22,7 @@ module.exports = exports = function(config) {
         if (err) {
             exec(`ezy i`, (err, stdout, stderr) => {
                 console.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
-                console.log(`Please restart this session or try source ~/.bash_profile`)
+                if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) console.log(`Please restart this session or try source ~/.bash_profile`)
                 process.exit(0)
             })
         }
