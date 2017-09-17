@@ -5,6 +5,7 @@ let version = require('./version')
 let help = require('./help')
 let install = require('./install')
 let uninstall = require('./uninstall')
+let rebuild = require('./rebuild')
 
 let argv = process.argv.slice(2).sort((a,b) => a < b)
 
@@ -14,6 +15,8 @@ if (argv.find(i => i == '-v' || i == '--v' || i == '-version' || i == '--version
 else if (argv.length == 0 || argv.find(i => i == '-?' || i == '--?' || i == '-help' || i == '--help')) help(config)
 //install command implementation
 else if (argv.find(i => i == 'install' || i == 'i' || i == 'update' || i == 'u')) install(config)
+//rebuild command implementation
+else if (argv.find(i => i == 'rebuild' || i == 'r')) rebuild(config)
 //uninstall command implementation
 else if (argv.find(i => i == 'uninstall' || i == 'un')) uninstall(config)
 //Commands implementations
