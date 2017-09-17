@@ -1,8 +1,11 @@
+import clean from 'gulp-clean'
+
 export default function(setting, gulp) {
     gulp.task(`${setting.appname}:mkprofile`, function(cb) {
         let profile = setting.normalizeName(setting.argv('profile'))
         if (!profile) {
             console.error(`Profile name is missing, syntax: gulp ${setting.appname}:mkprofile --profile=name`)
+            cb()
             return
         }
         let fs = require('fs')
@@ -21,6 +24,21 @@ export default function(setting, gulp) {
             .pipe(replace('dev', profile))
             .pipe(rename(`${profile}.json`))
             .pipe(gulp.dest(`${setting.app_dir}/pm2`))
-        cb()
+            .on('end', cb)
+    })
+    gulp.task(`${setting.appname}:rmprofile`, function(cb) {
+        let profile = setting.normalizeName(setting.argv('profile'))
+        if (!profile) {
+            console.error(`Profile name is missing, syntax: gulp ${setting.appname}:rmprofile --profile=name`)
+            cb()
+            return
+        }
+        setting.srcNormalized(
+            `${setting.app_dir}/config/${profile}.jsx`,
+            `${setting.app_dir}/pm2/${profile}.json`
+        )
+        .pipe(clean({force: true}))
+        .on('data', function () {})
+        .on('end', cb)
     })
 }

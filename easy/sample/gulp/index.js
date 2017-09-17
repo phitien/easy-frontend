@@ -1,4 +1,4 @@
-export default {
+module.exports = exports = {
     "appname": "{appname}",
     "AppName": "{AppName}",
     "APPNAME": "{APPNAME}",

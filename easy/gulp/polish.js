@@ -23,7 +23,7 @@ export default function(setting, gulp) {
     setting.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
     setting.log = setting.debug ? gutil.log : function(err, ...args) {}
 
-    setting.appname = setting.argv('name', setting.appname || '')
+    setting.appname = setting.argv('name', setting.argv('n', setting.appname || ''))
     setting.APPNAME = setting.appname.toUpperCase()
     setting.AppName = setting.appname.toCamelCase()
     setting.appname = setting.normalizeName(setting.appname)
@@ -76,15 +76,14 @@ export default function(setting, gulp) {
         return setting.normalize(setting.src(...args))
     }
     setting.libs = [
-        ['react', 'react-dom', 'react-router', 'react-redux'],
+        ['react', 'react-dom', 'react-router', 'react-redux', 'react-cookies', 'react-modal', 'react-dropzone'],
         ['redux', 'redux-thunk', 'redux-saga'],
-        ['react-cookies', 'react-modal', 'react-dropzone'],
         ['lodash', 'object-assign', 'dateformat', 'when', 'axios', 'sync-request', 'uuid'],
     ].concat(setting.libs || [])
     setting.commands = {
         app: {
             key: `/**NEWAPP**/`,
-            text: function(cb) {return `try {require('easy/gulp').default(require('./easy/apps/${setting.appname}/gulp').default, gulp, true)} catch(e) {console.log(e)}`},
+            text: function(cb) {return `try {apptasks(require('./easy/apps/${setting.appname}/gulp'), gulp, true)} catch(e) {console.log(e)}`},
             addon: function(cb) {return `${this.text()}
 /**NEWAPP**/`},
             removal: function(cb) {return `${this.text()}

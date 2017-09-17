@@ -6,4 +6,6 @@ require('module').Module._initPaths()
 
 import gulp from 'gulp'
 
-require('easy/gulp').default(require('./gulp').default, gulp)
+let {apptasks} = require('easy/gulp')
+
+apptasks(require('./gulp'), gulp)

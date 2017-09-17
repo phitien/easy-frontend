@@ -1,29 +1,41 @@
-export default function(setting, gulp) {
-    let source = require('vinyl-source-stream')
-    let buffer = require('vinyl-buffer')
-    let browserify = require('browserify')
-    let babelify = require('babelify')
-    let uglify = require('gulp-uglify')
-    let sourcemaps = require('gulp-sourcemaps')
+import source from 'vinyl-source-stream'
+import buffer from 'vinyl-buffer'
+import browserify from 'browserify'
+import babelify from 'babelify'
+import uglify from 'gulp-uglify'
+import sourcemaps from 'gulp-sourcemaps'
+
+export const vendorFn = function(setting, gulp, cb, i) {
+    i = i || 0
+    if (i == 0) setting.log(`Run '${setting.appname}:vendor'`)
     let bundleCnf = {
         debug: false, transform: [babelify],
     }
-    gulp.task(`${setting.appname}:vendor`, function(cb) {
-        setting.libs.forEach((libs, i) => {
-            let bundler = browserify(bundleCnf)
-            libs.forEach(lib => bundler.require(lib))
-            bundler.bundle()
-                .on('error', function(err, ...args) {
-                    setting.log(err, ...args)
-                    this.emit('end')
-                })
-                .pipe(source(`${setting.appname}-${i}.js`))
-                .pipe(buffer())
-                .pipe(sourcemaps.init())
-                .pipe(uglify())
-                .pipe(sourcemaps.write('./'))
-                .pipe(gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+    let bundler = browserify(bundleCnf)
+    setting.libs[i || 0].forEach(lib => bundler.require(lib))
+    bundler.bundle()
+        .on('error', function(err, ...args) {
+            setting.log(err, ...args)
+            this.emit('end')
         })
-        cb()
+        .on('end', function() {
+            i++
+            if (i == setting.libs.length) {
+                // setting.log(`Done '${setting.appname}:vendor'`)
+                cb()
+                return
+            }
+            vendorFn.bind(this, setting, gulp, cb, i)()
+        })
+        .pipe(source(`${setting.appname}-${i}.js`))
+        .pipe(buffer())
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+}
+export default function(setting, gulp) {
+    gulp.task(`${setting.appname}:vendor`, function(cb) {
+        vendorFn.bind(this, setting, gulp, cb, 0)()
     })
 }

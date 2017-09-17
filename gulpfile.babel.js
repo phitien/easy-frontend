@@ -6,7 +6,8 @@ require('module').Module._initPaths()
 
 import gulp from 'gulp'
 
-require('easy/gulp/apps').default({}, gulp)
+let {common, apptasks} = require('easy/gulp')
 
-try {require('easy/gulp').default(require('./easy/apps/demo/gulp').default, gulp, true)} catch(e) {console.log(e)}
+common({}, gulp)
+
 /**NEWAPP**/
