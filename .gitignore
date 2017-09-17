@@ -20,7 +20,7 @@ package-lock.json
 public
 build
 target
-apps/*
+apps
 !apps/demo
 config/index.jsx
 src/main/resources/*
