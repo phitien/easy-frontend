@@ -23,7 +23,7 @@ module.exports = exports = function(config) {
         }
         else {
             console.log(`EZY Updating ... git@github.com:phitien/easy-frontend.git to ${process.env.HOME}/${config.EZY_HOME}`)
-            exec(`cd ${process.env.HOME} && git checkout . && git pull`, (err, stdout, stderr) => {
+            exec(`cd ${process.env.HOME}/${config.EZY_HOME} && git checkout . && git pull`, (err, stdout, stderr) => {
                 if (err) console.log(`EZY Error: Could not clone EZY framework`, err)
                 install()
             })
