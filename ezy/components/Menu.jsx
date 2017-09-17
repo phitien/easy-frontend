@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router'
 import {Cmp} from '../common'
 
-export class Menu extends Style {
+export class Menu extends Cmp {
     get level() {return this.props.level || 0}
     get cmpDefaultData() {return []}
     get children() {

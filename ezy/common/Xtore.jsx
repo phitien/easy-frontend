@@ -1,27 +1,33 @@
-import redux from 'redux'
-import reduxSaga from 'redux-saga'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import createSagaMiddleware from 'redux-saga'
 import thunk from 'redux-thunk'
+import {routerReducer, routerMiddleware} from 'react-router-redux'
+import {history} from './history'
+
+const transformers = {
+    router: routerReducer,
+    test: function todos(state = {}, action) {return state}
+}
+const sagaMiddleware = createSagaMiddleware()
+const historyMiddleware = routerMiddleware(history)
 
 export const createXtore = (reducers, middlewares, initialState) => {
-    const transformers = {}
-    middlewares = [].concat(middlewares).concat([reduxSaga(), thunk])
+    middlewares = [].concat(middlewares).concat([historyMiddleware, sagaMiddleware, thunk])
     function add(r) {
         if (!r) return
         if (typeof r == 'function') {
             const reducer = new r()
             transformers[r.name] = reducer.transform.bind(reducer)
         }
-        else {
-            for (var i in  r) add(r[i])
-        }
+        else for (var i in  r) add(r[i])
     }
     add(reducers)
-    let xtore = redux.createStore(
-        redux.combineReducers(transformers),
+    let xtore = createStore(
+        combineReducers(transformers),
         initialState,
-        reduxSaga.applyMiddleware(...middlewares)
+        applyMiddleware(...middlewares.filter(m => m))
     )
-    xtore.reduxSaga = reduxSaga
-    xtore.close = () => xtore.dispatch(reduxSaga.END)
+    xtore.reduxSaga = sagaMiddleware
+    xtore.close = () => xtore.dispatch(sagaMiddleware.END)
     return xtore
 }

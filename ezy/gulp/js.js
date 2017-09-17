@@ -9,7 +9,7 @@ import sourcemaps from 'gulp-sourcemaps'
 export const jsFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:js'`)
     let bundleCnf = {
-        debug: false, transform: [babelify], entries: [`${setting.app_dir}/index.jsx`], extensions: ['.jsx'],
+        debug: setting.debug, transform: [babelify], entries: [`${setting.app_dir}/index.jsx`], extensions: ['.jsx'],
     }
     let bundler = browserify(bundleCnf)
     setting.libs.forEach(libs => libs.forEach(lib => bundler.external(lib)))

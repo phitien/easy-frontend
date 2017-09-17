@@ -1,22 +1,18 @@
 import React from 'react'
-import {ReactDOM} from 'react-dom'
+import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
-import {Router} from 'react-router'
+import {Router, Route, Switch} from 'react-router'
 import {Subscriber, Publisher} from './PubSub'
-export {history} from './history'
+import {history} from './history'
 
 export class Application {
     constructor(config) {
         this.config = config
     }
     get klass() {return this.constructor.name}
-    get container() {
-        return this.__container
-    }
+    get container() {return this.__container}
     set container(v) {this.__container = v}
-    get store() {
-        return this.__store
-    }
+    get store() {return this.__store}
     set store(v) {this.__store = v}
 
     renderApplication() {throw `${this.klass}: No children`}
@@ -45,23 +41,14 @@ export class Application {
     }
 }
 export class RouteApplication extends Application {
-    get routes() {
-        return this.__routes
-    }
-    set routes(v) {
-        this.__routes = v
-        this.render()
-    }
-    get history() {
-        return this.__history || history
-    }
-    set history(v) {
-        this.__history = v
-        this.render()
-    }
+    get routes() {return this.__routes}
+    set routes(v) {this.__routes = v}
+    get history() {return this.__history || history}
+    set history(v) {this.__history = v}
 
     renderApplication() {
-        if (this.routes && this.history) return <Router routes={this.routes} history={this.history}/>
+        if (this.routes && this.history)
+        return <Router routes={this.routes} history={history}></Router>
         else if (!this.routes) throw `${this.klass}: No routes provided`
         else if (!this.history) throw `${this.klass}: No history provided`
     }

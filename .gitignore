@@ -20,8 +20,9 @@ package-lock.json
 public
 build
 target
-apps
-!apps/demo
 config/index.jsx
+!sample/config/index.jsx
 src/main/resources/*
 !src/main/resources/application.yml
+# apps
+# !apps/demo

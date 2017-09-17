@@ -1,5 +1,5 @@
 import assign from 'object-assign'
-import Model from './Model'
+import {Model} from './Model'
 import {cache} from './cache'
 
 export class UserProfile extends Model {
