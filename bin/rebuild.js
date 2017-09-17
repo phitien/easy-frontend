@@ -21,7 +21,8 @@ module.exports = exports = function(config) {
         console.log(`EZY Rebuilding ...`)
         if (err) {
             exec(`ezy i`, (err, stdout, stderr) => {
-                console.log(stdout)
+                console.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
+                console.log(`Please restart this session or try source ~/.bash_profile`)
                 process.exit(0)
             })
         }
