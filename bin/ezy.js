@@ -9,6 +9,8 @@ let rebuild = require('./rebuild')
 
 let argv = process.argv.slice(2).sort((a,b) => a < b)
 
+const {exec} = require('child_process')
+
 //Show current version
 if (argv.find(i => i == '-v' || i == '--v' || i == '-version' || i == '--version')) version(config)
 //List all commands

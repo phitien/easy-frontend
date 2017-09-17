@@ -6,7 +6,8 @@ try {
     require('module').Module._initPaths()
     let {common, apptasks} = require('ezy/gulp')
     common()
-    /**NEWAPP**/
+    try {apptasks(require('./ezy/apps/demo/gulp'), true)} catch(e) {console.log(e)}
+/**NEWAPP**/
 }
 catch(e) {
     console.log(`Could not find ezy framework at: ${process.env.EZY_HOME}`)
