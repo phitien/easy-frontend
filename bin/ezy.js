@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-var config = {EZY_HOME: '.ezy', version: '1.0.0'}
 var fs = require('fs')
 var version = require('./version')
 var help = require('./help')
 var install = require('./install')
 var uninstall = require('./uninstall')
 var rebuild = require('./rebuild')
-
 var argv = process.argv.slice(2).sort((a,b) => a < b)
+
+var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
 
 const {exec} = require('child_process')
 
@@ -21,6 +21,8 @@ else if (argv.find(i => i == 'install' || i == 'i' || i == 'update' || i == 'u')
 else if (argv.find(i => i == 'rebuild' || i == 'r')) rebuild(config)
 //uninstall command implementation
 else if (argv.find(i => i == 'uninstall' || i == 'un')) uninstall(config)
+//push command implementation
+else if (argv.find(i => i == 'push' || i == 'p')) push(config)
 //Commands implementations
 else {
     //Show warning about incorrect path
@@ -38,8 +40,8 @@ else {
             process.exit(0)
         }
         else {
-            console.log(`EZY_HOME: ${process.env.EZY_HOME}`)
-            process.env.NODE_PATH = `.:${process.env.NODE_PATH || ''}:.:node_modules:${process.env.EZY_HOME}`
+            var sep = require('path').sep == '\\' ? ';' : ':'
+            process.env.NODE_PATH = `.${sep}${process.env.NODE_PATH || '.'}${sep}node_modules${sep}${process.env.EZY_HOME}`
             require('module').Module._initPaths()
 
             var polish = require('ezy/gulp/polish')

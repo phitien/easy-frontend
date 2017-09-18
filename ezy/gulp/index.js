@@ -1,5 +1,3 @@
-var gulp = require('gulp')
-var run = require('run-sequence')
 var argv = require('ezy/gulp/argv')
 var polish = require('ezy/gulp/polish')
 var mkapp = require('ezy/gulp/mkapp')
@@ -24,22 +22,23 @@ var watchFn = watch.watchFn
 var clean = require('ezy/gulp/clean')
 var cleanFn = clean.cleanFn
 
-const common = function(setting) {
+const common = function(setting, gulp) {
     setting = setting || {}
     setting.ezy = true
-    polish(setting)
+    polish(setting, gulp)
     mkapp(setting)
 }
 const serveFn = function(setting, cb) {
+    var run = require('run-sequence').use(setting.gulp)
     run([
         `${setting.appname}:watch`,
         `${setting.appname}:connect`,
     ], cb)
 }
-const apptasks = function(setting, ezy) {
+const apptasks = function(setting, gulp) {
     setting = setting || {}
-    setting.ezy = ezy
-    polish(setting)
+    setting.ezy = __dirname == process.env.EZY_HOME
+    polish(setting, gulp)
     mkprofile(setting)
     mkpage(setting)
     config(setting)
@@ -52,7 +51,7 @@ const apptasks = function(setting, ezy) {
     watch(setting)
     clean(setting)
 
-    gulp.task(`${setting.appname}`, function(cb) {
+    setting.gulp.task(`${setting.appname}`, function(cb) {
         cleanFn(setting, function() {
             configFn(setting, function() {
                 copyFn(setting, function() {
@@ -70,7 +69,7 @@ const apptasks = function(setting, ezy) {
             })
         })
     })
-    gulp.task(`${setting.appname}:serve`, serveFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:serve`, serveFn.bind(this, setting))
 }
 module.exports = exports = {
     apptasks,

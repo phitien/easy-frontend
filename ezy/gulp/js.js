@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var source = require('vinyl-source-stream')
 var buffer = require('vinyl-buffer')
 var browserify = require('browserify')
@@ -28,10 +27,10 @@ const jsFn = function(setting, cb) {
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
 }
 
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:js`, jsFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:js`, jsFn.bind(this, setting))
 }
 module.exports.jsFn = jsFn

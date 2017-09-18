@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var replace = require('gulp-replace')
 var gutil = require('gulp-util')
 var chalk = require('chalk')
@@ -11,7 +10,8 @@ String.prototype.toCamelCase = function(cb) {
     })
 }
 
-module.exports = exports = function(setting) {
+module.exports = exports = function(setting, gulp) {
+    setting.gulp = gulp || require('gulp')
     setting.argv = argv
     setting.profile = setting.argv('profile', 'dev')
     setting.env = process.env.NODE_ENV = setting.argv('env', process.env.NODE_ENV || 'dev')
@@ -52,10 +52,10 @@ module.exports = exports = function(setting) {
     setting.public_static = `${setting.public}/static`
     setting.dir = setting.argv('dir', setting.app_dir)
 
-    setting.gulpfile = './gulpfile.babel.js'
+    setting.gulpfile = './gulpfile.js'
 
     setting.src = function(...args) {
-        return gulp.src(args.reduce((rs, arg) => {
+        return setting.gulp.src(args.reduce((rs, arg) => {
             if (Array.isArray(arg)) rs = rs.concat(arg)
             else if (typeof arg == 'string') rs.push(arg)
             return rs
@@ -86,7 +86,7 @@ module.exports = exports = function(setting) {
     setting.commands = {
         app: {
             key: `/**NEWAPP**/`,
-            text: function(cb) {return `try {apptasks(require('./ezy/apps/${setting.appname}/gulp'), true)} catch(e) {console.log(e)}`},
+            text: function(cb) {return `try {apptasks(require('./ezy/apps/${setting.appname}/gulp'), require('gulp'))} catch(e) {console.log(e)}`},
             addon: function(cb) {return `${this.text()}
 /**NEWAPP**/`},
             removal: function(cb) {return `${this.text()}
@@ -112,7 +112,7 @@ module.exports = exports = function(setting) {
         }
     }
 
-    gulp.task(`${setting.appname}:info`, function(cb) {
+    setting.gulp.task(`${setting.appname}:info`, function(cb) {
         setting.log(setting)
         cb()
     })

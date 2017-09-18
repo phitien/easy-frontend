@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var clean = require('gulp-clean')
 
 const cleanFn = function(setting, cb) {
@@ -12,6 +11,6 @@ const cleanFn = function(setting, cb) {
         })
 }
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:clean`, cleanFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:clean`, cleanFn.bind(this, setting))
 }
 module.exports.cleanFn = cleanFn

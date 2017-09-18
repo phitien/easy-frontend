@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var connect = require('gulp-connect')
 
 const connectFn = function(setting, cb) {
@@ -14,6 +13,6 @@ const connectFn = function(setting, cb) {
     cb()
 }
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:connect`, connectFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:connect`, connectFn.bind(this, setting))
 }
 module.exports.connectFn = connectFn

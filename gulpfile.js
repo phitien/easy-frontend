@@ -1,12 +1,12 @@
 try {
     var fs = require('fs')
     fs.statSync(process.env.EZY_HOME)
-    console.log(`EZY_HOME: ${process.env.EZY_HOME}`)
-    process.env.NODE_PATH = `.:${process.env.NODE_PATH || ''}:.:node_modules:${process.env.EZY_HOME}`
+    var sep = require('path').sep == '\\' ? ';' : ':'
+    process.env.NODE_PATH = `.${sep}${process.env.NODE_PATH || '.'}${sep}node_modules${sep}${process.env.EZY_HOME}`
     require('module').Module._initPaths()
+
     var {common, apptasks} = require('ezy/gulp')
-    common()
-    try {apptasks(require('./ezy/apps/demo/gulp'), true)} catch(e) {console.log(e)}
+    common({}, require('gulp'))
 /**NEWAPP**/
 }
 catch(e) {

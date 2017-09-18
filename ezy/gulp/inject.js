@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var inject = require('gulp-inject')
 var rename = require('gulp-rename')
 
@@ -6,7 +5,7 @@ const injectFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:inject'`)
     setting.normalize(
         setting.src(`${setting.app_templates}/*.html`)
-        .pipe(inject(gulp.src([
+        .pipe(inject(setting.gulp.src([
             `${setting.public_static}/${setting.appname}/${setting.appname}*.css`,
             `${setting.public_static}/${setting.appname}/${setting.appname}*.js`
         ]), {
@@ -18,13 +17,13 @@ const injectFn = function(setting, cb) {
         }))
     )
     .pipe(rename(path => path.basename = path.basename == 'index' ? setting.appname : `${setting.appname}${path.basename}`))
-    .pipe(gulp.dest(setting.public, {overwrite: true}))
+    .pipe(setting.gulp.dest(setting.public, {overwrite: true}))
     .on('end', function() {
         // setting.log(`Done '${setting.appname}:inject'`)
         cb()
     })
 }
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:inject`, injectFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:inject`, injectFn.bind(this, setting))
 }
 module.exports.injectFn = injectFn

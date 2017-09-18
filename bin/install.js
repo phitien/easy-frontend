@@ -19,14 +19,14 @@ module.exports = exports = function(config) {
     }
     fs.stat(`${process.env.HOME}/${config.EZY_HOME}`, (err, stat) => {
         if (err) {
-            console.log(`EZY Cloning ... git@github.com:phitien/easy-frontend.git to ${process.env.HOME}/${config.EZY_HOME}`)
-            exec(`cd ${process.env.HOME} && git clone git@github.com:phitien/easy-frontend.git ${config.EZY_HOME}`, (err, stdout, stderr) => {
+            console.log(`EZY Cloning ... https://github.com/phitien/easy-frontend.git to ${process.env.HOME}/${config.EZY_HOME}`)
+            exec(`cd ${process.env.HOME} && git clone https://github.com/phitien/easy-frontend.git ${config.EZY_HOME}`, (err, stdout, stderr) => {
                 if (err) console.log(`EZY Error: Could not clone EZY framework`, err)
                 install()
             })
         }
         else {
-            console.log(`EZY Updating ... git@github.com:phitien/easy-frontend.git to ${process.env.HOME}/${config.EZY_HOME}`)
+            console.log(`EZY Updating ... https://github.com/phitien/easy-frontend.git to ${process.env.HOME}/${config.EZY_HOME}`)
             exec(`cd ${process.env.HOME}/${config.EZY_HOME} && git checkout . && git pull`, (err, stdout, stderr) => {
                 if (err) console.log(`EZY Error: Could not clone EZY framework`, err)
                 install()

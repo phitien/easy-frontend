@@ -1,4 +1,3 @@
-var gulp = require('gulp')
 var sass = require('gulp-sass')
 var sourcemaps = require('gulp-sourcemaps')
 var autoprefixer = require('gulp-autoprefixer')
@@ -13,13 +12,13 @@ const cssFn = function(setting, cb) {
         .pipe(autoprefixer())
         .pipe(concat(`${setting.appname}.css`))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
         .on('end', function() {
             // setting.log(`Done '${setting.appname}:css'`)
             cb()
         })
 }
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:css`, cssFn.bind(this, setting))
+    setting.gulp.task(`${setting.appname}:css`, cssFn.bind(this, setting))
 }
 module.exports.cssFn = cssFn

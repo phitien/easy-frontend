@@ -1,8 +1,8 @@
 try {
     let fs = require('fs')
     fs.statSync(process.env.EZY_HOME)
-    console.log(`EZY_HOME: ${process.env.EZY_HOME}`)
-    process.env.NODE_PATH = `.:${process.env.NODE_PATH || ''}:.:node_modules:${process.env.EZY_HOME}`
+    var sep = require('path').sep == '\\' ? ';' : ':'
+    process.env.NODE_PATH = `.${sep}${process.env.NODE_PATH || '.'}${sep}node_modules${sep}${process.env.EZY_HOME}`
     require('module').Module._initPaths()
 
     require('babel-register')({presets: ['env']})

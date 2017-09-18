@@ -1,10 +1,9 @@
-var gulp = require('gulp')
 var fs = require('fs')
 var clean = require('gulp-clean')
 var replace = require('gulp-replace')
 
 module.exports = exports = function(setting) {
-    gulp.task(`mkapp`, function(cb) {
+    setting.gulp.task(`mkapp`, function(cb) {
         if (!setting.ezy) {
             cb()
             return
@@ -22,16 +21,16 @@ module.exports = exports = function(setting) {
                 return
             }
             setting.srcNormalized(setting.files(setting.ezy_sample))
-                .pipe(gulp.dest(setting.dir))
+                .pipe(setting.gulp.dest(setting.dir))
             if (setting.dir == setting.app_dir) setting.src(setting.gulpfile)
                 .pipe(replace(setting.commands.app.removal(), ''))
                 .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
-                .pipe(gulp.dest('.', {overwrite: true}))
+                .pipe(setting.gulp.dest('.', {overwrite: true}))
                 .on('end', cb)
             else cb()
         })
     })
-    gulp.task(`rmapp`, function(cb) {
+    setting.gulp.task(`rmapp`, function(cb) {
         if (!setting.ezy) return
         if (!setting.appname) {
             console.error('Name is missing, syntax: gulp rmapp --name=name')
@@ -40,7 +39,7 @@ module.exports = exports = function(setting) {
         }
         setting.src(setting.gulpfile)
             .pipe(replace(setting.commands.app.removal(), ''))
-            .pipe(gulp.dest('.', {overwrite: true}))
+            .pipe(setting.gulp.dest('.', {overwrite: true}))
         fs.stat(`${setting.app_dir}`, function(err, stat) {
             if (err) {
                 cb()
@@ -56,7 +55,7 @@ module.exports = exports = function(setting) {
                 .on('end', cb)
         })
     })
-    gulp.task(`includeapp`, function(cb) {
+    setting.gulp.task(`includeapp`, function(cb) {
         if (!setting.ezy) {
             cb()
             return
@@ -76,11 +75,11 @@ module.exports = exports = function(setting) {
             setting.src(setting.gulpfile)
                 .pipe(replace(setting.commands.app.removal(), ''))
                 .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
-                .pipe(gulp.dest('.', {overwrite: true}))
+                .pipe(setting.gulp.dest('.', {overwrite: true}))
                 .on('end', cb)
         })
     })
-    gulp.task(`excludeapp`, function(cb) {
+    setting.gulp.task(`excludeapp`, function(cb) {
         if (!setting.ezy) {
             cb()
             return
@@ -92,7 +91,7 @@ module.exports = exports = function(setting) {
         }
         setting.src(setting.gulpfile)
             .pipe(replace(setting.commands.app.removal(), ''))
-            .pipe(gulp.dest('.', {overwrite: true}))
+            .pipe(setting.gulp.dest('.', {overwrite: true}))
             .on('end', cb)
     })
 }

@@ -1,11 +1,10 @@
-var gulp = require('gulp')
 var fs = require('fs')
 var clean = require('gulp-clean')
 var replace = require('gulp-replace')
 var rename = require('gulp-rename')
 
 module.exports = exports = function(setting) {
-    gulp.task(`${setting.appname}:mkpage`, function(cb) {
+    setting.gulp.task(`${setting.appname}:mkpage`, function(cb) {
         var pagename = setting.normalizeName(setting.argv('name'))
         if (!pagename) {
             console.error(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
@@ -28,23 +27,23 @@ module.exports = exports = function(setting) {
                 .pipe(replace('Sub', PageName))
                 .pipe(replace('SUB', PAGENAME))
                 .pipe(rename(`${PageName}Page.jsx`))
-                .pipe(gulp.dest(function (file) {
+                .pipe(setting.gulp.dest(function (file) {
                     return file.base
                 }))
             setting.src(`${setting.app_dir}/pages/index.jsx`)
                 .pipe(replace(setting.commands.page.key, setting.commands.page.pageAddon(name, PageName, PAGENAME)))
-                .pipe(gulp.dest(`${setting.app_dir}/pages`, {overwrite: true}))
+                .pipe(setting.gulp.dest(`${setting.app_dir}/pages`, {overwrite: true}))
             setting.src(`${setting.app_dir}/routes.jsx`)
                 .pipe(replace(setting.commands.page.key, setting.commands.page.routeAddon(name, PageName, PAGENAME)))
-                .pipe(gulp.dest(`${setting.app_dir}`, {overwrite: true}))
+                .pipe(setting.gulp.dest(`${setting.app_dir}`, {overwrite: true}))
             setting.src(`${setting.app_dir}/sass/index.scss`)
                 .pipe(replace(setting.commands.page.key, setting.commands.page.sassAddon(name, PageName, PAGENAME)))
-                .pipe(gulp.dest(`${setting.app_dir}/sass`, {overwrite: true}))
+                .pipe(setting.gulp.dest(`${setting.app_dir}/sass`, {overwrite: true}))
                 .on('end', cb)
         })
     })
 
-    gulp.task(`${setting.appname}:rmpage`, function(cb) {
+    setting.gulp.task(`${setting.appname}:rmpage`, function(cb) {
         var pagename = setting.normalizeName(setting.argv('page'))
         if (!pagename) {
             console.error(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --page=page`)
@@ -55,13 +54,13 @@ module.exports = exports = function(setting) {
         var PageName = pagename.toCamelCase()
         setting.src(`${setting.app_dir}/pages/index.jsx`)
             .pipe(replace(setting.commands.page.pageRemoval(name, Name, NAME), ''))
-            .pipe(gulp.dest(`${setting.app_dir}/pages`, {overwrite: true}))
+            .pipe(setting.gulp.dest(`${setting.app_dir}/pages`, {overwrite: true}))
         setting.src(`${setting.app_dir}/routes.jsx`)
             .pipe(replace(setting.commands.page.routeRemoval(name, Name, NAME), ''))
-            .pipe(gulp.dest(`${setting.app_dir}`, {overwrite: true}))
+            .pipe(setting.gulp.dest(`${setting.app_dir}`, {overwrite: true}))
         setting.src(`${setting.app_dir}/sass/index.scss`)
             .pipe(replace(setting.commands.page.sassRemoval(name, Name, NAME), ''))
-            .pipe(gulp.dest(`${setting.app_dir}/sass`, {overwrite: true}))
+            .pipe(setting.gulp.dest(`${setting.app_dir}/sass`, {overwrite: true}))
         setting.src(
             `${setting.app_dir}/pages/${PageName}Page.jsx`,
             `${setting.app_dir}/sass/page-${pagename}.scss`
