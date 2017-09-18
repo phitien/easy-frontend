@@ -1,6 +1,6 @@
-import gulp from 'gulp'
+var gulp = require('gulp')
 
-export const configFn = function(setting, cb) {
+const configFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:config'`)
     setting.srcNormalized(`${setting.ezy_sample}/config/index.jsx`)
         .pipe(gulp.dest(`${setting.app_dir}/config`, {overwrite: true}))
@@ -9,6 +9,7 @@ export const configFn = function(setting, cb) {
             cb()
         })
 }
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:config`, configFn.bind(this, setting))
 }
+module.exports.configFn = configFn

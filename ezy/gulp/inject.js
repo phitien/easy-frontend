@@ -1,8 +1,8 @@
-import gulp from 'gulp'
-import inject from 'gulp-inject'
-import rename from 'gulp-rename'
+var gulp = require('gulp')
+var inject = require('gulp-inject')
+var rename = require('gulp-rename')
 
-export const injectFn = function(setting, cb) {
+const injectFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:inject'`)
     setting.normalize(
         setting.src(`${setting.app_templates}/*.html`)
@@ -11,7 +11,7 @@ export const injectFn = function(setting, cb) {
             `${setting.public_static}/${setting.appname}/${setting.appname}*.js`
         ]), {
             transform: function(file) {
-                let filename = `{rooturl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`
+                var filename = `{rooturl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`
                 return /\.css$/.test(file) ? `<link href="${filename}" rel="stylesheet"/>` :
                 /\.js$/.test(file) ? `<script src="${filename}" defer="true"></script>` : ''
             }
@@ -24,6 +24,7 @@ export const injectFn = function(setting, cb) {
         cb()
     })
 }
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:inject`, injectFn.bind(this, setting))
 }
+module.exports.injectFn = injectFn

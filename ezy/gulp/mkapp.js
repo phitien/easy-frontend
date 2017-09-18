@@ -1,9 +1,9 @@
-import gulp from 'gulp'
-import fs from 'fs'
-import clean from 'gulp-clean'
-import replace from 'gulp-replace'
+var gulp = require('gulp')
+var fs = require('fs')
+var clean = require('gulp-clean')
+var replace = require('gulp-replace')
 
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`mkapp`, function(cb) {
         if (!setting.ezy) {
             cb()
@@ -14,7 +14,7 @@ export default function(setting) {
             cb()
             return
         }
-        let fs = require('fs')
+        var fs = require('fs')
         fs.stat(`${setting.dir}`, function(err, stat) {
             if (!err) {
                 console.log(`App ${setting.appname} already exists`)
@@ -66,7 +66,7 @@ export default function(setting) {
             cb()
             return
         }
-        let fs = require('fs')
+        var fs = require('fs')
         fs.stat(`${setting.app_dir}`, function(err, stat) {
             if (err) {
                 setting.log(`App ${setting.appname} does not exist`, err)

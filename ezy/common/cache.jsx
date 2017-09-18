@@ -11,13 +11,13 @@ export class Cookie {
     set(n, v, opts) {
         if (v !== undefined) {
             reactCookie.save(n, v, assign({path: '/'}, opts))
-            new Publisher(this, 'cache_changed', n, v)
+            new Publisher('cache_changed', n, v)
         }
         else this.remove(n, opts)
     }
     remove(n, opts) {
-        reactCookie.save(n, v, assign({path: '/'}, opts))
-        new Publisher(this, 'cache_changed', n)
+        reactCookie.save(n, undefined, assign({path: '/'}, opts))
+        new Publisher('cache_changed', n)
     }
 }
 
@@ -42,11 +42,11 @@ export class Cache {
     clean() {
         let excludes = [config.authTokenName, config.userProfileCacheName]
         Object.keys(localStorage).forEach(k => !excludes.includes(k) ? this.remove(k) : false)
-        new Publisher(this, 'cache_changed')
+        new Publisher('cache_changed')
     }
     clear() {
         localStorage.clear()
-        new Publisher(this, 'cache_changed')
+        new Publisher('cache_changed')
     }
 }
 

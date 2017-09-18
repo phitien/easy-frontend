@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 
 export class Menu extends Cmp {
     get level() {return this.props.level || 0}

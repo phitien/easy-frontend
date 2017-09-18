@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 import {Menu} from './Menu'
 
 export class AppLinks extends Cmp {

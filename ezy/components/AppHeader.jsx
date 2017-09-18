@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 import {AppLinks} from './AppLinks'
 import {AppName} from './AppName'
 import {AppSearch} from './AppSearch'

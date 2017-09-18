@@ -1,19 +1,19 @@
-import gulp from 'gulp'
-import fs from 'fs'
-import clean from 'gulp-clean'
-import replace from 'gulp-replace'
-import rename from 'gulp-rename'
+var gulp = require('gulp')
+var fs = require('fs')
+var clean = require('gulp-clean')
+var replace = require('gulp-replace')
+var rename = require('gulp-rename')
 
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:mkpage`, function(cb) {
-        let pagename = setting.normalizeName(setting.argv('name'))
+        var pagename = setting.normalizeName(setting.argv('name'))
         if (!pagename) {
             console.error(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
             cb()
             return
         }
-        let PAGENAME = pagename.toUpperCase()
-        let PageName = pagename.toCamelCase()
+        var PAGENAME = pagename.toUpperCase()
+        var PageName = pagename.toCamelCase()
         fs.stat(`${setting.app_dir}/pages/${PageName}Page.jsx`, function(err, stat) {
             if (!err) {
                 console.error(`Page ${PageName} already exists`)
@@ -45,14 +45,14 @@ export default function(setting) {
     })
 
     gulp.task(`${setting.appname}:rmpage`, function(cb) {
-        let pagename = setting.normalizeName(setting.argv('page'))
+        var pagename = setting.normalizeName(setting.argv('page'))
         if (!pagename) {
             console.error(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --page=page`)
             cb()
             return
         }
-        let PAGENAME = pagename.toUpperCase()
-        let PageName = pagename.toCamelCase()
+        var PAGENAME = pagename.toUpperCase()
+        var PageName = pagename.toCamelCase()
         setting.src(`${setting.app_dir}/pages/index.jsx`)
             .pipe(replace(setting.commands.page.pageRemoval(name, Name, NAME), ''))
             .pipe(gulp.dest(`${setting.app_dir}/pages`, {overwrite: true}))

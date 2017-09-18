@@ -1,5 +1,4 @@
 import {connect} from 'react-redux'
-import thunk from 'redux-thunk'
 import assign from 'object-assign'
 import {Action} from './actions'
 

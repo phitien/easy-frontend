@@ -1,5 +1,5 @@
 module.exports = exports = function(config) {
-    let fs = require('fs')
+    var fs = require('fs')
     const {exec} = require('child_process')
     const install = function () {
         console.log(`EZY Installing ..., it takes about 5-10 mins to finished process`)

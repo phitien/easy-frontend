@@ -1,24 +1,24 @@
 export class Publisher {
-    constructor(o, n, ...args) {
+    constructor(n, ...args) {
         dispatchEvent(new CustomEvent(n, detail: args))
     }
 }
 export class Subscriber {
-    constructor(o, opts) {
+    constructor(opts, o) {
         if (typeof opts == 'object')
             Object.keys(opts).forEach(n => this.constructor.subscribe(n, opts[n]))
     }
-    static subscribe(o, n, h) {
+    static subscribe(n, h, o) {
         if (typeof h == 'function')
             addEventListener(n, h, true)
     }
 }
 export class Unsubscriber {
-    constructor(o, opts) {
+    constructor(opts, o) {
         if (typeof opts == 'object')
             Object.keys(opts).forEach(n => this.constructor.unsubscribe(n, opts[n]))
     }
-    static unsubscribe(o, n, h) {
+    static unsubscribe(n, h, o) {
         removeEventListener(n, h, true)
     }
 }

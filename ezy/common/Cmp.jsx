@@ -12,6 +12,7 @@ export class BaseContainer extends React.Component {
     static utilities = utils
     static configuration = config
     static autoProps() {return []}
+    getAutoProp(n, v) {return this.state.__auto_props[name]}
     setAutoProp(n, v, r) {
         this.state.__auto_props[n] = v
         r ? this.refresh() : false
@@ -26,10 +27,8 @@ export class BaseContainer extends React.Component {
             }
             else name = p
             Object.defineProperty(this, name, {
-                get: () => this.state.__auto_props[name],
-                set: (v) => {
-                    this.setAutoProp(name, v)
-                }
+                get: () => this.getAutoProp(name, v),
+                set: (v) => this.setAutoProp(name, v)
             })
         })
     }
@@ -99,11 +98,11 @@ export class PubSubContainer extends BaseContainer {
     userLoggedOut = (e) => this.onUserLoggedOut(...e.detail)
     componentDidMount() {
         this.state.__mounted = true
-        new Subscriber(this, this.pubsub)
+        new Subscriber(this.pubsub, this)
     }
     componentWillUnmount() {
         this.state.__mounted = false
-        new Unsubscriber(this, this.pubsub)
+        new Unsubscriber(this.pubsub, this)
     }
 }
 export class ApiContainer extends PubSubContainer {
@@ -176,10 +175,10 @@ export class Container extends ApiContainer {
     get showPageIndicator() {return this.state.showPageIndicator}
     set showPageIndicator(showPageIndicator) {
         this.refresh({showPageIndicator})
-        new Publisher(this, 'showPageIndicator', showPageIndicator)
+        new Publisher('showPageIndicator', showPageIndicator, this)
     }
     set hideModals(hideModals) {
-        new Publisher(this, 'hideModals', hideModals)
+        new Publisher('hideModals', hideModals, this)
     }
     get showIndicator() {return this.state.showIndicator}
     set showIndicator(showIndicator) {this.refresh({showIndicator})}
@@ -222,8 +221,7 @@ export class Cmp extends Container {
         return <div className={`message ${error ? 'error' : ''}`}>{text}</div>
     }
     renderMessages() {
-        return this.messages && this.messages.length > 0 ?
-        <div className='messages'>{this.messages.map((m,i) => {
+        return this.messages && this.messages.length > 0 ? <div className='messages'>{this.messages.map((m,i) => {
             let text, error = false
             if (typeof m == 'object') {
                 text = m.text
@@ -241,13 +239,13 @@ export class Cmp extends Container {
     renderChildren() {return Array.isArray(this.children) ? this.children.map((c,i) => React.cloneElement(c, {key: i, className: this.childrenClassName})) : this.children}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {
-        return (
-            <div className={this.className} data-cmpId={this.cmpId}>
-                {this.renderCmp()}
-                {this.renderIndicator()}
-                {this.renderMessages()}
-            </div>
-        )
+        console.log(this)
+        return <div className={this.className} data-cmpId={this.cmpId}>
+            asdad
+            {this.renderCmp()}
+            {this.renderIndicator()}
+            {this.renderMessages()}
+        </div>
     }
     render() {
         if (this.shouldCmpRender) return this.renderPositiveCmp()
@@ -266,10 +264,8 @@ export class FlexCmp extends Cmp {
 export class Loader extends Cmp {
     get cmpClassName() {return 'loader-overlay'}
     render() {
-        return (
-            <div className={this.className} data-cmpId={this.cmpId}>
-                <div className='loader'></div>
-            </div>
-        )
+        return <div className={this.className} data-cmpId={this.cmpId}>
+            <div className='loader'></div>
+        </div>
     }
 }

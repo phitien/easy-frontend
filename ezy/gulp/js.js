@@ -1,17 +1,17 @@
-import gulp from 'gulp'
-import source from 'vinyl-source-stream'
-import buffer from 'vinyl-buffer'
-import browserify from 'browserify'
-import babelify from 'babelify'
-import uglify from 'gulp-uglify'
-import sourcemaps from 'gulp-sourcemaps'
+var gulp = require('gulp')
+var source = require('vinyl-source-stream')
+var buffer = require('vinyl-buffer')
+var browserify = require('browserify')
+var babelify = require('babelify')
+var uglify = require('gulp-uglify')
+var sourcemaps = require('gulp-sourcemaps')
 
-export const jsFn = function(setting, cb) {
+const jsFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:js'`)
-    let bundleCnf = {
+    var bundleCnf = {
         debug: setting.debug, transform: [babelify], entries: [`${setting.app_dir}/index.jsx`], extensions: ['.jsx'],
     }
-    let bundler = browserify(bundleCnf)
+    var bundler = browserify(bundleCnf)
     setting.libs.forEach(libs => libs.forEach(lib => bundler.external(lib)))
     bundler.bundle()
         .on('update', jsFn)
@@ -31,6 +31,7 @@ export const jsFn = function(setting, cb) {
         .pipe(gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
 }
 
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:js`, jsFn.bind(this, setting))
 }
+module.exports.jsFn = jsFn

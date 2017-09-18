@@ -1,26 +1,26 @@
-import gulp from 'gulp'
-import clean from 'gulp-clean'
+var gulp = require('gulp')
+var clean = require('gulp-clean')
 
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:mkprofile`, function(cb) {
-        let profile = setting.normalizeName(setting.argv('profile'))
+        var profile = setting.normalizeName(setting.argv('profile'))
         if (!profile) {
             console.error(`Profile name is missing, syntax: gulp ${setting.appname}:mkprofile --profile=name`)
             cb()
             return
         }
-        let fs = require('fs')
+        var fs = require('fs')
         fs.stat(`${setting.app_dir}/config/${profile}.jsx`, function(err, stat) {
             if (!err) return
-            let replace = require('gulp-replace')
-            let rename = require('gulp-rename')
+            var replace = require('gulp-replace')
+            var rename = require('gulp-rename')
             setting.srcNormalized(`${setting.ezy_sample}/config/dev.jsx`)
                 .pipe(replace('dev', profile))
                 .pipe(rename(`${profile}.jsx`))
                 .pipe(gulp.dest(`${setting.app_dir}/config`))
         })
-        let replace = require('gulp-replace')
-        let rename = require('gulp-rename')
+        var replace = require('gulp-replace')
+        var rename = require('gulp-rename')
         setting.srcNormalized(`${setting.ezy_sample}/pm2/dev.json`)
             .pipe(replace('dev', profile))
             .pipe(rename(`${profile}.json`))
@@ -28,7 +28,7 @@ export default function(setting) {
             .on('end', cb)
     })
     gulp.task(`${setting.appname}:rmprofile`, function(cb) {
-        let profile = setting.normalizeName(setting.argv('profile'))
+        var profile = setting.normalizeName(setting.argv('profile'))
         if (!profile) {
             console.error(`Profile name is missing, syntax: gulp ${setting.appname}:rmprofile --profile=name`)
             cb()

@@ -1,33 +1,42 @@
-import gulp from 'gulp'
-import run from 'run-sequence'
-import argv from 'ezy/gulp/argv'
-import polish from 'ezy/gulp/polish'
-import mkapp from 'ezy/gulp/mkapp'
-import mkprofile from 'ezy/gulp/mkprofile'
-import mkpage from 'ezy/gulp/mkpage'
-import config, {configFn} from 'ezy/gulp/config'
-import connect, {connectFn} from 'ezy/gulp/connect'
-import copy, {copyFn} from 'ezy/gulp/copy'
-import inject, {injectFn} from 'ezy/gulp/inject'
-import vendor, {vendorFn} from 'ezy/gulp/vendor'
-import css, {cssFn} from 'ezy/gulp/css'
-import js, {jsFn} from 'ezy/gulp/js'
-import watch, {watchFn} from 'ezy/gulp/watch'
-import clean, {cleanFn} from 'ezy/gulp/clean'
+var gulp = require('gulp')
+var run = require('run-sequence')
+var argv = require('ezy/gulp/argv')
+var polish = require('ezy/gulp/polish')
+var mkapp = require('ezy/gulp/mkapp')
+var mkprofile = require('ezy/gulp/mkprofile')
+var mkpage = require('ezy/gulp/mkpage')
+var config = require('ezy/gulp/config')
+var configFn = config.configFn
+var connect = require('ezy/gulp/connect')
+var connectFn = connect.connectFn
+var copy = require('ezy/gulp/copy')
+var copyFn = copy.copyFn
+var inject = require('ezy/gulp/inject')
+var injectFn = inject.injectFn
+var vendor = require('ezy/gulp/vendor')
+var vendorFn = vendor.vendorFn
+var css = require('ezy/gulp/css')
+var cssFn = css.cssFn
+var js = require('ezy/gulp/js')
+var jsFn = js.jsFn
+var watch = require('ezy/gulp/watch')
+var watchFn = watch.watchFn
+var clean = require('ezy/gulp/clean')
+var cleanFn = clean.cleanFn
 
-export const common = function(setting) {
+const common = function(setting) {
     setting = setting || {}
     setting.ezy = true
     polish(setting)
     mkapp(setting)
 }
-export const serveFn = function(setting, cb) {
+const serveFn = function(setting, cb) {
     run([
         `${setting.appname}:watch`,
         `${setting.appname}:connect`,
     ], cb)
 }
-export const apptasks = function(setting, ezy) {
+const apptasks = function(setting, ezy) {
     setting = setting || {}
     setting.ezy = ezy
     polish(setting)
@@ -63,7 +72,10 @@ export const apptasks = function(setting, ezy) {
     })
     gulp.task(`${setting.appname}:serve`, serveFn.bind(this, setting))
 }
-export {
+module.exports = exports = {
+    apptasks,
+    common,
+    serveFn,
     argv,
     polish,
     mkapp,

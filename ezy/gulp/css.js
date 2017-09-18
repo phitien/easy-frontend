@@ -1,11 +1,11 @@
-import gulp from 'gulp'
-import sass from 'gulp-sass'
-import sourcemaps from 'gulp-sourcemaps'
-import autoprefixer from 'gulp-autoprefixer'
-import concat from 'gulp-concat'
-import run from 'run-sequence'
+var gulp = require('gulp')
+var sass = require('gulp-sass')
+var sourcemaps = require('gulp-sourcemaps')
+var autoprefixer = require('gulp-autoprefixer')
+var concat = require('gulp-concat')
+var run = require('run-sequence')
 
-export const cssFn = function(setting, cb) {
+const cssFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:css'`)
     setting.src(`${setting.app_dir}/sass/index.scss`)
         .pipe(sourcemaps.init())
@@ -19,6 +19,7 @@ export const cssFn = function(setting, cb) {
             cb()
         })
 }
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:css`, cssFn.bind(this, setting))
 }
+module.exports.cssFn = cssFn

@@ -31,7 +31,7 @@ export class Application {
         else if (!this.container) throw `${this.klass}: No container provided`
     }
     dispatch() {
-        new Subscriber(window, {
+        new Subscriber({
             resize: this.resize,
             refresh: this.refresh,
             logout: this.logout,
@@ -48,7 +48,9 @@ export class RouteApplication extends Application {
 
     renderApplication() {
         if (this.routes && this.history)
-        return <Router routes={this.routes} history={history}></Router>
+        return <Router history={history}>
+            {React.createElement(Route, this.routes)}
+        </Router>
         else if (!this.routes) throw `${this.klass}: No routes provided`
         else if (!this.history) throw `${this.klass}: No history provided`
     }

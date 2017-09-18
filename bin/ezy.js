@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-let config = {EZY_HOME: '.ezy', version: '1.0.0'}
-let fs = require('fs')
-let version = require('./version')
-let help = require('./help')
-let install = require('./install')
-let uninstall = require('./uninstall')
-let rebuild = require('./rebuild')
+var config = {EZY_HOME: '.ezy', version: '1.0.0'}
+var fs = require('fs')
+var version = require('./version')
+var help = require('./help')
+var install = require('./install')
+var uninstall = require('./uninstall')
+var rebuild = require('./rebuild')
 
-let argv = process.argv.slice(2).sort((a,b) => a < b)
+var argv = process.argv.slice(2).sort((a,b) => a < b)
 
 const {exec} = require('child_process')
 
@@ -42,12 +42,12 @@ else {
             process.env.NODE_PATH = `.:${process.env.NODE_PATH || ''}:.:node_modules:${process.env.EZY_HOME}`
             require('module').Module._initPaths()
 
-            let polish = require('ezy/gulp/polish')
-            let setting = {}
+            var polish = require('ezy/gulp/polish')
+            var setting = {}
             polish(setting)
 
-            let cmd = `gulp ${setting.argv().join(' ')}`
-            let start = new Date()
+            var cmd = `gulp ${setting.argv().join(' ')}`
+            var start = new Date()
             setting.log(setting.chalk.cyan(`EZY Starting:.. ${setting.argv().join(' ')}`))
             exec(`source ~/.bash_profile && cd ${process.env.EZY_HOME} && gulp ${setting.argv().join(' ')}`, (err, stdout, stderr) => {
                 if (err) {
@@ -55,7 +55,7 @@ else {
                     process.exit(0)
                     return
                 }
-                let end = new Date()
+                var end = new Date()
                 if (stderr) setting.log(setting.chalk.red(stderr))
                 else setting.log(setting.chalk.cyan(`EZY Finished after ${(((end - start) % 60000) / 1000).toFixed(0)}s`))
                 process.exit(0)

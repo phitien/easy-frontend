@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 import {AppVersion} from './AppVersion'
 
 export class AppFooter extends Cmp {

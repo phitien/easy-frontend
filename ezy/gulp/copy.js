@@ -1,6 +1,6 @@
-import gulp from 'gulp'
+var gulp = require('gulp')
 
-export const copyFn = function(setting, cb) {
+const copyFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:copy'`)
     setting.src(setting.files(setting.ezy_static))
         .pipe(gulp.dest(`${setting.public_static}`, {overwrite: true}))
@@ -13,6 +13,7 @@ export const copyFn = function(setting, cb) {
                 })
         })
 }
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:copy`, copyFn.bind(this, setting))
 }
+module.exports.copyFn = copyFn

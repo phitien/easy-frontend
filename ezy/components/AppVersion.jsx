@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 
 export class AppVersion extends Cmp {
     get cmpClassName() {return 'version'}

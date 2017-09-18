@@ -1,7 +1,10 @@
 import assign from 'object-assign'
-import {utils} from '../utils'
-import {config} from '../config'
-import {getXtore} from '../Xtore'
+import {utils} from 'ezy/common/utils'
+import {config} from 'ezy/common/config'
+import {getXtore} from 'ezy/common/Xtore'
+
+let __dispatch = null
+const __actions = {}
 
 export class Action {
     get name() {this.constructor.name}
@@ -17,7 +20,7 @@ export class Action {
     before(...args) {}
     after(...args) {}
     dispatch(...args) {this.constructor.normalize(this.name, ...args)}
-    getState(name) {return this.store.getState()[this.name]}
+    getState(n) {return this.store.getState()[n]}
     getStates() {
         const state = this.store.getState()
         const nState = {}
@@ -39,37 +42,36 @@ export class Action {
         }
         return this.__fn
     }
-    static __dispatch = null
-    static __actions = {}
-    static normalize(name, payload, ...args) {
+    static normalize(n, payload, ...args) {
         if (!payload || !payload.hasOwnProperty('data')) payload = assign({}, {data: payload})
-        return assign({extra: args, type: name}, payload)
+        return assign({extra: args, type: n}, payload)
     }
     static actions() {
-        return Object.keys(this.__actions).reduce((rs, k) => {
-            rs[k] = this.__actions[k].fn
+        return Object.keys(__actions).reduce((rs, k) => {
+            rs[k] = __actions[k].fn
             return rs
         }, {})
     }
-    static getName(name) {return typeof name == 'function' ? name.name : n}
-    static find(name) {
-        let found = Object.keys(this.__actions).find(k => k == `exe${name}`)
-        return this.__actions[found](...args)
+    static getName(n) {return typeof n == 'function' ? n.name : n}
+    static find(n) {
+        let found = Object.keys(__actions).find(k => k == `exe${n}`)
+        return __actions[found]
     }
-    static execute(name, ...args) {
-        name = this.getName(name)
-        let found = this.find(name)
-        if (found) this.__actions[found](...args)
-        else this.__dispatch(this.normalize(name, ...args))
+    static execute(n, ...args) {
+        n = this.getName(n)
+        let found = this.find(n)
+        found ? __actions[found](...args) : __dispatch(this.normalize(n, ...args))
     }
-    static put(name, dispatch, ...args) {
-        if (!this.__dispatch) this.__dispatch = dispatch
-        name = this.getName(name)
-        let found = this.find(name)
-        if (!found) {
-            let instance = new name()
-            instance.initFn(this.__dispatch, ...args)
-            this.__actions[`exe${name}`] = instance.fn
+    static put(n, dispatch, ...args) {
+        __dispatch = dispatch
+        n = this.getName(n)
+        if (n && typeof n == 'string') {
+            let found = this.find(n)
+            if (!found) {
+                let instance = new n()
+                instance.initFn(__dispatch, ...args)
+                __actions[`exe${n}`] = instance.fn
+            }
         }
     }
 }

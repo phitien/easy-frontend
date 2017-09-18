@@ -1,7 +1,7 @@
-import gulp from 'gulp'
-import livereload from 'gulp-livereload'
+var gulp = require('gulp')
+var livereload = require('gulp-livereload')
 
-export const watchFn = function(setting, cb) {
+const watchFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:watch'`)
     livereload.listen(setting.livereload)
     gulp.watch([]
@@ -31,6 +31,7 @@ export const watchFn = function(setting, cb) {
         cb()
     })
 }
-export default function(setting) {
+module.exports = exports = function(setting) {
     gulp.task(`${setting.appname}:watch`, watchFn.bind(this, setting))
 }
+module.exports.watchFn = watchFn

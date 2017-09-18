@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
-import {Cmp} from '../common'
+import {Cmp} from 'ezy/common'
 
 export class Logo extends Cmp {
     get cmpClassName() {return 'logo'}
