@@ -6,7 +6,7 @@ try {
     require('module').Module._initPaths()
 
     var gulp = require('gulp')
-    var {apptasks} = require('ezy/gulp')
+    var {apptasks} = require('ezygulp')
     apptasks(require('./gulp'), gulp)
 }
 catch(e) {

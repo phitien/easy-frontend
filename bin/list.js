@@ -1,6 +1,6 @@
 module.exports = exports = function(config) {
     const {exec} = require('child_process')
-    exec(`gulp info`, (err, stdout, stderr) => {
+    exec(`gulp --tasks`, (err, stdout, stderr) => {
         if (err) console.log(err.trim())
         if (stderr) console.log(stderr.trim())
         console.log(

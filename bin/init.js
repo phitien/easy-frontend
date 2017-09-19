@@ -2,7 +2,7 @@ module.exports = exports = function(config) {
     var fs = require('fs')
     var gulp = require('gulp')
     var readline = require('readline')
-    var polish = require('../ezy/gulp/polish')
+    var polish = require('../ezygulp/polish')
     var setting = {}, name, appname, path
     polish(setting, gulp)
     var rl = readline.createInterface(process.stdin, process.stdout)

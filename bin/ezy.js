@@ -2,8 +2,8 @@
 var fs = require('fs')
 var gulp = require('gulp')
 
-var argv = require('../ezy/gulp/argv')
-var verify = require('../ezy/gulp/verify')
+var argv = require('../ezygulp/argv')
+var verify = require('../ezygulp/verify')
 
 var version = require('./version')
 var help = require('./help')
@@ -13,6 +13,7 @@ var rebuild = require('./rebuild')
 var contribute = require('./contribute')
 var init = require('./init')
 var info = require('./info')
+var list = require('./list')
 
 var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
 
@@ -34,12 +35,14 @@ else if (argv.has('contribute|c')) contribute(config)
 else if (argv.empty() || argv.has('init') || argv.hasTask('init')) init(config)
 //push command implementation
 else if (argv.has('info')) info(config)
+//push command implementation
+else if (argv.has('list|ls')) list(config)
 //Commands implementations
 else {
     //verify ezy path
     if (!verify(config)) process.exit(0)
 
-    var polish = require('../ezy/gulp/polish')
+    var polish = require('../ezygulp/polish')
     var setting = {}
     polish(setting, gulp)
 

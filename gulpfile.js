@@ -4,7 +4,7 @@ process.env.NODE_PATH = `.${sep}${process.env.NODE_PATH || '.'}${sep}./node_modu
 require('module').Module._initPaths()
 
 var gulp = require('gulp')
-var {common, apptasks} = require('ezy/gulp')
+var {common, apptasks} = require('ezygulp')
 var setting = {}
 common(setting, gulp)
 try {apptasks(require('ezy/apps/demo/gulp'), require('gulp'))} catch(e) {console.log(e)}

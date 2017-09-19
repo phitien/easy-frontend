@@ -1,7 +1,7 @@
 import fs from 'fs'
 import gulp from 'gulp'
 import express from 'express'
-import polish from 'ezy/gulp/polish'
+import polish from 'ezygulp/polish'
 
 let setting = {}
 polish(setting, gulp)
