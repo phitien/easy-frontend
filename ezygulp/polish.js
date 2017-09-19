@@ -65,7 +65,7 @@ module.exports = exports = function(setting, gulp) {
 
     setting.ezy_home = process.env.EZY_HOME
     setting.ezy_dir = `${setting.ezy_home}/ezy`
-    setting.ezy_apps = `${setting.ezy_dir}/apps`
+    setting.ezy_apps = `${setting.ezy_home}/apps`
     setting.ezy_common = `${setting.ezy_dir}/common`
     setting.ezy_config = `${setting.ezy_dir}/config`
     setting.ezy_components = `${setting.ezy_dir}/components`
@@ -75,7 +75,7 @@ module.exports = exports = function(setting, gulp) {
     setting.ezy_public_static = `${setting.ezy_public}/static`
     setting.ezy_gulp = `${setting.ezy_dir}/gulp`
 
-    setting.sample_dir = `${setting.ezy_dir}/sample`
+    setting.sample_dir = `${setting.ezy_home}/sample`
     setting.sample_actions = `${setting.sample_dir}/actions`
     setting.sample_components = `${setting.sample_dir}/components`
     setting.sample_config = `${setting.sample_dir}/config`
@@ -147,7 +147,7 @@ module.exports = exports = function(setting, gulp) {
     setting.commands = {
         app: {
             key: `/**NEWAPP**/`,
-            text: function(cb) {return `try {apptasks(require('ezy/apps/${setting.appname}/gulp'), require('gulp'))} catch(e) {console.log(e)}`},
+            text: function(cb) {return `try {apptasks(require('apps/${setting.appname}/gulp'), require('gulp'))} catch(e) {console.log(e)}`},
             addon: function(cb) {return `${this.text()}
 /**NEWAPP**/`},
             removal: function(cb) {return `${this.text()}

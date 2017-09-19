@@ -12,7 +12,6 @@ module.exports = exports = function(config) {
                     config.setting.log(stdout.trim())
                     config.setting.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
                     if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) config.setting.log(`Please restart this session or try source ~/.bash_profile`)
-                    process.exit(0)
                 })
             })
         })

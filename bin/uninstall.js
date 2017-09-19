@@ -3,6 +3,5 @@ module.exports = exports = function(config) {
     config.setting.log(`EZY Removing ...`)
     exec(`rm -rf ${process.env.HOME}/${config.EZY_HOME}`, (err, stdout, stderr) => {
         config.setting.log(`EZY Done Removing`)
-        process.exit(0)
     })
 }

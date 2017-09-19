@@ -8,16 +8,11 @@ module.exports = exports = function(config) {
             config.setting.log(stdout.trim())
             config.setting.log(stderr.trim())
             config.setting.log(`EZY is pushed`)
-            process.exit(0)
+            return
         })
     }
     fs.stat(`${process.env.HOME}/${config.EZY_HOME}`, (err, stat) => {
-        if (err) {
-            config.setting.log(`EZY Error: ${process.env.HOME}/${config.EZY_HOME} not found`)
-            process.exit(0)
-        }
-        else {
-            push()
-        }
+        if (err) return config.setting.log(`EZY Error: ${process.env.HOME}/${config.EZY_HOME} not found`)
+        else return push()
     })
 }

@@ -9,6 +9,5 @@ module.exports = exports = function(config) {
                 .replace(/^.*\n/g, '')
                 .trim()
         )
-        process.exit(0)
     })
 }

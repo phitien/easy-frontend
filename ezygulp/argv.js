@@ -23,7 +23,16 @@ module.exports.hasTask = function(name) {
     var argv = getArgv()
     if (!argv || !argv.length || !name) return false
     var reg = new RegExp(`^\(${name}\)$`)
-    return reg.test(argv.join(' '))
+    for(var i in argv) if (reg.test(argv[i])) return true
+    return false
+}
+module.exports.indexOf = function(name) {
+    name = name ? name.trim() : ''
+    var argv = getArgv()
+    if (!argv || !argv.length || !name) return -1
+    var reg = new RegExp(`\(${name}\)`)
+    for(var i = 0;i < argv.length;i++) if (reg.test(argv[i])) return i
+    return -1
 }
 module.exports.hasOption = function(name) {
     return argvFn(name)
@@ -33,6 +42,9 @@ module.exports.has = function(name) {
 }
 module.exports.tasks = function() {
     var argv = getArgv()
-    if (argv.length == 0) return null
     return argv.filter(i => /^\w/.test(i))
+}
+module.exports.options = function() {
+    var argv = getArgv()
+    return argv.filter(i => /^-/.test(i))
 }

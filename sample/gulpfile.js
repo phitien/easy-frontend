@@ -11,6 +11,6 @@ try {
 }
 catch(e) {
     console.log(`Could not find ezy framework at: ${process.env.EZY_HOME}`)
-    console.log(`Run: npm i -g && ezy install, then start new session`)
+    console.log(`Run: ezy install, then start new session`)
     console.log(e)
 }

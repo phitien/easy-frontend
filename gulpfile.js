@@ -7,5 +7,4 @@ var gulp = require('gulp')
 var {common, apptasks} = require('ezygulp')
 var setting = {}
 common(setting, gulp)
-try {apptasks(require('ezy/apps/demo/gulp'), require('gulp'))} catch(e) {console.log(e)}
 /**NEWAPP**/
