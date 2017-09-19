@@ -1,5 +1,5 @@
 const copyFn = function(setting, cb) {
-    setting.log(`Running  '${setting.appname}:copy'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}copy'`)
     setting.src(setting.files(setting.ezy_static))
         .pipe(setting.gulp.dest(`${setting.public_static}`, {overwrite: true}))
         .on('end', function() {
@@ -9,6 +9,6 @@ const copyFn = function(setting, cb) {
         })
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:copy`, copyFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}copy`, copyFn.bind(this, setting))
 }
 module.exports.copyFn = copyFn

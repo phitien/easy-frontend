@@ -2,7 +2,7 @@ const mkprofileFn = function(setting, cb) {
     var fs = require('fs')
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.appname}:mkprofile'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}mkprofile'`)
     var profile = setting.normalizedName
     if (!profile) {
         setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:mkprofile --name=name`)
@@ -29,7 +29,7 @@ const mkprofileFn = function(setting, cb) {
 }
 const rmprofileFn = function(setting, cb) {
     var clean = require('gulp-clean')
-    setting.log(`Running  '${setting.appname}:rmprofile'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}rmprofile'`)
     var profile = setting.normalizedName
     if (!profile) {
         setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:rmprofile --name=name`)
@@ -45,8 +45,8 @@ const rmprofileFn = function(setting, cb) {
     .on('end', cb)
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:mkprofile`, mkprofileFn.bind(this, setting))
-    setting.gulp.task(`${setting.appname}:rmprofile`, rmprofileFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}mkprofile`, mkprofileFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}rmprofile`, rmprofileFn.bind(this, setting))
 }
 module.exports.mkprofileFn = mkprofileFn
 module.exports.rmprofileFn = rmprofileFn

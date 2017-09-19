@@ -6,7 +6,7 @@ const vendorFn = function(setting, cb, i) {
     var uglify = require('gulp-uglify')
     var sourcemaps = require('gulp-sourcemaps')
     i = i || 0
-    if (i == 0) setting.log(`Running  '${setting.appname}:vendor'`)
+    if (i == 0) setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}vendor'`)
     var bundleCnf = {
         debug: false, transform: [babelify],
     }
@@ -33,7 +33,7 @@ const vendorFn = function(setting, cb, i) {
         })
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:vendor`, function(cb) {
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}vendor`, function(cb) {
         vendorFn.bind(this, setting, cb, 0)()
     })
 }

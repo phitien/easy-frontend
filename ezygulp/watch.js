@@ -1,7 +1,7 @@
 var livereload = require('gulp-livereload')
 
 const watchFn = function(setting, cb) {
-    setting.log(`Running  '${setting.appname}:watch'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}watch'`)
     livereload.listen(setting.livereload)
     setting.gulp.watch([]
         .concat(setting.files(`${setting.ezy_common}`, '*.jsx'))
@@ -28,6 +28,6 @@ const watchFn = function(setting, cb) {
     cb()
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:watch`, watchFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}watch`, watchFn.bind(this, setting))
 }
 module.exports.watchFn = watchFn

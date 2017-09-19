@@ -4,7 +4,7 @@ const cssFn = function(setting, cb) {
     var autoprefixer = require('gulp-autoprefixer')
     var concat = require('gulp-concat')
     var run = require('run-sequence')
-    setting.log(`Running  '${setting.appname}:css'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}css'`)
     setting.src(`${setting.app_sass}/index.scss`)
         .pipe(sourcemaps.init())
         .pipe(sass({
@@ -18,6 +18,6 @@ const cssFn = function(setting, cb) {
         .on('end', cb)
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:css`, cssFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}css`, cssFn.bind(this, setting))
 }
 module.exports.cssFn = cssFn

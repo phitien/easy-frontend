@@ -12,18 +12,12 @@ var mkprofile = require('./mkprofile'), mkprofileFn = mkprofile.mkprofileFn, rmp
 var polish = require('./polish'), polishFn = polish.polishFn
 var vendor = require('./vendor'), vendorFn = vendor.vendorFn
 var watch = require('./watch'), watchFn = watch.watchFn
+var serve = require('./serve'), serveFn = serve.serveFn
 
 const common = function(setting, gulp) {
     setting.ezy = true
     polish(setting, gulp)
     mkapp(setting)
-}
-const serveFn = function(setting, cb) {
-    var run = require('run-sequence').use(setting.gulp)
-    run([
-        `${setting.appname}:watch`,
-        `${setting.appname}:connect`,
-    ], cb)
 }
 const apptasks = function(setting, gulp) {
     setting.ezy = __dirname == process.env.EZY_HOME
@@ -39,8 +33,9 @@ const apptasks = function(setting, gulp) {
     js(setting)
     watch(setting)
     clean(setting)
+    serve(setting)
 
-    setting.gulp.task(`${setting.appname}`, function(cb) {
+    setting.gulp.task(`${setting.ezy ? setting.appname : 'default'}`, function(cb) {
         cleanFn(setting, function() {
             configFn(setting, function() {
                 jsFn(setting, function() {
@@ -58,14 +53,11 @@ const apptasks = function(setting, gulp) {
             })
         })
     })
-    setting.gulp.task(`${setting.appname}:serve`, serveFn.bind(this, setting))
 }
 module.exports = exports = {
     argv,
     apptasks,
     common,
-    serveFn,
-    argv,
     clean, cleanFn,
     config, configFn,
     connect, connectFn,
@@ -79,4 +71,5 @@ module.exports = exports = {
     polish, polishFn,
     vendor, vendorFn,
     watch, watchFn,
+    serve, serveFn,
 }

@@ -1,7 +1,7 @@
 const injectFn = function(setting, cb) {
     var inject = require('gulp-inject')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.appname}:inject'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}inject'`)
     setting.normalize(
         setting.src(`${setting.app_templates}/*.html`)
         .pipe(inject(setting.gulp.src([
@@ -20,6 +20,6 @@ const injectFn = function(setting, cb) {
     .on('end', cb)
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:inject`, injectFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}inject`, injectFn.bind(this, setting))
 }
 module.exports.injectFn = injectFn

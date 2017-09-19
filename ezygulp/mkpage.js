@@ -2,7 +2,7 @@ const mkpageFn = function(setting, cb) {
     var fs = require('fs')
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.appname}:mkpage'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}mkpage'`)
     var pagename = setting.normalizedName
     if (!pagename) {
         setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
@@ -48,7 +48,7 @@ const rmpageFn = function(setting, cb) {
     var fs = require('fs')
     var clean = require('gulp-clean')
     var replace = require('gulp-replace')
-    setting.log(`Running  '${setting.appname}:rmpage'`)
+    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}rmpage'`)
     var pagename = setting.normalizedName
     if (!pagename) {
         setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
@@ -81,8 +81,8 @@ const rmpageFn = function(setting, cb) {
     })
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.appname}:mkpage`, mkpageFn.bind(this, setting))
-    setting.gulp.task(`${setting.appname}:rmpage`, rmpageFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}mkpage`, mkpageFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}rmpage`, rmpageFn.bind(this, setting))
 }
 module.exports.mkpageFn = mkpageFn
 module.exports.rmpageFn = rmpageFn
