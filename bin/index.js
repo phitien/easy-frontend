@@ -14,8 +14,12 @@ var contribute = require('./contribute')
 var init = require('./init')
 var info = require('./info')
 var list = require('./list')
+var readline = require('readline')
+var polish = require('../ezygulp/polish')
+var setting = {}
+polish(setting, gulp)
 
-var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
+var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv, setting: setting}
 
 const {exec} = require('child_process')
 

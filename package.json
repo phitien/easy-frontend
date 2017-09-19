@@ -9,7 +9,7 @@
     "npm-dev": "npm install -D gulp gulp-clean gulp-replace gulp-rename gulp-connect gulp-sass gulp-sourcemaps gulp-autoprefixer gulp-concat gulp-inject gulp-uglify gulp-connect gulp-livereload vinyl-source-stream vinyl-buffer browserify babelify run-sequence"
   },
   "bin": {
-    "ezy": "./bin/ezy.js"
+    "ezy": "./bin/index.js"
   },
   "repository": {
     "type": "git",

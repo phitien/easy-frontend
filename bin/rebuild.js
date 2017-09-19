@@ -2,27 +2,27 @@ module.exports = exports = function(config) {
     var fs = require('fs')
     const {exec} = require('child_process')
     const install = function () {
-        console.log(`EZY Installing ..., it takes about 5-10 mins to finished process`)
+        config.setting.log(`EZY Installing ..., it takes about 5-10 mins to finished process`)
         exec(`cd ${process.env.HOME}/${config.EZY_HOME} && npm i -g`, (err, stdout, stderr) => {
-            if (err) console.log(`EZY Error: Could not update EZY modules`, err)
+            if (err) config.setting.log(`EZY Error: Could not update EZY modules`, err)
             exec(`cat ~/.bash_profile | sed '/EZY_HOME/d' | tee ~/.bash_profile && echo 'export EZY_HOME="$HOME/${config.EZY_HOME}"' >> ~/.bash_profile`, (err, stdout, stderr) => {
-                if (err) console.log(`EZY Error: Could not update EZY command`, err)
+                if (err) config.setting.log(`EZY Error: Could not update EZY command`, err)
                 exec(`ezy -v`, (err, stdout, stderr) => {
-                    if (err) console.log(`EZY Error: Could not update EZY command`, err)
-                    console.log(stdout.trim())
-                    console.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
-                    if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) console.log(`Please restart this session or try source ~/.bash_profile`)
+                    if (err) config.setting.log(`EZY Error: Could not update EZY command`, err)
+                    config.setting.log(stdout.trim())
+                    config.setting.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
+                    if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) config.setting.log(`Please restart this session or try source ~/.bash_profile`)
                     process.exit(0)
                 })
             })
         })
     }
     fs.stat(`${process.env.HOME}/${config.EZY_HOME}`, (err, stat) => {
-        console.log(`EZY Rebuilding ...`)
+        config.setting.log(`EZY Rebuilding ...`)
         if (err) {
             exec(`ezy i`, (err, stdout, stderr) => {
-                console.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
-                if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) console.log(`Please restart this session or try source ~/.bash_profile`)
+                config.setting.log(`EZY is installed at ${process.env.HOME}/${config.EZY_HOME}`)
+                if (process.env.EZY_HOME != `${process.env.HOME}/${config.EZY_HOME}`) config.setting.log(`Please restart this session or try source ~/.bash_profile`)
                 process.exit(0)
             })
         }

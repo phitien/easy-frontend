@@ -1,3 +1,3 @@
 module.exports = exports = function(config) {
-    console.log(`${config.version}`)
+    config.setting.log(`${config.version}`)
 }
