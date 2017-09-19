@@ -44,8 +44,12 @@ module.exports = exports = function(config) {
         exec(`cd ${config.setting.ezy_home} && gulp mkapp -n="${name}" ${config.setting.ezy ? '' : `-path="${path}"`}`, (err, stdout, stderr) => {
             if (err) config.setting.log(err.trim())
             if (stderr) config.setting.log(stderr.trim())
-            config.setting.log(`App '${name}' is created at '${path}'`)
-            process.exit()
+            exec(`cd ${path} && npm install`, (err, stdout, stderr) => {
+                if (err) config.setting.log(err.trim())
+                if (stderr) config.setting.log(stderr.trim())
+                config.setting.log(`App '${name}' is created at '${path}'`)
+                process.exit()
+            })
         })
     }
     if (!name) askForName()
