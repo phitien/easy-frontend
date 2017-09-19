@@ -8,7 +8,7 @@ const jsFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:js'`)
     var bundleCnf = {
         debug: setting.debug, transform: [babelify], entries: [`${setting.app_dir}/index.jsx`], extensions: ['.jsx'],
-        paths: ['.', './node_modules', setting.ezy_dir, setting.app_dir]
+        paths: ['.', './node_modules', setting.ezy_home, `${setting.ezy_home}/node_modules`, setting.app_home, `${setting.app_home}/node_modules`]
     }
     var bundler = browserify(bundleCnf)
     setting.libs.forEach(libs => libs.forEach(lib => bundler.external(lib)))

@@ -13,7 +13,7 @@ const mkappFn = function(setting, cb) {
     }
     fs.stat(`${setting.path}`, function(err, stat) {
         if (!err) {
-            setting.log(`App ${setting.appname} already exists`)
+            setting.log(`App ${setting.appname} already exists at ${setting.path}`)
             cb()
             return
         }

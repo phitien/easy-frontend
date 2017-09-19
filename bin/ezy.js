@@ -12,25 +12,28 @@ var uninstall = require('./uninstall')
 var rebuild = require('./rebuild')
 var contribute = require('./contribute')
 var init = require('./init')
+var info = require('./info')
 
 var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
 
 const {exec} = require('child_process')
 
 //Show current version
-if (argv.hasOption('v|version')) version(config)
+if (argv.has('v|version')) version(config)
 //List all commands
-else if (argv.empty() || argv.hasOption('\\?|help')) help(config)
+else if (argv.hasOption('\\?') || argv.has('help')) help(config)
 //install command implementation
-else if (argv.hasOption('install|update|i|u')) install(config)
+else if (argv.has('install|update|i|u')) install(config)
 //rebuild command implementation
-else if (argv.hasOption('rebuild|repair|r')) rebuild(config)
+else if (argv.has('rebuild|repair|r')) rebuild(config)
 //uninstall command implementation
-else if (argv.hasOption('uninstall|remove|un|rm')) uninstall(config)
+else if (argv.has('uninstall|remove|un|rm')) uninstall(config)
 //push command implementation
-else if (argv.hasOption('contribute|c')) contribute(config)
+else if (argv.has('contribute|c')) contribute(config)
 //push command implementation
-else if (argv.hasOption('init')) init(config)
+else if (argv.empty() || argv.has('init') || argv.hasTask('init')) init(config)
+//push command implementation
+else if (argv.has('info')) info(config)
 //Commands implementations
 else {
     //verify ezy path

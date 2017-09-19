@@ -1,17 +1,17 @@
-var argv = require('ezy/gulp/argv'), has = argv.has
-var clean = require('ezy/gulp/clean'), cleanFn = clean.cleanFn
-var config = require('ezy/gulp/config'), configFn = config.configFn
-var connect = require('ezy/gulp/connect'), connectFn = connect.connectFn
-var copy = require('ezy/gulp/copy'), copyFn = copy.copyFn
-var css = require('ezy/gulp/css'), cssFn = css.cssFn
-var inject = require('ezy/gulp/inject'), injectFn = inject.injectFn
-var js = require('ezy/gulp/js'), jsFn = js.jsFn
-var mkapp = require('ezy/gulp/mkapp'), mkappFn = mkapp.mkappFn, rmappFn = mkapp.rmappFn, includeappFn = mkapp.includeappFn, excludeappFn = mkapp.excludeappFn
-var mkpage = require('ezy/gulp/mkpage'), mkpageFn = mkpage.mkpageFn, rmpageFn = mkpage.rmpageFn
-var mkprofile = require('ezy/gulp/mkprofile'), mkprofileFn = mkprofile.mkprofileFn, rmprofileFn = mkprofile.rmprofileFn
-var polish = require('ezy/gulp/polish'), polishFn = polish.polishFn
-var vendor = require('ezy/gulp/vendor'), vendorFn = vendor.vendorFn
-var watch = require('ezy/gulp/watch'), watchFn = watch.watchFn
+var argv = require('./argv'), has = argv.has
+var clean = require('./clean'), cleanFn = clean.cleanFn
+var config = require('./config'), configFn = config.configFn
+var connect = require('./connect'), connectFn = connect.connectFn
+var copy = require('./copy'), copyFn = copy.copyFn
+var css = require('./css'), cssFn = css.cssFn
+var inject = require('./inject'), injectFn = inject.injectFn
+var js = require('./js'), jsFn = js.jsFn
+var mkapp = require('./mkapp'), mkappFn = mkapp.mkappFn, rmappFn = mkapp.rmappFn, includeappFn = mkapp.includeappFn, excludeappFn = mkapp.excludeappFn
+var mkpage = require('./mkpage'), mkpageFn = mkpage.mkpageFn, rmpageFn = mkpage.rmpageFn
+var mkprofile = require('./mkprofile'), mkprofileFn = mkprofile.mkprofileFn, rmprofileFn = mkprofile.rmprofileFn
+var polish = require('./polish'), polishFn = polish.polishFn
+var vendor = require('./vendor'), vendorFn = vendor.vendorFn
+var watch = require('./watch'), watchFn = watch.watchFn
 
 const common = function(setting, gulp) {
     setting.ezy = true

@@ -7,11 +7,10 @@ String.prototype.toCamelCase = function(f) {
     return str
 }
 
-var gutil = require('gulp-util')
-var chalk = require('chalk')
-var argv = require('ezy/gulp/argv')
+var argv = require('./argv')
 
 module.exports = exports = function(setting, gulp) {
+    setting.sep = require('path').sep == '\\' ? ';' : ':'
     setting.pwd = process.env.PWD
     setting.ezy = setting.pwd.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
 
@@ -27,8 +26,27 @@ module.exports = exports = function(setting, gulp) {
     setting.path = function(s) {return setting.trim(s).replace(/_/g, '/')}
     setting.normalizeName = function(s) {return setting.trim(s || '').replace(/\W/g, '').toLowerCase()}
     setting.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
-    setting.log = setting.debug ? gutil.log : function(err, ...args) {}
-    setting.chalk = chalk
+    try {
+        setting.gutil = require('gulp-util')
+        setting.log = setting.debug ? setting.gutil.log : function(...args) {}
+    }
+    catch(e) {
+        setting.log = setting.debug ? function(...args) {console.log(...args)}: function(...args) {}
+    }
+    try {setting.chalk = require('chalk')}
+    catch(e) {
+        function chalk(s) {return s}
+        setting.chalk = chalk
+        setting.chalk.red = chalk
+        setting.chalk.green = chalk
+        setting.chalk.blue = chalk
+        setting.chalk.cyan = chalk
+        setting.chalk.yellow = chalk
+        setting.chalk.magenta = chalk
+        setting.chalk.gray = chalk
+        setting.chalk.black = chalk
+        setting.chalk.white = chalk
+    }
     setting.ondata = function() {}
     setting.onerror = function(...args) {
         setting.log(...args)
@@ -45,7 +63,9 @@ module.exports = exports = function(setting, gulp) {
     setting.apppath = setting.argv('apppath', setting.apppath || `/${setting.appname}`)
     setting.baseurl = setting.argv('baseurl|url', setting.baseurl || '')
 
-    setting.ezy_dir = `${process.env.EZY_HOME}/ezy`
+    setting.ezy_home = process.env.EZY_HOME
+    setting.ezy_dir = `${setting.ezy_home}/ezy`
+    setting.ezy_apps = `${setting.ezy_dir}/apps`
     setting.ezy_common = `${setting.ezy_dir}/common`
     setting.ezy_config = `${setting.ezy_dir}/config`
     setting.ezy_components = `${setting.ezy_dir}/components`
@@ -68,7 +88,7 @@ module.exports = exports = function(setting, gulp) {
     setting.sample_static = `${setting.sample_dir}/static`
     setting.sample_templates = `${setting.sample_dir}/templates`
 
-    setting.app_dir = setting.ezy ? `${setting.ezy_dir}/apps/${setting.appname}` : setting.pwd
+    setting.app_dir = setting.app_home = setting.ezy ? `${setting.ezy_apps}/${setting.appname}` : setting.pwd
     setting.app_actions = `${setting.app_dir}/actions`
     setting.app_components = `${setting.app_dir}/components`
     setting.app_config = `${setting.app_dir}/config`
@@ -85,6 +105,9 @@ module.exports = exports = function(setting, gulp) {
     setting.path = setting.argv('path', setting.ezy ? setting.app_dir : `${setting.pwd}/${setting.appname}`)
 
     setting.gulpfile = './gulpfile.js'
+
+    process.env.NODE_PATH = `.${setting.sep}${process.env.NODE_PATH}${setting.sep}${setting.ezy_home}${setting.sep}${setting.app_home}`
+    require('module').Module._initPaths()
 
     setting.src = function(...args) {
         return setting.gulp.src(args.filter(arg => arg).reduce((rs, arg) => {

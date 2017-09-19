@@ -28,6 +28,9 @@ module.exports.hasTask = function(name) {
 module.exports.hasOption = function(name) {
     return argvFn(name)
 }
+module.exports.has = function(name) {
+    return module.exports.hasTask(name) || module.exports.hasOption(name)
+}
 module.exports.tasks = function() {
     var argv = getArgv()
     if (argv.length == 0) return null
