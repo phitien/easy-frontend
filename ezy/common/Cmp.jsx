@@ -239,9 +239,7 @@ export class Cmp extends Container {
     renderChildren() {return Array.isArray(this.children) ? this.children.map((c,i) => React.cloneElement(c, {key: i, className: this.childrenClassName})) : this.children}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {
-        console.log(this)
         return <div className={this.className} data-cmpId={this.cmpId}>
-            asdad
             {this.renderCmp()}
             {this.renderIndicator()}
             {this.renderMessages()}

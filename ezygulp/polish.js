@@ -160,7 +160,7 @@ module.exports = exports = function(setting, gulp) {
 /**NEWPAGE**/`},
             pageRemoval: function(name, Name, NAME){return `${this.pageAddonText()}
 `},
-            routeAddonText: function(name, Name, NAME) {return `{path: config.apppath + '${name}', component: wrap(pages.${Name}Page), onEnter: onRouteEnter, onChange: onRouteChanged},`},
+            routeAddonText: function(name, Name, NAME) {return `{path: config.apppath + '${name}', component: wrap(pages.${Name}Page), onEnter: onRouteEntered, onChange: onRouteChanged},`},
             routeAddon: function(name, Name, NAME){return `${this.routeAddonText()}
 /**NEWPAGE**/`},
             routeRemoval: function(name, Name, NAME){return `${this.routeAddonText()}

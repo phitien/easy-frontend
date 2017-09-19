@@ -7,18 +7,18 @@ const watchFn = function(setting, cb) {
         .concat(setting.files(`${setting.ezy_common}`, '*.jsx'))
         .concat(setting.files(`${setting.ezy_components}`, '*.jsx'))
         .concat(setting.files(`${setting.app_dir}`, '*.jsx'))
-        , [`${setting.appname}:js`])
+        , [`${setting.ezy ? `${setting.appname}:` : ''}js`])
     setting.gulp.watch([]
         .concat(setting.files(`${setting.ezy_sass}`, '*.scss'))
         .concat(setting.files(`${setting.app_sass}`, '*.scss'))
-        , [`${setting.appname}:css`])
+        , [`${setting.ezy ? `${setting.appname}:` : ''}css`])
     setting.gulp.watch([]
         .concat(setting.files(`${setting.app_templates}`, '*.html'))
-        , [`${setting.appname}:inject`])
+        , [`${setting.ezy ? `${setting.appname}:` : ''}inject`])
     setting.gulp.watch([]
         .concat(setting.files(`${setting.ezy_static}`, '*'))
         .concat(setting.files(`${setting.app_static}`, '*'))
-        , [`${setting.appname}:copy`])
+        , [`${setting.ezy ? `${setting.appname}:` : ''}copy`])
     setting.gulp.watch([
         `${setting.public_static}/${setting.appname}/*${setting.appname}*.css`,
         `${setting.public_static}/${setting.appname}/*${setting.appname}*.js`,

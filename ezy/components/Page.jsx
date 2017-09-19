@@ -33,8 +33,7 @@ export class Page extends Cmp {
         return this.isNagative ? this.nagativeContent : this.positiveContent
     }
     get positiveContent() {
-        return
-        <div className='container content'>
+        return <div className='container content'>
             {this.renderToolbar()}
             <div className='page-wrapper'>
                 {this.renderLeftPanel()}

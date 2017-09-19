@@ -4,12 +4,14 @@ import {Provider} from 'react-redux'
 import {Router, Route, Switch} from 'react-router'
 import {Subscriber, Publisher} from './PubSub'
 import {history} from './history'
+import {utils} from './utils'
 
 export class Application {
     constructor(config) {
         this.config = config
     }
     get klass() {return this.constructor.name}
+    get utils() {return utils}
     get container() {return this.__container}
     set container(v) {this.__container = v}
     get store() {return this.__store}
@@ -40,16 +42,20 @@ export class Application {
         this.render()
     }
 }
+
 export class RouteApplication extends Application {
     get routes() {return this.__routes}
     set routes(v) {this.__routes = v}
     get history() {return this.__history || history}
     set history(v) {this.__history = v}
 
+    renderRoute(props, i) {
+        return React.createElement(Route, this.utils.assign({key: i}, props.props || props))
+    }
     renderApplication() {
         if (this.routes && this.history)
-        return <Router history={history}>
-            {React.createElement(Route, this.routes)}
+        return <Router routes={this.routes} history={history}>
+            {this.routes}
         </Router>
         else if (!this.routes) throw `${this.klass}: No routes provided`
         else if (!this.history) throw `${this.klass}: No history provided`

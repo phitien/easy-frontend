@@ -13,17 +13,17 @@ const jsFn = function(setting, cb) {
     var bundler = browserify(bundleCnf)
     setting.libs.forEach(libs => libs.forEach(lib => bundler.external(lib)))
     bundler.bundle()
+        .on('update', jsFn)
+        .on('error', function(err, ...args) {
+            setting.log(err, ...args)
+            this.emit('end')
+        })
         .pipe(source(`${setting.appname}.js`))
         .pipe(buffer())
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
-        .on('update', jsFn)
-        .on('error', function(err, ...args) {
-            setting.log(err, ...args)
-            this.emit('end')
-        })
         .on('end', cb)
 }
 
