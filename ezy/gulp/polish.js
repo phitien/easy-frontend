@@ -1,26 +1,30 @@
+String.prototype.toCamelCase = function(f) {
+    var str = this.replace(/^([A-Z])|\s([a-z])/g, function(match, p1, p2, offset) {
+        if (p2) return ` ${p2.toUpperCase()}`
+        return p1.toLowerCase()
+    })
+    str = f ? str != '' ? str.substr(0, 1).toUpperCase() + str.substr(1) : '' : str
+    return str
+}
+
 var gutil = require('gulp-util')
 var chalk = require('chalk')
 var argv = require('ezy/gulp/argv')
 
-String.prototype.toCamelCase = function(cb) {
-    return this.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2, offset) {
-        if (p2) return p2.toUpperCase()
-        return p1.toLowerCase()
-    })
-}
-
 module.exports = exports = function(setting, gulp) {
+    setting.ezy = __dirname.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
+
     setting.gulp = gulp || require('gulp')
     setting.argv = argv
-    setting.profile = setting.argv('profile', 'dev')
+    setting.profile = setting.argv('profile|p', 'dev')
     setting.env = process.env.NODE_ENV = setting.argv('env', process.env.NODE_ENV || 'dev')
     setting.port = setting.argv('port', setting.port || 2810)
     setting.livereload = setting.argv('livereload', setting.livereload || 1028)
-    setting.debug = setting.argv('debug', 1)
+    setting.debug = Boolean.valueOf(setting.argv('debug|d', 1))
 
     setting.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
     setting.path = function(s) {return setting.trim(s).replace(/_/g, '/')}
-    setting.normalizeName = function(s) {return setting.trim(s || '').replace(/\W/g, '').toLowerCase()},
+    setting.normalizeName = function(s) {return setting.trim(s || '').replace(/\W/g, '').toLowerCase()}
     setting.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
     setting.log = setting.debug ? gutil.log : function(err, ...args) {}
     setting.chalk = chalk
@@ -30,14 +34,15 @@ module.exports = exports = function(setting, gulp) {
         this.emit('end')
     }
 
-    setting.appname = setting.argv('name', setting.argv('n', setting.appname || ''))
-    setting.name = setting.normalizeName(setting.appname)
-    setting.APPNAME = setting.appname.toUpperCase()
-    setting.AppName = setting.appname.toCamelCase()
-    setting.appname = setting.normalizeName(setting.appname)
+    setting.name = setting.argv('name|n', setting.appname || '').replace(/^\W/g, '').replace(/\W$/g, '')
+    setting.normalizedName = setting.normalizeName(setting.name)
+    setting.appname = setting.normalizedName
+    setting.APPNAME = setting.name.toUpperCase()
+    setting.AppName = setting.name.toCamelCase(true)
+    setting.apptitle = setting.argv('apptitle|title', setting.apptitle || setting.AppName)
+    setting.appdesc = setting.argv('appdesc|desc', setting.appdesc || setting.AppName)
     setting.apppath = setting.argv('apppath', setting.apppath || `/${setting.appname}`)
-    setting.baseurl = setting.argv('baseurl', setting.baseurl || '')
-    setting.apptitle = setting.argv('apptitle', setting.apptitle || setting.AppName)
+    setting.baseurl = setting.argv('baseurl|url', setting.baseurl || '')
 
     setting.ezy_dir = `${process.env.EZY_HOME}/ezy`
     setting.ezy_common = `${setting.ezy_dir}/common`
@@ -76,31 +81,35 @@ module.exports = exports = function(setting, gulp) {
     setting.app_templates = `${setting.app_dir}/templates`
     setting.public = setting.argv('public', `${setting.app_dir}/src/main/resources/${setting.profile}`)
     setting.public_static = `${setting.public}/static`
-    setting.dir = setting.argv('dir', setting.app_dir)
+    setting.path = setting.argv('path', setting.ezy ? setting.app_dir : `${process.env.PWD}/${setting.appname}`)
 
     setting.gulpfile = './gulpfile.js'
 
     setting.src = function(...args) {
-        return setting.gulp.src(args.reduce((rs, arg) => {
+        return setting.gulp.src(args.filter(arg => arg).reduce((rs, arg) => {
             if (Array.isArray(arg)) rs = rs.concat(arg)
             else if (typeof arg == 'string') rs.push(arg)
             return rs
-        }, []), {dot: true})
+        }, []), args.filter(arg => arg && typeof arg == 'object').reduce((rs, arg) => {
+            if (!Array.isArray(arg)) rs = rs.concat(arg)
+            return rs
+        }, {dot: true}))
         .on('error', setting.onerror)
-        .on('data', setting.ondata)
     }
     setting.normalize = function(bundle) {
         var replace = require('gulp-replace')
         return bundle
-        .pipe(replace('{baseurl}', setting.baseurl))
+        .pipe(replace('{name}', setting.name))
         .pipe(replace('{appname}', setting.appname))
-        .pipe(replace('{apppath}', setting.apppath))
         .pipe(replace('{AppName}', setting.AppName))
         .pipe(replace('{APPNAME}', setting.APPNAME))
         .pipe(replace('{apptitle}', setting.apptitle))
+        .pipe(replace('{appdesc}', setting.appdesc))
+        .pipe(replace('{apppath}', setting.apppath))
+        .pipe(replace('{baseurl}', setting.baseurl))
+        .pipe(replace('{profile}', setting.profile))
         .pipe(replace('{port}', setting.port))
         .pipe(replace('{livereload}', setting.livereload))
-        .pipe(replace('{profile}', setting.profile))
         .pipe(replace('{debug}', setting.debug ? 'true' : 'false'))
     }
     setting.srcNormalized = function(...args) {

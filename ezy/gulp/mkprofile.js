@@ -3,7 +3,7 @@ const mkprofileFn = function(setting, cb) {
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
     setting.log(`Running  '${setting.appname}:mkprofile'`)
-    var profile = setting.name
+    var profile = setting.normalizedName
     if (!profile) {
         setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:mkprofile --name=name`)
         cb()
@@ -30,7 +30,7 @@ const mkprofileFn = function(setting, cb) {
 const rmprofileFn = function(setting, cb) {
     var clean = require('gulp-clean')
     setting.log(`Running  '${setting.appname}:rmprofile'`)
-    var profile = setting.name
+    var profile = setting.normalizedName
     if (!profile) {
         setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:rmprofile --name=name`)
         cb()
@@ -41,6 +41,7 @@ const rmprofileFn = function(setting, cb) {
         `${setting.app_pm2}/${profile}.json`
     )
     .pipe(clean({force: true}))
+    .on('data', setting.ondata)
     .on('end', cb)
 }
 module.exports = exports = function(setting) {

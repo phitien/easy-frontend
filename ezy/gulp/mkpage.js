@@ -3,14 +3,14 @@ const mkpageFn = function(setting, cb) {
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
     setting.log(`Running  '${setting.appname}:mkpage'`)
-    var pagename = setting.name
+    var pagename = setting.normalizedName
     if (!pagename) {
         setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
         cb()
         return
     }
     var PAGENAME = pagename.toUpperCase()
-    var PageName = pagename.toCamelCase()
+    var PageName = pagename.toCamelCase(true)
     fs.stat(`${setting.app_pages}/${PageName}Page.jsx`, function(err, stat) {
         if (!err) {
             setting.log(`Page ${PageName} already exists`)
@@ -49,14 +49,14 @@ const rmpageFn = function(setting, cb) {
     var clean = require('gulp-clean')
     var replace = require('gulp-replace')
     setting.log(`Running  '${setting.appname}:rmpage'`)
-    var pagename = setting.name
+    var pagename = setting.normalizedName
     if (!pagename) {
         setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
         cb()
         return
     }
     var PAGENAME = pagename.toUpperCase()
-    var PageName = pagename.toCamelCase()
+    var PageName = pagename.toCamelCase(true)
     setting.src(`${setting.app_dir}/routes.jsx`)
     .pipe(replace(setting.commands.page.routeRemoval(name, Name, NAME), ''))
     .pipe(setting.gulp.dest(`${setting.app_dir}`, {overwrite: true}))
@@ -74,6 +74,7 @@ const rmpageFn = function(setting, cb) {
                     `${setting.app_sass}/page-${pagename}.scss`
                 ])
                 .pipe(clean({force: true}))
+                .on('data', setting.ondata)
                 .on('end', cb)
             })
         })

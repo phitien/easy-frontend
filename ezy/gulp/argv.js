@@ -5,7 +5,7 @@ function argvFn(name, dfVal) {
     name = name ? name.trim() : ''
     var argv = getArgv()
     if (!name) return argv
-    var reg = new RegExp(`^-{1,2}\(${name}\)=([^\\s]*)\\s*$`)
+    var reg = new RegExp(`^-{1,2}\(${name}\)=(.*)\\s*$`)
     var boolReg = new RegExp(`^-{1,2}\(${name}\)\\s*$`)
     for (var i in argv) {
         if (boolReg.test(argv[i])) return true

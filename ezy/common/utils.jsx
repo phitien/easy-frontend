@@ -1,3 +1,12 @@
+String.prototype.toCamelCase = function(f) {
+    var str = this.replace(/^([A-Z])|\s([a-z])/g, function(match, p1, p2, offset) {
+        if (p2) return ` ${p2.toUpperCase()}`
+        return p1.toLowerCase()
+    })
+    str = f ? str != '' ? str.substr(0, 1).toUpperCase() + str.substr(1) : '' : str
+    return str
+}
+
 import assign from 'object-assign'
 import uuid from 'uuid/v1'
 import dateformat from 'dateformat'

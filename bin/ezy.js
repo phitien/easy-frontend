@@ -11,6 +11,7 @@ var install = require('./install')
 var uninstall = require('./uninstall')
 var rebuild = require('./rebuild')
 var contribute = require('./contribute')
+var init = require('./init')
 
 var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
 
@@ -27,13 +28,15 @@ else if (argv.hasOption('rebuild|repair|r')) rebuild(config)
 //uninstall command implementation
 else if (argv.hasOption('uninstall|remove|un|rm')) uninstall(config)
 //push command implementation
-else if (argv.hasOption('contribute|c')) push(config)
+else if (argv.hasOption('contribute|c')) contribute(config)
+//push command implementation
+else if (argv.hasOption('init')) init(config)
 //Commands implementations
 else {
     //verify ezy path
     if (!verify(config)) process.exit(0)
 
-    var polish = require('ezy/gulp/polish')
+    var polish = require('../ezy/gulp/polish')
     var setting = {}
     polish(setting, gulp)
 

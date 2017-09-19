@@ -1,26 +1,26 @@
 const mkappFn = function(setting, cb) {
     var fs = require('fs')
     var replace = require('gulp-replace')
-    setting.log(`Running  'mkapp'`)
+    setting.log(`Running  'mkapp'`, setting.appname)
     if (!setting.ezy) {
         cb()
         return
     }
     if (!setting.appname) {
-        setting.log('Name is missing, syntax: gulp mkapp --name=name --dir=/path/to/app')
+        setting.log('Name is missing, syntax: gulp mkapp --name=name --path=/path/to/app')
         cb()
         return
     }
-    fs.stat(`${setting.dir}`, function(err, stat) {
+    fs.stat(`${setting.path}`, function(err, stat) {
         if (!err) {
             setting.log(`App ${setting.appname} already exists`)
             cb()
             return
         }
         setting.srcNormalized(setting.files(setting.sample_dir))
-            .pipe(setting.gulp.dest(setting.dir))
+            .pipe(setting.gulp.dest(setting.path))
             .on('end', function() {
-                if (setting.dir == setting.app_dir) setting.src(setting.gulpfile)
+                if (setting.path == setting.app_dir) setting.src(setting.gulpfile)
                     .pipe(replace(setting.commands.app.removal(), ''))
                     .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
                     .pipe(setting.gulp.dest('.', {overwrite: true}))
@@ -58,6 +58,7 @@ const rmappFn = function(setting, cb) {
                     `${setting.public_static}/${setting.appname}*`
                 ])
                 .pipe(clean({force: true}))
+                .on('data', setting.ondata)
                 .on('end', cb)
             })
         })

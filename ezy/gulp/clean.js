@@ -3,6 +3,7 @@ const cleanFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:clean'`)
     setting.src(`${setting.public}/${setting.appname}*`, `${setting.public_static}/${setting.appname}*`)
         .pipe(clean({force: true}))
+        .on('data', setting.ondata)
         .on('end', cb)
 }
 module.exports = exports = function(setting) {
