@@ -1,57 +1,49 @@
 #!/usr/bin/env node
 var fs = require('fs')
+var gulp = require('gulp')
+
+var argv = require('../ezy/gulp/argv')
+var verify = require('../ezy/gulp/verify')
+
 var version = require('./version')
 var help = require('./help')
 var install = require('./install')
 var uninstall = require('./uninstall')
 var rebuild = require('./rebuild')
-var argv = process.argv.slice(2).sort((a,b) => a < b)
+var contribute = require('./contribute')
 
 var config = {EZY_HOME: '.ezy', version: '1.0.0', argv: argv}
 
 const {exec} = require('child_process')
 
 //Show current version
-if (argv.find(i => i == '-v' || i == '--v' || i == '-version' || i == '--version')) version(config)
+if (argv.hasOption('v|version')) version(config)
 //List all commands
-else if (argv.length == 0 || argv.find(i => i == '-?' || i == '--?' || i == '-help' || i == '--help')) help(config)
+else if (argv.empty() || argv.hasOption('\\?|help')) help(config)
 //install command implementation
-else if (argv.find(i => i == 'install' || i == 'i' || i == 'update' || i == 'u')) install(config)
+else if (argv.hasOption('install|update|i|u')) install(config)
 //rebuild command implementation
-else if (argv.find(i => i == 'rebuild' || i == 'r')) rebuild(config)
+else if (argv.hasOption('rebuild|repair|r')) rebuild(config)
 //uninstall command implementation
-else if (argv.find(i => i == 'uninstall' || i == 'un')) uninstall(config)
+else if (argv.hasOption('uninstall|remove|un|rm')) uninstall(config)
 //push command implementation
-else if (argv.find(i => i == 'push' || i == 'p')) push(config)
+else if (argv.hasOption('contribute|c')) push(config)
 //Commands implementations
 else {
-    //Show warning about incorrect path
-    if (!process.env.EZY_HOME) {
-        console.log(`EZY_HOME is not defined, eg: ${process.env.HOME}/${config.EZY_HOME}`)
-        console.log(`Try to run export EZY_HOME=${process.env.HOME}/${config.EZY_HOME} && ezy ${process.argv.slice(2).join(' ')}`)
-        console.log(`Or run: ezy install or ezy i`)
-        process.exit(0)
-    }
-    //Verify EZY_HOME
-    fs.stat(process.env.EZY_HOME, (err, stat) => {
-        if (err) {
-            console.log(`EZY Error: Could not find ezy framework at ${process.env.EZY_HOME}`)
-            console.log(`Try to run: ezy install or ezy i`)
-            process.exit(0)
-        }
-        else {
-            var sep = require('path').sep == '\\' ? ';' : ':'
-            process.env.NODE_PATH = `.${sep}${process.env.NODE_PATH || '.'}${sep}node_modules${sep}${process.env.EZY_HOME}`
-            require('module').Module._initPaths()
+    //verify ezy path
+    if (!verify(config)) process.exit(0)
 
-            var polish = require('ezy/gulp/polish')
-            var setting = {}
-            polish(setting)
+    var polish = require('ezy/gulp/polish')
+    var setting = {}
+    polish(setting, gulp)
 
+    var tasks = setting.argv.tasks()
+    if (tasks && tasks.length) {
+        function run() {
             var cmd = `gulp ${setting.argv().join(' ')}`
             var start = new Date()
             setting.log(setting.chalk.cyan(`EZY Starting:.. ${setting.argv().join(' ')}`))
-            exec(`source ~/.bash_profile && cd ${process.env.EZY_HOME} && gulp ${setting.argv().join(' ')}`, (err, stdout, stderr) => {
+            exec(`gulp ${setting.argv().join(' ')}`, (err, stdout, stderr) => {
                 if (err) {
                     setting.log(setting.chalk.red(err))
                     process.exit(0)
@@ -63,5 +55,20 @@ else {
                 process.exit(0)
             })
         }
-    })
+        function invalid(task) {
+            setting.log(setting.chalk.red(`EZY Error:`), setting.chalk.cyan(`task '${task}' is not defined at this path: ${process.env.PWD}`))
+            process.exit(0)
+        }
+        function loop() {
+            if (!tasks.length) return run()
+            var task = tasks.pop()
+            if (!task) return invalid(task)
+            exec(`gulp --tasks | grep ${task} -w`, (err, stdout, stderr) => {
+                if (err || !stdout || stderr) return invalid(task)
+                return loop()
+            })
+        }
+        loop()
+    }
+    else help(config)
 }

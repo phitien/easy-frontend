@@ -1,6 +1,5 @@
-var connect = require('gulp-connect')
-
 const connectFn = function(setting, cb) {
+    var connect = require('gulp-connect')
     setting.log(`Running  '${setting.appname}:connect'`)
     connect.server({
         name: `Application ${setting.AppName} - ${setting.profile}`,
@@ -9,7 +8,6 @@ const connectFn = function(setting, cb) {
         livereload: {port: setting.livereload},
         fallback: `${setting.public}/${setting.appname}.html`
     })
-    // setting.log(`Done '${setting.appname}:connect'`)
     cb()
 }
 module.exports = exports = function(setting) {

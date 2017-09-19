@@ -1,7 +1,6 @@
-var inject = require('gulp-inject')
-var rename = require('gulp-rename')
-
 const injectFn = function(setting, cb) {
+    var inject = require('gulp-inject')
+    var rename = require('gulp-rename')
     setting.log(`Running  '${setting.appname}:inject'`)
     setting.normalize(
         setting.src(`${setting.app_templates}/*.html`)
@@ -10,7 +9,7 @@ const injectFn = function(setting, cb) {
             `${setting.public_static}/${setting.appname}/${setting.appname}*.js`
         ]), {
             transform: function(file) {
-                var filename = `{rooturl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`
+                var filename = `{baseurl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`
                 return /\.css$/.test(file) ? `<link href="${filename}" rel="stylesheet"/>` :
                 /\.js$/.test(file) ? `<script src="${filename}" defer="true"></script>` : ''
             }
@@ -18,10 +17,7 @@ const injectFn = function(setting, cb) {
     )
     .pipe(rename(path => path.basename = path.basename == 'index' ? setting.appname : `${setting.appname}${path.basename}`))
     .pipe(setting.gulp.dest(setting.public, {overwrite: true}))
-    .on('end', function() {
-        // setting.log(`Done '${setting.appname}:inject'`)
-        cb()
-    })
+    .on('end', cb)
 }
 module.exports = exports = function(setting) {
     setting.gulp.task(`${setting.appname}:inject`, injectFn.bind(this, setting))

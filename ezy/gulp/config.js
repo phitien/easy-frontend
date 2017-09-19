@@ -1,11 +1,8 @@
 const configFn = function(setting, cb) {
     setting.log(`Running  '${setting.appname}:config'`)
-    setting.srcNormalized(`${setting.ezy_sample}/config/index.jsx`)
-        .pipe(setting.gulp.dest(`${setting.app_dir}/config`, {overwrite: true}))
-        .on('end', function() {
-            // setting.log(`Done '${setting.appname}:config'`)
-            cb()
-        })
+    setting.srcNormalized(`${setting.sample_config}/index.jsx`)
+        .pipe(setting.gulp.dest(`${setting.app_config}`, {overwrite: true}))
+        .on('end', cb)
 }
 module.exports = exports = function(setting) {
     setting.gulp.task(`${setting.appname}:config`, configFn.bind(this, setting))

@@ -25,10 +25,7 @@ const watchFn = function(setting, cb) {
         `${setting.public}/*${setting.appname}*.html`,
     ])
     .on('change', livereload.reload)
-    .on('end', function() {
-        // setting.log(`Done '${setting.appname}:watch'`)
-        cb()
-    })
+    cb()
 }
 module.exports = exports = function(setting) {
     setting.gulp.task(`${setting.appname}:watch`, watchFn.bind(this, setting))

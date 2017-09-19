@@ -5,10 +5,7 @@ const copyFn = function(setting, cb) {
         .on('end', function() {
             setting.src(setting.files(setting.app_static))
                 .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
-                .on('end', function() {
-                    // setting.log(`Done '${setting.appname}:copy'`)
-                    cb()
-                })
+                .on('end', cb)
         })
 }
 module.exports = exports = function(setting) {

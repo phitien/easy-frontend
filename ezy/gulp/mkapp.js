@@ -1,97 +1,117 @@
-var fs = require('fs')
-var clean = require('gulp-clean')
-var replace = require('gulp-replace')
-
-module.exports = exports = function(setting) {
-    setting.gulp.task(`mkapp`, function(cb) {
-        if (!setting.ezy) {
+const mkappFn = function(setting, cb) {
+    var fs = require('fs')
+    var replace = require('gulp-replace')
+    setting.log(`Running  'mkapp'`)
+    if (!setting.ezy) {
+        cb()
+        return
+    }
+    if (!setting.appname) {
+        setting.log('Name is missing, syntax: gulp mkapp --name=name --dir=/path/to/app')
+        cb()
+        return
+    }
+    fs.stat(`${setting.dir}`, function(err, stat) {
+        if (!err) {
+            setting.log(`App ${setting.appname} already exists`)
             cb()
             return
         }
-        if (!setting.appname) {
-            console.error('Name is missing, syntax: gulp mkapp --name=name --dir=/path/to/app')
-            cb()
-            return
-        }
-        var fs = require('fs')
-        fs.stat(`${setting.dir}`, function(err, stat) {
-            if (!err) {
-                console.log(`App ${setting.appname} already exists`)
-                cb()
-                return
-            }
-            setting.srcNormalized(setting.files(setting.ezy_sample))
-                .pipe(setting.gulp.dest(setting.dir))
-            if (setting.dir == setting.app_dir) setting.src(setting.gulpfile)
-                .pipe(replace(setting.commands.app.removal(), ''))
-                .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
-                .pipe(setting.gulp.dest('.', {overwrite: true}))
-                .on('end', cb)
-            else cb()
-        })
+        setting.srcNormalized(setting.files(setting.sample_dir))
+            .pipe(setting.gulp.dest(setting.dir))
+            .on('end', function() {
+                if (setting.dir == setting.app_dir) setting.src(setting.gulpfile)
+                    .pipe(replace(setting.commands.app.removal(), ''))
+                    .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
+                    .pipe(setting.gulp.dest('.', {overwrite: true}))
+                    .on('end', cb)
+                else cb()
+            })
     })
-    setting.gulp.task(`rmapp`, function(cb) {
-        if (!setting.ezy) return
-        if (!setting.appname) {
-            console.error('Name is missing, syntax: gulp rmapp --name=name')
-            cb()
-            return
-        }
-        setting.src(setting.gulpfile)
-            .pipe(replace(setting.commands.app.removal(), ''))
-            .pipe(setting.gulp.dest('.', {overwrite: true}))
-        fs.stat(`${setting.app_dir}`, function(err, stat) {
-            if (err) {
-                cb()
-                return
-            }
-            setting.src([
-                setting.app_dir,
-                `${setting.public}/${setting.appname}*`,
-                `${setting.public_static}/${setting.appname}*`
-            ], {read: false})
+}
+const rmappFn = function(setting, cb) {
+    var fs = require('fs')
+    var clean = require('gulp-clean')
+    var replace = require('gulp-replace')
+    setting.log(`Running  'rmapp'`)
+    if (!setting.ezy) {
+        cb()
+        return
+    }
+    if (!setting.appname) {
+        setting.log('Name is missing, syntax: gulp rmapp --name=name')
+        cb()
+        return
+    }
+    setting.src(setting.gulpfile)
+        .pipe(replace(setting.commands.app.removal(), ''))
+        .pipe(setting.gulp.dest('.', {overwrite: true}))
+        .on('end', function() {
+            fs.stat(`${setting.app_dir}`, function(err, stat) {
+                if (err) {
+                    cb()
+                    return
+                }
+                setting.src([
+                    setting.app_dir,
+                    `${setting.public}/${setting.appname}*`,
+                    `${setting.public_static}/${setting.appname}*`
+                ])
                 .pipe(clean({force: true}))
-                .on('data', function () {})
                 .on('end', cb)
+            })
         })
-    })
-    setting.gulp.task(`includeapp`, function(cb) {
-        if (!setting.ezy) {
-            cb()
-            return
-        }
-        if (!setting.appname) {
-            console.error('Name is missing, syntax: gulp includeapp --name=name --dir=/path/to/app')
-            cb()
-            return
-        }
-        var fs = require('fs')
-        fs.stat(`${setting.app_dir}`, function(err, stat) {
-            if (err) {
-                setting.log(`App ${setting.appname} does not exist`, err)
-                cb()
-                return
-            }
-            setting.src(setting.gulpfile)
-                .pipe(replace(setting.commands.app.removal(), ''))
-                .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
-                .pipe(setting.gulp.dest('.', {overwrite: true}))
-                .on('end', cb)
-        })
-    })
-    setting.gulp.task(`excludeapp`, function(cb) {
-        if (!setting.ezy) {
-            cb()
-            return
-        }
-        if (!setting.appname) {
-            console.error('Name is missing, syntax: gulp excludeapp --name=name')
+}
+const includeappFn = function(setting, cb) {
+    var fs = require('fs')
+    var replace = require('gulp-replace')
+    setting.log(`Running  'includeapp'`)
+    if (!setting.ezy) {
+        cb()
+        return
+    }
+    if (!setting.appname) {
+        setting.log('Name is missing, syntax: gulp includeapp --name=name --dir=/path/to/app')
+        cb()
+        return
+    }
+    fs.stat(`${setting.app_dir}`, function(err, stat) {
+        if (err) {
+            setting.log(`App ${setting.appname} does not exist`, err)
             cb()
             return
         }
         setting.src(setting.gulpfile)
             .pipe(replace(setting.commands.app.removal(), ''))
+            .pipe(replace(setting.commands.app.key, setting.commands.app.addon()))
             .pipe(setting.gulp.dest('.', {overwrite: true}))
             .on('end', cb)
     })
 }
+const excludeappFn = function(setting, cb) {
+    var replace = require('gulp-replace')
+    setting.log(`Running  'excludeapp'`)
+    if (!setting.ezy) {
+        cb()
+        return
+    }
+    if (!setting.appname) {
+        setting.log('Name is missing, syntax: gulp excludeapp --name=name')
+        cb()
+        return
+    }
+    setting.src(setting.gulpfile)
+        .pipe(replace(setting.commands.app.removal(), ''))
+        .pipe(setting.gulp.dest('.', {overwrite: true}))
+        .on('end', cb)
+}
+module.exports = exports = function(setting) {
+    setting.gulp.task(`mkapp`, mkappFn.bind(this, setting))
+    setting.gulp.task(`rmapp`, rmappFn.bind(this, setting))
+    setting.gulp.task(`includeapp`, includeappFn.bind(this, setting))
+    setting.gulp.task(`excludeapp`, excludeappFn.bind(this, setting))
+}
+module.exports.mkappFn = mkappFn
+module.exports.rmappFn = rmappFn
+module.exports.includeappFn = includeappFn
+module.exports.excludeappFn = excludeappFn
