@@ -12,7 +12,8 @@ var chalk = require('chalk')
 var argv = require('ezy/gulp/argv')
 
 module.exports = exports = function(setting, gulp) {
-    setting.ezy = __dirname.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
+    setting.pwd = process.env.PWD
+    setting.ezy = setting.pwd.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
 
     setting.gulp = gulp || require('gulp')
     setting.argv = argv
@@ -67,7 +68,7 @@ module.exports = exports = function(setting, gulp) {
     setting.sample_static = `${setting.sample_dir}/static`
     setting.sample_templates = `${setting.sample_dir}/templates`
 
-    setting.app_dir = setting.ezy ? `${setting.ezy_dir}/apps/${setting.appname}` : process.env.PWD
+    setting.app_dir = setting.ezy ? `${setting.ezy_dir}/apps/${setting.appname}` : setting.pwd
     setting.app_actions = `${setting.app_dir}/actions`
     setting.app_components = `${setting.app_dir}/components`
     setting.app_config = `${setting.app_dir}/config`
@@ -81,7 +82,7 @@ module.exports = exports = function(setting, gulp) {
     setting.app_templates = `${setting.app_dir}/templates`
     setting.public = setting.argv('public', `${setting.app_dir}/src/main/resources/${setting.profile}`)
     setting.public_static = `${setting.public}/static`
-    setting.path = setting.argv('path', setting.ezy ? setting.app_dir : `${process.env.PWD}/${setting.appname}`)
+    setting.path = setting.argv('path', setting.ezy ? setting.app_dir : `${setting.pwd}/${setting.appname}`)
 
     setting.gulpfile = './gulpfile.js'
 
@@ -150,7 +151,10 @@ module.exports = exports = function(setting, gulp) {
     }
 
     setting.gulp.task(`${setting.appname ? `${setting.appname}:` : ''}info`, function(cb) {
-        setting.log(setting)
+        var props = ['ezy', 'name', 'port', 'profile', 'path', 'ezy_dir', 'app_dir', 'public']
+        props.forEach(function(p) {
+            setting.log(`${p}: ${setting[p]}`)
+        })
         cb()
     })
     setting.gulp.task(`ezypath`, function(cb) {
