@@ -17,12 +17,5 @@ jspm_packages
 .idea
 .DS_Store
 package-lock.json
-public
-build
-target
-!apps/demo
-apps
-!sample/config/index.jsx
-config/index.jsx
-!src/main/resources/application.yml
 src/main/resources/*
+!src/main/resources/application.yml
