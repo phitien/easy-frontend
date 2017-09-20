@@ -42,8 +42,8 @@ module.exports = exports = function(config) {
         if (appname == '1') return
         const {exec} = require('child_process')
         exec(`cd ${config.setting.ezy_home} && gulp rmapp -n="${name}"`, (err, stdout, stderr) => {
-            if (err) config.setting.log(err.trim())
-            if (stderr) config.setting.log(stderr.trim())
+            if (err) config.setting.log(err)
+            if (stderr) config.setting.log(stderr)
             config.setting.log(`App '${name}' at '${path}' is removed`)
             process.exit()
         })

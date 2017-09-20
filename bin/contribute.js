@@ -6,7 +6,7 @@ module.exports = exports = function(config) {
         exec(`cd ${process.env.HOME}/${config.EZY_HOME} && git add . && git commit -am "${config.argv.find('-m') || 'Auto message'}" && git push`, (err, stdout, stderr) => {
             if (err) config.setting.log(`EZY Error: Could not push to repo`, err)
             config.setting.log(stdout.trim())
-            config.setting.log(stderr.trim())
+            config.setting.log(stderr)
             config.setting.log(`EZY is pushed`)
             return
         })
