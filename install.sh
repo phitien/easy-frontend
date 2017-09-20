@@ -1,3 +1,4 @@
 #!/bin/sh
-cat ~/.bash_profile | sed '/EZY_HOME/d' 2>&1 | tee ~/.bash_profile && echo export EZY_HOME="$(pwd)" >> ~/.bash_profile
-npm install -g
+npm install gulp@^3.9.1 --save-dev
+npm install gulp@^3.9.1 --global
+npm install --global

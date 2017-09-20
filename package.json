@@ -4,7 +4,7 @@
   "description": "Platform for react applications",
   "main": "index.js",
   "scripts": {
-    "install": "sh install.sh",
+    "ezy": "cat ~/.bash_profile | sed '/EZY_HOME/d' 2>&1 | tee ~/.bash_profile && echo export \"EZY_HOME=\"$(pwd)\"\" >> ~/.bash_profile && source ~/.bash_profile && sh install.sh",
     "test": "jest"
   },
   "bin": {

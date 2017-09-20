@@ -6,10 +6,6 @@
   "scripts": {
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/phitien/ezy-frontend.git"
-  },
   "keywords": [
     "react",
     "ezy",
@@ -18,10 +14,6 @@
   ],
   "author": "Phi Tien <im.phitien@gmail.com>",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/phitien/ezy-frontend/issues"
-  },
-  "homepage": "https://github.com/phitien/ezy-frontend#readme",
   "dependencies": {
     "axios": "^0.16.2",
     "dateformat": "^2.0.0",
