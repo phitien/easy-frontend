@@ -1,4 +1,4 @@
-const serveFn = function(setting, cb) {
+const runFn = function(setting, cb) {
     var run = require('run-sequence').use(setting.gulp)
     run([
         `${setting.ezy ? `${setting.appname}:` : ''}watch`,
@@ -6,6 +6,6 @@ const serveFn = function(setting, cb) {
     ], cb)
 }
 module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}serve`, serveFn.bind(this, setting))
+    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}run`, runFn.bind(this, setting))
 }
-module.exports.serveFn = serveFn
+module.exports.runFn = runFn

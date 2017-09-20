@@ -12,7 +12,7 @@ var mkprofile = require('./mkprofile'), mkprofileFn = mkprofile.mkprofileFn, rmp
 var polish = require('./polish'), polishFn = polish.polishFn
 var vendor = require('./vendor'), vendorFn = vendor.vendorFn
 var watch = require('./watch'), watchFn = watch.watchFn
-var serve = require('./serve'), serveFn = serve.serveFn
+var run = require('./run'), runFn = run.runFn
 
 const common = function(setting, gulp) {
     setting.ezy = true
@@ -33,7 +33,7 @@ const apptasks = function(setting, gulp) {
     js(setting)
     watch(setting)
     clean(setting)
-    serve(setting)
+    run(setting)
 
     setting.gulp.task(`${setting.ezy ? setting.appname : 'default'}`, function(cb) {
         cleanFn(setting, function() {
@@ -43,8 +43,8 @@ const apptasks = function(setting, gulp) {
                         cssFn(setting, function() {
                             copyFn(setting, function() {
                                 setTimeout(function() {injectFn(setting, function() {
-                                    if (setting.argv('serve', setting.argv('s', setting.argv('S'))))
-                                        serveFn(setting, cb)
+                                    if (setting.argv('run', setting.argv('s', setting.argv('S'))))
+                                        runFn(setting, cb)
                                 })}, 10000)
                             })
                         })
@@ -71,5 +71,5 @@ module.exports = exports = {
     polish, polishFn,
     vendor, vendorFn,
     watch, watchFn,
-    serve, serveFn,
+    run, runFn,
 }
