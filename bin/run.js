@@ -1,26 +1,26 @@
-module.exports = exports = function(setting) {
+module.exports = exports = function(config) {
     var exec = require('child_process').exec
     var verify = require('../ezygulp/verify')
     var help = require('./help')
 
     //verify ezy path
-    if (!verify(setting)) return
+    if (!verify(config)) return
 
-    var tasks = setting.argv.tasks()
+    var tasks = config.argv.tasks()
     if (tasks.length) {
         function run() {
-            var cmd = `gulp ${setting.argv().join(' ')}`
+            var cmd = `gulp ${config.argv().join(' ')}`
             var start = new Date()
-            setting.log(setting.chalk.cyan(`EZY Starting:.. ${setting.argv().join(' ')}`))
-            exec(`gulp ${setting.argv().join(' ')}`, (err, stdout, stderr) => {
+            config.log(config.chalk.cyan(`EZY Starting:.. ${config.argv().join(' ')}`))
+            exec(`gulp ${config.argv().join(' ')}`, (err, stdout, stderr) => {
                 var end = new Date()
-                if (err) setting.log(`EZY Error: Could not run command ${setting.argv().join(' ')}`, err)
-                else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
-                else setting.log(setting.chalk.cyan(`EZY Finished after ${(((end - start) % 60000) / 1000).toFixed(0)}s`))
+                if (err) config.log(`EZY Error: Could not run command ${config.argv().join(' ')}`, err)
+                else if (stderr) config.log(config.chalk.red(stderr.trim()))
+                else config.log(config.chalk.cyan(`EZY Finished after ${(((end - start) % 60000) / 1000).toFixed(0)}s`))
             })
         }
         function invalid(task) {
-            setting.log(setting.chalk.red(`EZY Error:`), setting.chalk.cyan(`task '${task}' is not defined at this path: ${process.env.PWD}`))
+            config.log(config.chalk.red(`EZY Error:`), config.chalk.cyan(`task '${task}' is not defined at this path: ${process.env.PWD}`))
         }
         function loop() {
             if (!tasks.length) return run()
@@ -33,5 +33,5 @@ module.exports = exports = function(setting) {
         }
         loop()
     }
-    else return help(setting)
+    else return help(config)
 }

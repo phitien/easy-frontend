@@ -31,6 +31,7 @@
     "dateformat": "^2.0.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
+    "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.1",
     "react": "^15.6.1",
     "react-cookies": "^0.1.0",

@@ -9,97 +9,114 @@ String.prototype.toCamelCase = function(f) {
 
 var argv = require('./argv')
 
-module.exports = exports = function(setting, gulp) {
-    setting.sep = require('path').sep == '\\' ? ';' : ':'
-    setting.pwd = process.env.PWD
-    setting.ezy = setting.pwd.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
+module.exports = exports = function(config, gulp) {
+    config.sep = require('path').sep == '\\' ? ';' : ':'
+    config.pwd = process.env.PWD
+    config.ezy = config.pwd.toLowerCase().replace(/\W/g, '').indexOf(process.env.EZY_HOME.toLowerCase().replace(/\W/g, '')) == 0
 
-    setting.gulp = gulp || require('gulp')
-    setting.argv = argv
-    setting.profile = setting.argv('profile|p', 'dev')
-    setting.env = process.env.NODE_ENV = setting.argv('env', process.env.NODE_ENV || 'dev')
-    setting.port = setting.argv('port', setting.port || 2810)
-    setting.livereload = setting.argv('livereload', setting.livereload || 1028)
-    setting.debug = setting.argv('debug', true) ? true : false
-    setting.production = setting.argv('production') ? true : false
-    if (setting.production) process.env.NODE_ENV = 'production'
+    config.gulp = gulp || require('gulp')
+    config.argv = argv
+    config.profile = config.argv('profile|p', 'dev')
+    config.env = process.env.NODE_ENV = config.argv('env', process.env.NODE_ENV || 'dev')
+    config.version = config.argv('version|v', config.version || '1.0.0')
+    config.port = config.argv('port', config.port || 2810)
+    config.livereload = config.argv('livereload', config.livereload || 1028)
+    config.debug = config.argv('debug', true) ? true : false
+    config.production = config.argv('production') ? true : false
+    if (config.production) process.env.NODE_ENV = 'production'
 
-    setting.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
-    setting.path = function(s) {return setting.trim(s).replace(/_/g, '/')}
-    setting.normalizeName = function(s) {return setting.trim(s || '').replace(/\W/g, '').toLowerCase()}
-    setting.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
-    setting.gutil = require('gulp-util')
-    setting.log = setting.debug ? setting.gutil.log : function(...args) {}
-    setting.noop = setting.gutil.noop
-    setting.chalk = require('chalk')
-    setting.ondata = function() {}
-    setting.onerror = function(...args) {
-        setting.log(...args)
+    config.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
+    config.path = function(s) {return config.trim(s).replace(/_/g, '/')}
+    config.normalizeName = function(s) {return config.trim(s || '').replace(/\W/g, '').toLowerCase()}
+    config.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
+    config.gutil = require('gulp-util')
+    config.log = config.debug ? config.gutil.log : function(...args) {}
+    config.noop = config.gutil.noop
+    config.chalk = require('chalk')
+    config.ondata = function() {}
+    config.onerror = function(...args) {
+        config.log(...args)
         this.emit('end')
     }
 
-    setting.name = setting.argv.option('name|n', setting.name || '').replace(/^\W/g, '').replace(/\W$/g, '')
-    setting.normalizedName = setting.normalizeName(setting.name)
-    setting.appname = setting.appname || setting.normalizedName
-    setting.APPNAME = setting.name.toUpperCase()
-    setting.AppName = setting.name.toCamelCase(true)
-    setting.apptitle = setting.argv('apptitle|title', setting.apptitle || setting.AppName)
-    setting.appdesc = setting.argv('appdesc|desc', setting.appdesc || setting.AppName)
-    setting.apppath = setting.argv('apppath', setting.apppath || `/${setting.appname}`)
-    setting.baseurl = setting.argv('baseurl|url', setting.baseurl || '')
+    config.name = config.argv.option('name|n', config.name || '').replace(/^\W/g, '').replace(/\W$/g, '')
+    config.normalizedName = config.normalizeName(config.name)
+    config.appname = config.appname || config.normalizedName
+    config.APPNAME = config.name.toUpperCase()
+    config.AppName = config.name.toCamelCase(true)
+    config.apptitle = config.argv('apptitle|title', config.apptitle || config.AppName)
+    config.appdesc = config.argv('appdesc|desc', config.appdesc || config.AppName)
+    config.apppath = config.argv('apppath', config.apppath || `/${config.appname}`)
+    config.baseurl = config.argv('baseurl|url', config.baseurl || '')
 
-    setting.ezy_home = process.env.EZY_HOME
-    setting.ezy_apps = `${setting.ezy_home}/apps`
-    setting.ezy_dir = `${setting.ezy_home}/ezy`
-    setting.ezy_common = `${setting.ezy_dir}/common`
-    setting.ezy_config = `${setting.ezy_dir}/config`
-    setting.ezy_components = `${setting.ezy_dir}/components`
-    setting.ezy_sass = `${setting.ezy_dir}/sass`
-    setting.ezy_static = `${setting.ezy_dir}/static`
-    setting.ezy_public = `${process.env.EZY_HOME}/src/main/resources/${setting.profile}`
-    setting.ezy_public_static = `${setting.ezy_public}/static`
-    setting.ezy_gulp = `${setting.ezy_dir}/gulp`
+    config.ezy_home = process.env.EZY_HOME
+    config.ezy_apps = `${config.ezy_home}/apps`
+    config.ezy_dir = `${config.ezy_home}/ezy`
+    config.ezy_common = `${config.ezy_dir}/common`
+    config.ezy_config = `${config.ezy_dir}/config`
+    config.ezy_components = `${config.ezy_dir}/components`
+    config.ezy_sass = `${config.ezy_dir}/sass`
+    config.ezy_static = `${config.ezy_dir}/static`
+    config.ezy_public = `${process.env.EZY_HOME}/src/main/resources/${config.profile}`
+    config.ezy_public_static = `${config.ezy_public}/static`
+    config.ezy_gulp = `${config.ezy_dir}/gulp`
 
-    setting.sample_dir = setting.argv('sample', `${setting.ezy_home}/sample`)
-    setting.sample_actions = `${setting.sample_dir}/actions`
-    setting.sample_components = `${setting.sample_dir}/components`
-    setting.sample_config = `${setting.sample_dir}/config`
-    setting.sample_gulp = `${setting.sample_dir}/gulp`
-    setting.sample_middlewares = `${setting.sample_dir}/middlewares`
-    setting.sample_pages = `${setting.sample_dir}/pages`
-    setting.sample_pm2 = `${setting.sample_dir}/pm2`
-    setting.sample_reducers = `${setting.sample_dir}/reducers`
-    setting.sample_sass = `${setting.sample_dir}/sass`
-    setting.sample_static = `${setting.sample_dir}/static`
-    setting.sample_templates = `${setting.sample_dir}/templates`
+    config.sample_dir = config.argv('sample', `${config.ezy_home}/sample`)
+    config.sample_actions = `${config.sample_dir}/actions`
+    config.sample_components = `${config.sample_dir}/components`
+    config.sample_config = `${config.sample_dir}/config`
+    config.sample_gulp = `${config.sample_dir}/gulp`
+    config.sample_middlewares = `${config.sample_dir}/middlewares`
+    config.sample_pages = `${config.sample_dir}/pages`
+    config.sample_pm2 = `${config.sample_dir}/pm2`
+    config.sample_reducers = `${config.sample_dir}/reducers`
+    config.sample_sass = `${config.sample_dir}/sass`
+    config.sample_static = `${config.sample_dir}/static`
+    config.sample_templates = `${config.sample_dir}/templates`
 
-    setting.newapp_dir = setting.argv('dir|d')
-    setting.newapp_dir =`${setting.newapp_dir ? setting.newapp_dir : setting.apps_dir}/${setting.appname}`
+    config.newapp_dir = config.argv('dir|d')
+    config.newapp_dir =`${config.newapp_dir ? config.newapp_dir : config.ezy_apps}/${config.appname}`
 
-    setting.app_dir = setting.ezy ? `${setting.ezy_apps}/${setting.appname}` : setting.argv('dir|d', setting.pwd)
-    setting.app_actions = `${setting.app_dir}/actions`
-    setting.app_components = `${setting.app_dir}/components`
-    setting.app_config = `${setting.app_dir}/config`
-    setting.app_gulp = `${setting.app_dir}/gulp`
-    setting.app_middlewares = `${setting.app_dir}/middlewares`
-    setting.app_pages = `${setting.app_dir}/pages`
-    setting.app_pm2 = `${setting.app_dir}/pm2`
-    setting.app_reducers = `${setting.app_dir}/reducers`
-    setting.app_sass = `${setting.app_dir}/sass`
-    setting.app_static = `${setting.app_dir}/static`
-    setting.app_templates = `${setting.app_dir}/templates`
+    config.app_dir = config.ezy ? `${config.ezy_apps}/${config.appname}` : config.argv('dir|d', config.pwd)
+    config.app_actions = `${config.app_dir}/actions`
+    config.app_components = `${config.app_dir}/components`
+    config.app_config = `${config.app_dir}/config`
+    config.app_gulp = `${config.app_dir}/gulp`
+    config.app_middlewares = `${config.app_dir}/middlewares`
+    config.app_pages = `${config.app_dir}/pages`
+    config.app_pm2 = `${config.app_dir}/pm2`
+    config.app_reducers = `${config.app_dir}/reducers`
+    config.app_sass = `${config.app_dir}/sass`
+    config.app_static = `${config.app_dir}/static`
+    config.app_templates = `${config.app_dir}/templates`
+    config.keywords = [
+        'name',
+        'appname',
+        'AppName',
+        'APPNAME',
+        'apptitle',
+        'appdesc',
+        'apppath',
+        'baseurl',
+        'profile',
+        'version',
+        'port',
+        'livereload',
+        'debug',
+    ]
 
-    setting.public = `${setting.app_dir}/src/main/resources`
-    setting.public_profile = e => `${setting.app_dir}/src/main/resources/${setting.profile}`
-    setting.public_static = e => `${setting.public_profile()}/static`
+    config.public = `${config.app_dir}/src/main/resources`
+    config.public_profile = e => `${config.app_dir}/src/main/resources/${config.profile}`
+    config.public_static = e => `${config.public_profile()}/static`
 
-    setting.gulpfile = './gulpfile.js'
+    config.gulpfile = './gulpfile.js'
 
-    process.env.NODE_PATH = `.${setting.sep}${process.env.NODE_PATH}${setting.sep}${setting.ezy_home}${setting.sep}${setting.app_home}`
+
+    process.env.NODE_PATH = `.${config.sep}${process.env.NODE_PATH}${config.sep}${config.ezy_home}${config.sep}${config.app_home}`
     require('module').Module._initPaths()
 
-    setting.src = function(...args) {
-        return setting.gulp.src(args.filter(arg => arg).reduce((rs, arg) => {
+    config.src = function(...args) {
+        return config.gulp.src(args.filter(arg => arg).reduce((rs, arg) => {
             if (Array.isArray(arg)) rs = rs.concat(arg)
             else if (typeof arg == 'string') rs.push(arg)
             return rs
@@ -107,36 +124,25 @@ module.exports = exports = function(setting, gulp) {
             if (!Array.isArray(arg)) rs = rs.concat(arg)
             return rs
         }, {dot: true}))
-        .on('error', setting.onerror)
+        .on('error', config.onerror)
     }
-    setting.normalize = function(bundle) {
+    config.normalize = function(bundle) {
         var replace = require('gulp-replace')
+        config.keywords.forEach(k => bundle = bundle.pipe(replace(`{${k}}`, config[k])))
         return bundle
-        .pipe(replace('{name}', setting.name))
-        .pipe(replace('{appname}', setting.appname))
-        .pipe(replace('{AppName}', setting.AppName))
-        .pipe(replace('{APPNAME}', setting.APPNAME))
-        .pipe(replace('{apptitle}', setting.apptitle))
-        .pipe(replace('{appdesc}', setting.appdesc))
-        .pipe(replace('{apppath}', setting.apppath))
-        .pipe(replace('{baseurl}', setting.baseurl))
-        .pipe(replace('{profile}', setting.profile))
-        .pipe(replace('{port}', setting.port))
-        .pipe(replace('{livereload}', setting.livereload))
-        .pipe(replace('{debug}', setting.debug ? 'true' : 'false'))
     }
-    setting.srcNormalized = function(...args) {
-        return setting.normalize(setting.src(...args))
+    config.srcNormalized = function(...args) {
+        return config.normalize(config.src(...args))
     }
-    setting.libs = [
+    config.libs = [
         ['react', 'react-dom', 'react-router', 'react-redux', 'react-cookies', 'react-modal', 'react-dropzone'],
         ['redux', 'redux-thunk', 'redux-saga'],
         ['lodash', 'object-assign', 'dateformat', 'when', 'axios', 'sync-request', 'uuid'],
-    ].concat(setting.libs || [])
-    setting.commands = {
+    ].concat(config.libs || [])
+    config.commands = {
         app: {
             key: `/**NEWAPP**/`,
-            text: function(cb) {return `apptasks(require('apps/${setting.appname}/gulp'), require('gulp'))`},
+            text: function(cb) {return `apptasks(require('apps/${config.appname}/gulp'), require('gulp'))`},
             addon: function(cb) {return `${this.text()}
 /**NEWAPP**/`},
             removal: function(cb) {return `${this.text()}
@@ -144,28 +150,28 @@ module.exports = exports = function(setting, gulp) {
         },
         page: {
             key: `/**NEWPAGE**/`,
-            pageAddonText: function(name, Name, NAME) {return `exports {${Name}Page} from './${Name}Page'`},
-            pageAddon: function(name, Name, NAME){return `${this.pageAddonText()}
+            pageAddonText: function(name, Name, NAME) {return `export {${Name}Page} from './${Name}Page'`},
+            pageAddon: function(...args){return `${this.pageAddonText(...args)}
 /**NEWPAGE**/`},
-            pageRemoval: function(name, Name, NAME){return `${this.pageAddonText()}
+            pageRemoval: function(...args){return `${this.pageAddonText(...args)}
 `},
-            routeAddonText: function(name, Name, NAME) {return `{path: config.apppath + '${name}', component: wrap(pages.${Name}Page), onEnter: onRouteEntered, onChange: onRouteChanged},`},
-            routeAddon: function(name, Name, NAME){return `${this.routeAddonText()}
+            routeAddonText: function(name, Name, NAME) {return `{path: \`\${config.apppath}/${name}\`, component: wrap(pages.${Name}Page)},`},
+            routeAddon: function(...args){return `${this.routeAddonText(...args)}
 /**NEWPAGE**/`},
-            routeRemoval: function(name, Name, NAME){return `${this.routeAddonText()}
+            routeRemoval: function(...args){return `${this.routeAddonText(...args)}
 `},
             sassAddonText: function(name, Name, NAME) {return `@import "./page-${name}.scss";`},
-            sassAddon: function(name, Name, NAME){return `${this.sassAddonText()}
+            sassAddon: function(...args){return `${this.sassAddonText(...args)}
 /**NEWPAGE**/`},
-            sassRemoval: function(name, Name, NAME){return `${this.sassAddonText()}
+            sassRemoval: function(...args){return `${this.sassAddonText(...args)}
 `},
         }
     }
 
-    setting.gulp.task(`${setting.ezy && setting.appname ? `${setting.appname}:` : ''}info`, function(cb) {
-        var props = ['ezy', 'name', 'port', 'profile', 'ezy_home', 'apps_dir', 'app_dir', 'public', 'debug', 'production']
+    config.gulp.task(`${config.ezy && config.appname ? `${config.appname}:` : ''}info`, function(cb) {
+        var props = ['ezy', 'name', 'port', 'profile', 'ezy_home', 'app_dir', 'public', 'debug', 'production']
         props.forEach(function(p) {
-            setting.log(`${p}: ${setting[p]}`)
+            config.log(`${p}: ${config[p]}`)
         })
         cb()
     })

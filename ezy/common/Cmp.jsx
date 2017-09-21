@@ -191,7 +191,7 @@ export class Container extends ApiContainer {
     cmpPropsToState(props) {}
     componentWillUpdate(nextProps, nextState) {
         super.componentWillUpdate(nextProps, nextState)
-        this.cmpPropsToState(props)
+        this.cmpPropsToState(nextProps)
     }
     constructor(props) {
         super(props)
@@ -217,6 +217,9 @@ export class Cmp extends Container {
     get children() {return this.props.children}
     get childrenClassName() {return ''}
 
+    renderObject(o) {
+        return Array.isArray(o) ? o.filter(i => i).map((item,i) => React.cloneElement(item, {key: i})) : o || null
+    }
     renderMessage(i, text, error) {
         return <div className={`message ${error ? 'error' : ''}`}>{text}</div>
     }
@@ -236,8 +239,7 @@ export class Cmp extends Container {
         return this.showIndicator ? <Loader className={this.indicatorClassName}/> : null
     }
     renderNagativeCmp() {return null}
-    renderChildren() {return Array.isArray(this.children) ?
-        this.children.filter(c => c).map((c,i) => React.cloneElement(c, {key: i, className: this.childrenClassName})) : this.children}
+    renderChildren() {return this.renderObject(this.children)}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {
         return <div className={this.className} data-cmpId={this.cmpId}>

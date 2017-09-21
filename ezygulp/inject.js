@@ -1,25 +1,25 @@
-const injectFn = function(setting, cb) {
+const injectFn = function(config, cb) {
     var inject = require('gulp-inject')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}inject'`)
-    setting.normalize(
-        setting.src(`${setting.app_templates}/*.html`)
-        .pipe(inject(setting.gulp.src([
-            `${setting.public_static()}/${setting.appname}/${setting.appname}*.css`,
-            `${setting.public_static()}/${setting.appname}/${setting.appname}*.js`
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}inject'`)
+    config.normalize(
+        config.src(`${config.app_templates}/*.html`)
+        .pipe(inject(config.gulp.src([
+            `${config.public_static()}/${config.appname}/${config.appname}*.css`,
+            `${config.public_static()}/${config.appname}/${config.appname}*.js`
         ]), {
             transform: function(file) {
-                var filename = `{baseurl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`
+                var filename = `{baseurl}/static/${config.appname}${file.substr(file.lastIndexOf('/'))}`
                 return /\.css$/.test(file) ? `<link href="${filename}" rel="stylesheet"/>` :
                 /\.js$/.test(file) ? `<script src="${filename}" defer="true"></script>` : ''
             }
         }))
     )
-    .pipe(rename(path => path.basename = path.basename == 'index' ? setting.appname : `${setting.appname}${path.basename}`))
-    .pipe(setting.gulp.dest(`${setting.public_profile()}`, {overwrite: true}))
+    .pipe(rename(path => path.basename = path.basename == 'index' ? config.appname : `${config.appname}${path.basename}`))
+    .pipe(config.gulp.dest(`${config.public_profile()}`, {overwrite: true}))
     .on('end', cb)
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}inject`, injectFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}inject`, injectFn.bind(this, config))
 }
 module.exports.injectFn = injectFn

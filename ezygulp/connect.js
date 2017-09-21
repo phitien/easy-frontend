@@ -1,16 +1,16 @@
-const connectFn = function(setting, cb) {
+const connectFn = function(config, cb) {
     var connect = require('gulp-connect')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}connect'`)
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}connect'`)
     connect.server({
-        name: `Application ${setting.AppName} - ${setting.profile}`,
-        root: [`${setting.public_profile()}`],
-        port: setting.port,
-        livereload: {port: setting.livereload},
-        fallback: `${setting.public_profile()}/${setting.appname}.html`
+        name: `Application ${config.AppName} - ${config.profile}`,
+        root: [`${config.public_profile()}`],
+        port: config.port,
+        livereload: {port: config.livereload},
+        fallback: `${config.public_profile()}/${config.appname}.html`
     })
     cb()
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}connect`, connectFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}connect`, connectFn.bind(this, config))
 }
 module.exports.connectFn = connectFn

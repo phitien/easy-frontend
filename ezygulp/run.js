@@ -1,11 +1,11 @@
-const runFn = function(setting, cb) {
-    var run = require('run-sequence').use(setting.gulp)
+const runFn = function(config, cb) {
+    var run = require('run-sequence').use(config.gulp)
     run([
-        `${setting.ezy ? `${setting.appname}:` : ''}watch`,
-        `${setting.ezy ? `${setting.appname}:` : ''}connect`,
+        `${config.ezy ? `${config.appname}:` : ''}watch`,
+        `${config.ezy ? `${config.appname}:` : ''}connect`,
     ], cb)
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}run`, runFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}run`, runFn.bind(this, config))
 }
 module.exports.runFn = runFn

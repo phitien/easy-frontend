@@ -1,33 +1,33 @@
 var livereload = require('gulp-livereload')
 
-const watchFn = function(setting, cb) {
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}watch'`)
-    livereload.listen(setting.livereload)
-    setting.gulp.watch([]
-        .concat(setting.files(`${setting.ezy_common}`, '*.jsx'))
-        .concat(setting.files(`${setting.ezy_components}`, '*.jsx'))
-        .concat(setting.files(`${setting.app_dir}`, '*.jsx'))
-        , [`${setting.ezy ? `${setting.appname}:` : ''}js`])
-    setting.gulp.watch([]
-        .concat(setting.files(`${setting.ezy_sass}`, '*.scss'))
-        .concat(setting.files(`${setting.app_sass}`, '*.scss'))
-        , [`${setting.ezy ? `${setting.appname}:` : ''}css`])
-    setting.gulp.watch([]
-        .concat(setting.files(`${setting.app_templates}`, '*.html'))
-        , [`${setting.ezy ? `${setting.appname}:` : ''}inject`])
-    setting.gulp.watch([]
-        .concat(setting.files(`${setting.ezy_static}`, '*'))
-        .concat(setting.files(`${setting.app_static}`, '*'))
-        , [`${setting.ezy ? `${setting.appname}:` : ''}copy`])
-    setting.gulp.watch([
-        `${setting.public_static()}/${setting.appname}/*${setting.appname}*.css`,
-        `${setting.public_static()}/${setting.appname}/*${setting.appname}*.js`,
-        `${setting.public_profile()}/*${setting.appname}*.html`,
+const watchFn = function(config, cb) {
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}watch'`)
+    livereload.listen(config.livereload)
+    config.gulp.watch([]
+        .concat(config.files(`${config.ezy_common}`, '*.jsx'))
+        .concat(config.files(`${config.ezy_components}`, '*.jsx'))
+        .concat(config.files(`${config.app_dir}`, '*.jsx'))
+        , [`${config.ezy ? `${config.appname}:` : ''}js`])
+    config.gulp.watch([]
+        .concat(config.files(`${config.ezy_sass}`, '*.scss'))
+        .concat(config.files(`${config.app_sass}`, '*.scss'))
+        , [`${config.ezy ? `${config.appname}:` : ''}css`])
+    config.gulp.watch([]
+        .concat(config.files(`${config.app_templates}`, '*.html'))
+        , [`${config.ezy ? `${config.appname}:` : ''}inject`])
+    config.gulp.watch([]
+        .concat(config.files(`${config.ezy_static}`, '*'))
+        .concat(config.files(`${config.app_static}`, '*'))
+        , [`${config.ezy ? `${config.appname}:` : ''}copy`])
+    config.gulp.watch([
+        `${config.public_static()}/${config.appname}/*${config.appname}*.css`,
+        `${config.public_static()}/${config.appname}/*${config.appname}*.js`,
+        `${config.public_profile()}/*${config.appname}*.html`,
     ])
     .on('change', livereload.reload)
     cb()
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}watch`, watchFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}watch`, watchFn.bind(this, config))
 }
 module.exports.watchFn = watchFn

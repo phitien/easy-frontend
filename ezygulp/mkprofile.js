@@ -1,57 +1,57 @@
-const mkprofileFn = function(setting, cb) {
+const mkprofileFn = function(config, cb) {
     var fs = require('fs')
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}mkprofile'`)
-    var profile = setting.normalizedName
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}mkprofile'`)
+    var profile = config.normalizedName
     if (!profile) {
-        setting.log(`Profile name is missing, syntax: gulp ${setting.ezy ? `${setting.appname}:` : ''}mkprofile --name=name`)
+        config.log(`Profile name is missing, syntax: gulp ${config.ezy ? `${config.appname}:` : ''}mkprofile --name=name`)
         cb()
         return
     }
-    setting.srcNormalized(`${setting.sample_pm2}/dev.json`)
+    config.srcNormalized(`${config.sample_pm2}/dev.json`)
         .pipe(replace('dev', profile))
         .pipe(rename(`${profile}.json`))
-        .pipe(setting.gulp.dest(`${setting.app_pm2}`))
+        .pipe(config.gulp.dest(`${config.app_pm2}`))
         .on('end', function() {
-            fs.stat(`${setting.app_config}/${profile}.jsx`, function(err, stat) {
+            fs.stat(`${config.app_config}/${profile}.jsx`, function(err, stat) {
                 if (!err) {
                     cb()
                     return
                 }
-                setting.srcNormalized(`${setting.sample_config}/dev.jsx`)
+                config.srcNormalized(`${config.sample_config}/dev.jsx`)
                     .pipe(replace('dev', profile))
                     .pipe(rename(`${profile}.jsx`))
-                    .pipe(setting.gulp.dest(`${setting.app_config}`), {overwrite: true})
+                    .pipe(config.gulp.dest(`${config.app_config}`), {overwrite: true})
                     .on('end', cb)
             })
         })
 }
-const rmprofileFn = function(setting, cb) {
+const rmprofileFn = function(config, cb) {
     var clean = require('gulp-clean')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}rmprofile'`)
-    var profile = setting.normalizedName
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}rmprofile'`)
+    var profile = config.normalizedName
     if (!profile) {
-        setting.log(`Profile name is missing, syntax: gulp ${setting.ezy ? `${setting.appname}:` : ''}rmprofile --name=name`)
+        config.log(`Profile name is missing, syntax: gulp ${config.ezy ? `${config.appname}:` : ''}rmprofile --name=name`)
         cb()
         return
     }
     else if (profile == 'base' || profile == 'index') {
-        setting.log(`Profile name is invalid, should not be index or base`)
+        config.log(`Profile name is invalid, should not be index or base`)
         cb()
         return
     }
-    setting.src(
-        `${setting.app_config}/${profile}.jsx`,
-        `${setting.app_pm2}/${profile}.json`
+    config.src(
+        `${config.app_config}/${profile}.jsx`,
+        `${config.app_pm2}/${profile}.json`
     )
     .pipe(clean({force: true}))
-    .on('data', setting.ondata)
+    .on('data', config.ondata)
     .on('end', cb)
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}mkprofile`, mkprofileFn.bind(this, setting))
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}rmprofile`, rmprofileFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}mkprofile`, mkprofileFn.bind(this, config))
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}rmprofile`, rmprofileFn.bind(this, config))
 }
 module.exports.mkprofileFn = mkprofileFn
 module.exports.rmprofileFn = rmprofileFn

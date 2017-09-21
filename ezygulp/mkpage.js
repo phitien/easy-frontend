@@ -1,88 +1,94 @@
-const mkpageFn = function(setting, cb) {
+const mkpageFn = function(config, cb) {
     var fs = require('fs')
     var replace = require('gulp-replace')
     var rename = require('gulp-rename')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}mkpage'`)
-    var pagename = setting.normalizedName
-    if (!pagename) {
-        setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}mkpage'`)
+    var name = config.normalizedName
+    if (!name) {
+        config.log(`Page name is missing, syntax: gulp ${config.appname}:mkpage --name=name`)
         cb()
         return
     }
-    var PAGENAME = pagename.toUpperCase()
-    var PageName = pagename.toCamelCase(true)
-    fs.stat(`${setting.app_pages}/${PageName}Page.jsx`, function(err, stat) {
+    var NAME = name.toUpperCase()
+    var Name = name.toCamelCase(true)
+    fs.stat(`${config.app_pages}/${Name}Page.jsx`, function(err, stat) {
         if (!err) {
-            setting.log(`Page ${PageName} already exists`)
+            config.log(`Page ${Name} already exists`)
             cb()
             return
         }
-        setting.srcNormalized([
-            `${setting.sample_pages}/SubPage.jsx`,
-            `${setting.sample_sass}/page-sub.scss`
-        ])
-        .pipe(replace('sub', pagename))
-        .pipe(replace('Sub', PageName))
-        .pipe(replace('SUB', PAGENAME))
-        .pipe(rename(`${PageName}Page.jsx`))
-        .pipe(setting.gulp.dest(function (file) {return file.base}))
+        config.srcNormalized(`${config.sample_pages}/SubPage.jsx`,)
+        .pipe(replace('sub', name))
+        .pipe(replace('Sub', Name))
+        .pipe(replace('SUB', NAME))
+        .pipe(rename(`${Name}Page.jsx`))
+        .pipe(config.gulp.dest(`${config.app_pages}`, {overwrite: true}))
         .on('end', function() {
-            setting.src(`${setting.app_pages}/index.jsx`)
-            .pipe(replace(setting.commands.page.key, setting.commands.page.pageAddon(name, PageName, PAGENAME)))
-            .pipe(setting.gulp.dest(`${setting.app_pages}`, {overwrite: true}))
+            config.srcNormalized(`${config.sample_sass}/page-sub.scss`)
+            .pipe(replace('sub', name))
+            .pipe(replace('Sub', Name))
+            .pipe(replace('SUB', NAME))
+            .pipe(rename(`page-${name}.scss`))
+            .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
             .on('end', function() {
-                setting.src(`${setting.app_dir}/routes.jsx`)
-                .pipe(replace(setting.commands.page.key, setting.commands.page.routeAddon(name, PageName, PAGENAME)))
-                .pipe(setting.gulp.dest(`${setting.app_dir}`, {overwrite: true}))
+                console.log(name, Name, NAME)
+                config.src(`${config.app_pages}/index.jsx`)
+                .pipe(replace(config.commands.page.key, config.commands.page.pageAddon(name, Name, NAME)))
+                .pipe(config.gulp.dest(`${config.app_pages}`, {overwrite: true}))
                 .on('end', function() {
-                    setting.src(`${setting.app_sass}/index.scss`)
-                    .pipe(replace(setting.commands.page.key, setting.commands.page.sassAddon(name, PageName, PAGENAME)))
-                    .pipe(setting.gulp.dest(`${setting.app_sass}`, {overwrite: true}))
-                    .on('end', cb)
+                    config.src(`${config.app_components}/routes.jsx`)
+                    .pipe(replace(config.commands.page.key, config.commands.page.routeAddon(name, Name, NAME)))
+                    .pipe(config.gulp.dest(`${config.app_components}`, {overwrite: true}))
+                    .on('end', function() {
+                        config.src(`${config.app_sass}/index.scss`)
+                        .pipe(replace(config.commands.page.key, config.commands.page.sassAddon(name, Name, NAME)))
+                        .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
+                        .on('end', cb)
+                    })
                 })
             })
         })
     })
 }
-const rmpageFn = function(setting, cb) {
+const rmpageFn = function(config, cb) {
     var fs = require('fs')
     var clean = require('gulp-clean')
     var replace = require('gulp-replace')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}rmpage'`)
-    var pagename = setting.normalizedName
-    if (!pagename) {
-        setting.log(`Page name is missing, syntax: gulp ${setting.appname}:mkpage --name=name`)
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}rmpage'`)
+    var name = config.normalizedName
+    if (!name) {
+        config.log(`Page name is missing, syntax: gulp ${config.appname}:mkpage --name=name`)
         cb()
         return
     }
-    var PAGENAME = pagename.toUpperCase()
-    var PageName = pagename.toCamelCase(true)
-    setting.src(`${setting.app_dir}/routes.jsx`)
-    .pipe(replace(setting.commands.page.routeRemoval(name, Name, NAME), ''))
-    .pipe(setting.gulp.dest(`${setting.app_dir}`, {overwrite: true}))
+    var NAME = name.toUpperCase()
+    var Name = name.toCamelCase(true)
+    config.src(`${config.app_components}/routes.jsx`)
+    .pipe(replace(config.commands.page.routeRemoval(name, Name, NAME), ''))
+    .pipe(config.gulp.dest(`${config.app_components}`, {overwrite: true}))
     .on('end', function() {
-        setting.src(`${setting.app_pages}/index.jsx`)
-        .pipe(replace(setting.commands.page.pageRemoval(name, Name, NAME), ''))
-        .pipe(setting.gulp.dest(`${setting.app_pages}`, {overwrite: true}))
+        config.src(`${config.app_pages}/index.jsx`)
+        .pipe(replace(config.commands.page.pageRemoval(name, Name, NAME), ''))
+        .pipe(config.gulp.dest(`${config.app_pages}`, {overwrite: true}))
         .on('end', function() {
-            setting.src(`${setting.app_sass}/index.scss`)
-            .pipe(replace(setting.commands.page.sassRemoval(name, Name, NAME), ''))
-            .pipe(setting.gulp.dest(`${setting.app_sass}`, {overwrite: true}))
+            config.src(`${config.app_sass}/index.scss`)
+            .pipe(replace(config.commands.page.sassRemoval(name, Name, NAME), ''))
+            .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
             .on('end', function() {
-                setting.src([
-                    `${setting.app_pages}/${PageName}Page.jsx`,
-                    `${setting.app_sass}/page-${pagename}.scss`
+                config.src([
+                    `${config.app_pages}/${Name}Page.jsx`,
+                    `${config.app_sass}/page-${name}.scss`
                 ])
                 .pipe(clean({force: true}))
-                .on('data', setting.ondata)
+                .on('data', config.ondata)
                 .on('end', cb)
             })
         })
     })
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}mkpage`, mkpageFn.bind(this, setting))
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}rmpage`, rmpageFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}mkpage`, mkpageFn.bind(this, config))
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}rmpage`, rmpageFn.bind(this, config))
 }
 module.exports.mkpageFn = mkpageFn
 module.exports.rmpageFn = rmpageFn

@@ -1,9 +1,9 @@
-module.exports = exports = function(setting) {
+module.exports = exports = function(config) {
     var exec = require('child_process').exec
-    setting.log(`EZY Removing ...`)
-    exec(`rm -rf ${setting.ezy_home}`, (err, stdout, stderr) => {
-        if (err) setting.log(`EZY Error: Could not uninstall ezy`, err)
-        else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
-        else setting.log(`EZY Done Removing`)
+    config.log(`EZY Removing ...`)
+    exec(`rm -rf ${config.ezy_home}`, (err, stdout, stderr) => {
+        if (err) config.log(`EZY Error: Could not uninstall ezy`, err)
+        else if (stderr) config.log(config.chalk.red(stderr.trim()))
+        else config.log(`EZY Done Removing`)
     })
 }

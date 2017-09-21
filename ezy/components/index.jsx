@@ -1,5 +1,3 @@
-export {AppHeader} from './AppHeader'
-export {AppFooter} from './AppFooter'
 export {AppLinks} from './AppLinks'
 export {AppName} from './AppName'
 export {AppSearch} from './AppSearch'

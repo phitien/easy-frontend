@@ -1,12 +1,12 @@
-const cleanFn = function(setting, cb) {
+const cleanFn = function(config, cb) {
     var clean = require('gulp-clean')
-    setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}clean'`)
-    setting.src(`${setting.public_profile()}/${setting.appname}*`, `${setting.public_static()}/${setting.appname}*`)
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}clean'`)
+    config.src(`${config.public_profile()}/${config.appname}*`, `${config.public_static()}/${config.appname}*`)
         .pipe(clean({force: true}))
-        .on('data', setting.ondata)
+        .on('data', config.ondata)
         .on('end', cb)
 }
-module.exports = exports = function(setting) {
-    setting.gulp.task(`${setting.ezy ? `${setting.appname}:` : ''}clean`, cleanFn.bind(this, setting))
+module.exports = exports = function(config) {
+    config.gulp.task(`${config.ezy ? `${config.appname}:` : ''}clean`, cleanFn.bind(this, config))
 }
 module.exports.cleanFn = cleanFn

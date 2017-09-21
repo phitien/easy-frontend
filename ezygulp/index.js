@@ -1,6 +1,6 @@
 var argv = require('./argv'), has = argv.has
 var clean = require('./clean'), cleanFn = clean.cleanFn
-var config = require('./config'), configFn = config.configFn
+var setting = require('./setting'), settingFn = setting.settingFn
 var connect = require('./connect'), connectFn = connect.connectFn
 var copy = require('./copy'), copyFn = copy.copyFn
 var css = require('./css'), cssFn = css.cssFn
@@ -14,38 +14,38 @@ var vendor = require('./vendor'), vendorFn = vendor.vendorFn
 var watch = require('./watch'), watchFn = watch.watchFn
 var run = require('./run'), runFn = run.runFn
 
-const common = function(setting, gulp) {
-    setting.ezy = true
-    info(setting, gulp)
-    mkapp(setting)
+const common = function(config, gulp) {
+    config.ezy = true
+    info(config, gulp)
+    mkapp(config)
 }
-const apptasks = function(setting, gulp) {
-    setting.ezy = __dirname == process.env.EZY_HOME
-    info(setting, gulp)
-    mkprofile(setting)
-    mkpage(setting)
-    config(setting)
-    connect(setting)
-    copy(setting)
-    inject(setting)
-    vendor(setting)
-    css(setting)
-    js(setting)
-    watch(setting)
-    clean(setting)
-    run(setting)
+const apptasks = function(config, gulp) {
+    config.ezy = __dirname == process.env.EZY_HOME
+    info(config, gulp)
+    mkprofile(config)
+    mkpage(config)
+    setting(config)
+    connect(config)
+    copy(config)
+    inject(config)
+    vendor(config)
+    css(config)
+    js(config)
+    watch(config)
+    clean(config)
+    run(config)
 
-    setting.gulp.task(`${setting.ezy ? setting.appname : 'default'}`, function(cb) {
-        cleanFn(setting, function() {
-            configFn(setting, function() {
-                jsFn(setting, function() {
-                    vendorFn(setting, function() {
-                        cssFn(setting, function() {
-                            copyFn(setting, function() {
-                                setTimeout(function() {injectFn(setting, function() {
-                                    if (setting.argv('run', setting.argv('s', setting.argv('S'))))
-                                        runFn(setting, cb)
-                                })}, setting.delay || 10000)
+    config.gulp.task(`${config.ezy ? config.appname : 'default'}`, function(cb) {
+        cleanFn(config, function() {
+            settingFn(config, function() {
+                jsFn(config, function() {
+                    vendorFn(config, function() {
+                        cssFn(config, function() {
+                            copyFn(config, function() {
+                                setTimeout(function() {injectFn(config, function() {
+                                    if (config.argv('run', config.argv('s', config.argv('S'))))
+                                        runFn(config, cb)
+                                })}, config.delay || 10000)
                             })
                         })
                     })
@@ -59,7 +59,7 @@ module.exports = exports = {
     apptasks,
     common,
     clean, cleanFn,
-    config, configFn,
+    setting, settingFn,
     connect, connectFn,
     copy, copyFn,
     css, cssFn,

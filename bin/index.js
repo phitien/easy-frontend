@@ -16,32 +16,32 @@ var run = require('./run')
 var deploy = require('./deploy')
 
 var info = require('../ezygulp/info')
-var setting = {EZY_HOME: '.ezy', version: '1.0.0'}
-info(setting, gulp)
+var config = {EZY_HOME: '.ezy', version: '1.0.0'}
+info(config, gulp)
 
-var task = setting.argv.task()
+var task = config.argv.task()
 
 //install command implementation
-if (setting.argv.isTask(task, 'install|update|i|u')) install(setting)
+if (config.argv.isTask(task, 'install|update|i|u')) install(config)
 //rebuild command implementation
-else if (setting.argv.isTask(task, 'rebuild|repair|r')) rebuild(setting)
+else if (config.argv.isTask(task, 'rebuild|repair|r')) rebuild(config)
 //uninstall command implementation
-else if (setting.argv.isTask(task, 'uninstall|un')) uninstall(setting)
+else if (config.argv.isTask(task, 'uninstall|un')) uninstall(config)
 //push command implementation
-else if (setting.argv.isTask(task, 'contribute|con')) contribute(setting)
+else if (config.argv.isTask(task, 'contribute|con')) contribute(config)
 //mkapp command implementation
-else if (setting.argv.empty() || setting.argv.isTask(task, 'init|make|mkapp|mk')) mkapp(setting)
+else if (config.argv.empty() || config.argv.isTask(task, 'init|make|mkapp|mk')) mkapp(config)
 //rmapp command implementation
-else if (setting.argv.isTask(task, 'remove|rmapp|rm')) rmapp(setting)
+else if (config.argv.isTask(task, 'remove|rmapp|rm')) rmapp(config)
 //deploy command implementation
-else if (setting.argv.isTask(task, 'deploy') || setting.argv.hasOption('d|D')) deploy(setting)
+else if (config.argv.isTask(task, 'deploy') || config.argv.hasOption('d|D')) deploy(config)
 //push command implementation
-else if (setting.argv.isTask(task, 'info') || setting.argv.hasOption('i|I')) info(setting)
+else if (config.argv.isTask(task, 'info') || config.argv.hasOption('i|I')) info(config)
 //list all command implementation
-else if (setting.argv.isTask(task, 'list|ls') || setting.argv.hasOption('l|L')) list(setting)
+else if (config.argv.isTask(task, 'list|ls') || config.argv.hasOption('l|L')) list(config)
 //Help command
-else if (setting.argv.isTask(task, 'help') || setting.argv.hasOption('\\?')) help(setting)
+else if (config.argv.isTask(task, 'help') || config.argv.hasOption('\\?')) help(config)
 //Version
-else if (setting.argv.isTask(task, 'version|Version') || setting.argv.hasOption('v|V')) version(setting)
+else if (config.argv.isTask(task, 'version|Version') || config.argv.hasOption('v|V')) version(config)
 //Commands implementations
-else run(setting)
+else run(config)

@@ -8,7 +8,7 @@ module.exports = exports = {
     "apppath": "{apppath}",
     "baseurl": "{baseurl}",
     "applogo": "/static/{appname}/images/logo.jpg",
-    "appversion": "0.0.1",
+    "version": "{version}",
     "template": "index.html",
     "port": {port},
     "livereload": {livereload}

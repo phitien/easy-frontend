@@ -9,9 +9,8 @@ import {Viewport} from './Viewport'
 const onRouteEntered = (...args) => dispatchEvent(new CustomEvent('route_changed', {detail: args}))
 const onRouteChanged = (...args) => dispatchEvent(new CustomEvent('route_entered', {detail: args}))
 
-const roots = [config.apppath + '/']
-const children = [
-{path: config.apppath + '/sub', component: wrap(pages.SubPage)},
+export const routes = [
+{path: `${config.apppath}/`, component: wrap(pages.HomePage)},
+{path: `${config.apppath}/sub`, component: wrap(pages.SubPage)},
 /**NEWPAGE**/
 ].map((r,i) => <Route key={i} exact {...r}/>)
-export const routes = roots.map((r,i) => <Route key={i} exact {...r} component={wrap(pages.HomePage)}><Switch>{children}</Switch></Route>)
