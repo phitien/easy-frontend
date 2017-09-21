@@ -247,7 +247,6 @@ export class Cmp extends Container {
         </div>
     }
     render() {
-        return <div>asd</div>
         if (this.shouldCmpRender) return this.renderPositiveCmp()
         return this.renderNagativeCmp()
     }

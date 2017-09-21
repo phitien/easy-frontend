@@ -3,7 +3,7 @@ const connectFn = function(setting, cb) {
     setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}connect'`)
     connect.server({
         name: `Application ${setting.AppName} - ${setting.profile}`,
-        root: [setting.public],
+        root: [`${setting.public_profile()}`],
         port: setting.port,
         livereload: {port: setting.livereload},
         fallback: `${setting.public_profile()}/${setting.appname}.html`

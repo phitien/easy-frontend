@@ -44,7 +44,7 @@ export class Application {
     }
 }
 
-export class RouteApplication extends Application {
+export class RoutesApplication extends Application {
     get routes() {return this.__routes}
     set routes(v) {this.__routes = v}
     get history() {return this.__history || history}

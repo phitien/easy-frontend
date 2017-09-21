@@ -1,1 +1,1 @@
-export {RouteApplication as Application} from 'ezy/common'
+export {RoutesApplication as Application} from 'ezy/common'

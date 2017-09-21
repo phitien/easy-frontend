@@ -16,7 +16,7 @@ const injectFn = function(setting, cb) {
         }))
     )
     .pipe(rename(path => path.basename = path.basename == 'index' ? setting.appname : `${setting.appname}${path.basename}`))
-    .pipe(setting.gulp.dest(setting.public, {overwrite: true}))
+    .pipe(setting.gulp.dest(`${setting.public_profile()}`, {overwrite: true}))
     .on('end', cb)
 }
 module.exports = exports = function(setting) {
