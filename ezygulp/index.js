@@ -9,19 +9,19 @@ var js = require('./js'), jsFn = js.jsFn
 var mkapp = require('./mkapp'), mkappFn = mkapp.mkappFn, rmappFn = mkapp.rmappFn, includeappFn = mkapp.includeappFn, excludeappFn = mkapp.excludeappFn
 var mkpage = require('./mkpage'), mkpageFn = mkpage.mkpageFn, rmpageFn = mkpage.rmpageFn
 var mkprofile = require('./mkprofile'), mkprofileFn = mkprofile.mkprofileFn, rmprofileFn = mkprofile.rmprofileFn
-var polish = require('./polish'), polishFn = polish.polishFn
+var info = require('./info'), infoFn = info.infoFn
 var vendor = require('./vendor'), vendorFn = vendor.vendorFn
 var watch = require('./watch'), watchFn = watch.watchFn
 var run = require('./run'), runFn = run.runFn
 
 const common = function(setting, gulp) {
     setting.ezy = true
-    polish(setting, gulp)
+    info(setting, gulp)
     mkapp(setting)
 }
 const apptasks = function(setting, gulp) {
     setting.ezy = __dirname == process.env.EZY_HOME
-    polish(setting, gulp)
+    info(setting, gulp)
     mkprofile(setting)
     mkpage(setting)
     config(setting)
@@ -68,7 +68,7 @@ module.exports = exports = {
     mkapp, mkappFn, rmappFn, includeappFn, excludeappFn,
     mkpage, mkpageFn, rmpageFn,
     mkprofile, mkprofileFn, rmprofileFn,
-    polish, polishFn,
+    info, infoFn,
     vendor, vendorFn,
     watch, watchFn,
     run, runFn,

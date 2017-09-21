@@ -15,9 +15,9 @@ var list = require('./list')
 var run = require('./run')
 var deploy = require('./deploy')
 
-var polish = require('../ezygulp/polish')
+var info = require('../ezygulp/info')
 var setting = {EZY_HOME: '.ezy', version: '1.0.0'}
-polish(setting, gulp)
+info(setting, gulp)
 
 var task = setting.argv.task()
 

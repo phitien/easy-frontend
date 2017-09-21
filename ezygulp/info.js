@@ -73,9 +73,10 @@ module.exports = exports = function(setting, gulp) {
     setting.sample_static = `${setting.sample_dir}/static`
     setting.sample_templates = `${setting.sample_dir}/templates`
 
-    setting.apps_dir = setting.ezy ? setting.ezy_apps : setting.argv('dir|d', setting.pwd)
+    setting.newapp_dir = setting.argv('dir|d')
+    setting.newapp_dir =`${setting.newapp_dir ? setting.newapp_dir : setting.apps_dir}/${setting.appname}`
 
-    setting.app_dir = `${setting.apps_dir}/${setting.appname}`
+    setting.app_dir = setting.ezy ? `${setting.apps_dir}/${setting.appname}` : setting.pwd
     setting.app_actions = `${setting.app_dir}/actions`
     setting.app_components = `${setting.app_dir}/components`
     setting.app_config = `${setting.app_dir}/config`
@@ -160,15 +161,11 @@ module.exports = exports = function(setting, gulp) {
         }
     }
 
-    setting.gulp.task(`${setting.appname ? `${setting.appname}:` : ''}info`, function(cb) {
+    setting.gulp.task(`${setting.ezy && setting.appname ? `${setting.appname}:` : ''}info`, function(cb) {
         var props = ['ezy', 'name', 'port', 'profile', 'ezy_home', 'apps_dir', 'app_dir', 'public', 'debug', 'production']
         props.forEach(function(p) {
             setting.log(`${p}: ${setting[p]}`)
         })
-        cb()
-    })
-    setting.gulp.task(`ezypath`, function(cb) {
-        setting.log(process.env.EZY_HOME)
         cb()
     })
 }

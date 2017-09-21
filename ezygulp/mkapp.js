@@ -7,14 +7,15 @@ const mkappFn = function(setting, cb) {
         cb()
         return
     }
-    fs.stat(`${setting.app_dir}`, function(err, stat) {
+    console.log(setting.newapp_dir)
+    fs.stat(`${setting.newapp_dir}`, function(err, stat) {
         if (!err) {
-            setting.log(`App ${setting.appname} already exists at ${setting.app_dir}`)
+            setting.log(`App ${setting.appname} already exists at ${setting.newapp_dir}`)
             cb()
             return
         }
         setting.srcNormalized(setting.files(setting.sample_dir))
-            .pipe(setting.gulp.dest(setting.app_dir))
+            .pipe(setting.gulp.dest(setting.newapp_dir))
             .on('end', function() {
                 setting.src(setting.gulpfile)
                     .pipe(replace(setting.commands.app.removal(), ''))
@@ -42,13 +43,13 @@ const rmappFn = function(setting, cb) {
         .pipe(replace(setting.commands.app.removal(), ''))
         .pipe(setting.gulp.dest('.', {overwrite: true}))
         .on('end', function() {
-            fs.stat(`${setting.app_dir}`, function(err, stat) {
+            fs.stat(`${setting.newapp_dir}`, function(err, stat) {
                 if (err) {
                     cb()
                     return
                 }
                 setting.src([
-                    setting.app_dir,
+                    setting.newapp_dir,
                     `${setting.public}/${setting.appname}*`,
                     `${setting.public_static}/${setting.appname}*`
                 ])
@@ -71,7 +72,7 @@ const includeappFn = function(setting, cb) {
         cb()
         return
     }
-    fs.stat(`${setting.app_dir}`, function(err, stat) {
+    fs.stat(`${setting.newapp_dir}`, function(err, stat) {
         if (err) {
             setting.log(`App ${setting.appname} does not exist`, err)
             cb()
