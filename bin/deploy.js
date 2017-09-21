@@ -8,7 +8,9 @@ module.exports = exports = function(setting) {
     if (!profiles.length) profiles.push('dev')
     if (!app && setting.ezy) setting.log(`EZY Error: no app provided`)
     else {
-        function doJob(profile, cb) {
+        function doJob() {
+            if (!profiles.length) process.exit(0)
+            var profile = setting.profile = profiles.shift()
             setting.log(`Deploying profile: ${profile} ...`)
             var profileCmd = app ? `gulp ${app}:mkprofile -name=${profile}` : `gulp mkprofile -name=${profile}`
             var params = `-profile=${profile} -dir=${setting.argv('dir|d', '')} ${setting.debug ? '-debug': ''} ${setting.production ? '-production': ''} -port=${setting.port}`
@@ -24,8 +26,8 @@ module.exports = exports = function(setting) {
                     exec(`${injectCmd}`, (err, stdout, stderr) => {
                         if (err) setting.log(err)
                         else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
-                        setting.log(`EZY deployed ${profile} profile to ${setting.apps_dir}`)
-                        cb()
+                        setting.log(`EZY deployed ${profile} profile to ${setting.public_profile()}`)
+                        doJob()
                     })
                 })
             })
@@ -33,7 +35,7 @@ module.exports = exports = function(setting) {
         exec(app ? `gulp ${app}:info` : `gulp info`, (err, stdout, stderr) => {
             if (err) setting.log(`EZY Error: Could not run`, err)
             else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
-            else profiles.forEach((p,i) => doJob(p, i < profiles.length - 1 ? (e => {}) : (e => process.exit())))
+            else doJob()
         })
     }
 }

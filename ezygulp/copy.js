@@ -1,10 +1,10 @@
 const copyFn = function(setting, cb) {
     setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}copy'`)
     setting.src(setting.files(setting.ezy_static))
-        .pipe(setting.gulp.dest(`${setting.public_static}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static()}`, {overwrite: true}))
         .on('end', function() {
             setting.src(setting.files(setting.app_static))
-                .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+                .pipe(setting.gulp.dest(`${setting.public_static()}/${setting.appname}`, {overwrite: true}))
                 .on('end', cb)
         })
 }

@@ -14,7 +14,7 @@ const cssFn = function(setting, cb) {
         .pipe(autoprefixer())
         .pipe(concat(`${setting.appname}.css`))
         .pipe(setting.debug ? sourcemaps.write('./') : setting.noop())
-        .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static()}/${setting.appname}`, {overwrite: true}))
         .on('end', cb)
 }
 module.exports = exports = function(setting) {

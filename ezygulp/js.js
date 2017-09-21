@@ -23,7 +23,7 @@ const jsFn = function(setting, cb) {
         .pipe(setting.debug ? sourcemaps.init() : setting.noop())
         .pipe(setting.debug ? setting.noop() : uglify())
         .pipe(setting.debug ? sourcemaps.write('./') : setting.noop())
-        .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static()}/${setting.appname}`, {overwrite: true}))
         .on('end', cb)
 }
 

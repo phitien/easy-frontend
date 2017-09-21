@@ -7,7 +7,6 @@ const mkappFn = function(setting, cb) {
         cb()
         return
     }
-    console.log(setting.newapp_dir)
     fs.stat(`${setting.newapp_dir}`, function(err, stat) {
         if (!err) {
             setting.log(`App ${setting.appname} already exists at ${setting.newapp_dir}`)
@@ -50,8 +49,8 @@ const rmappFn = function(setting, cb) {
                 }
                 setting.src([
                     setting.newapp_dir,
-                    `${setting.public}/${setting.appname}*`,
-                    `${setting.public_static}/${setting.appname}*`
+                    `${setting.public_profile()}/${setting.appname}*`,
+                    `${setting.public_static()}/${setting.appname}*`
                 ])
                 .pipe(clean({force: true}))
                 .on('data', setting.ondata)

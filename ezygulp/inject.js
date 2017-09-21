@@ -5,8 +5,8 @@ const injectFn = function(setting, cb) {
     setting.normalize(
         setting.src(`${setting.app_templates}/*.html`)
         .pipe(inject(setting.gulp.src([
-            `${setting.public_static}/${setting.appname}/${setting.appname}*.css`,
-            `${setting.public_static}/${setting.appname}/${setting.appname}*.js`
+            `${setting.public_static()}/${setting.appname}/${setting.appname}*.css`,
+            `${setting.public_static()}/${setting.appname}/${setting.appname}*.js`
         ]), {
             transform: function(file) {
                 var filename = `{baseurl}/static/${setting.appname}${file.substr(file.lastIndexOf('/'))}`

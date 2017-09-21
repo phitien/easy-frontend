@@ -6,7 +6,7 @@ const connectFn = function(setting, cb) {
         root: [setting.public],
         port: setting.port,
         livereload: {port: setting.livereload},
-        fallback: `${setting.public}/${setting.appname}.html`
+        fallback: `${setting.public_profile()}/${setting.appname}.html`
     })
     cb()
 }

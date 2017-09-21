@@ -1,0 +1,16 @@
+{
+    "apps": [{
+        "name": "Application demo - sit",
+        "script": "index.js",
+        "args": ["--profile=sit", "--debug=1"],
+        "name": false,
+        "node_args": "--harmony",
+        "merge_logs": true,
+        "cwd": "./",
+        "env": {
+            "NODE_ENV": "sit",
+            "port": 2810,
+            "TEST": true
+        }
+    }]
+}

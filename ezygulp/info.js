@@ -76,7 +76,7 @@ module.exports = exports = function(setting, gulp) {
     setting.newapp_dir = setting.argv('dir|d')
     setting.newapp_dir =`${setting.newapp_dir ? setting.newapp_dir : setting.apps_dir}/${setting.appname}`
 
-    setting.app_dir = setting.ezy ? `${setting.apps_dir}/${setting.appname}` : setting.pwd
+    setting.app_dir = setting.ezy ? `${setting.ezy_apps}/${setting.appname}` : setting.argv('dir|d', setting.pwd)
     setting.app_actions = `${setting.app_dir}/actions`
     setting.app_components = `${setting.app_dir}/components`
     setting.app_config = `${setting.app_dir}/config`
@@ -89,8 +89,9 @@ module.exports = exports = function(setting, gulp) {
     setting.app_static = `${setting.app_dir}/static`
     setting.app_templates = `${setting.app_dir}/templates`
 
-    setting.public = `${setting.app_dir}/src/main/resources/${setting.profile}`
-    setting.public_static = `${setting.public}/static`
+    setting.public = `${setting.app_dir}/src/main/resources`
+    setting.public_profile = e => `${setting.app_dir}/src/main/resources/${setting.profile}`
+    setting.public_static = e => `${setting.public_profile()}/static`
 
     setting.gulpfile = './gulpfile.js'
 

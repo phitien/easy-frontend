@@ -20,9 +20,9 @@ const watchFn = function(setting, cb) {
         .concat(setting.files(`${setting.app_static}`, '*'))
         , [`${setting.ezy ? `${setting.appname}:` : ''}copy`])
     setting.gulp.watch([
-        `${setting.public_static}/${setting.appname}/*${setting.appname}*.css`,
-        `${setting.public_static}/${setting.appname}/*${setting.appname}*.js`,
-        `${setting.public}/*${setting.appname}*.html`,
+        `${setting.public_static()}/${setting.appname}/*${setting.appname}*.css`,
+        `${setting.public_static()}/${setting.appname}/*${setting.appname}*.js`,
+        `${setting.public_profile()}/*${setting.appname}*.html`,
     ])
     .on('change', livereload.reload)
     cb()

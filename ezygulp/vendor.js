@@ -18,7 +18,7 @@ const vendorFn = function(setting, cb, i) {
         .pipe(setting.debug ? sourcemaps.init() : setting.noop())
         .pipe(setting.debug ? setting.noop() : uglify())
         .pipe(setting.debug ? sourcemaps.write('./') : setting.noop())
-        .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
+        .pipe(setting.gulp.dest(`${setting.public_static()}/${setting.appname}`, {overwrite: true}))
         .on('error', function(err, ...args) {
             setting.log(err, ...args)
             this.emit('end')
