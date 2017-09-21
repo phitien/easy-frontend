@@ -8,16 +8,16 @@ const vendorFn = function(setting, cb, i) {
     i = i || 0
     if (i == 0) setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}vendor'`)
     var bundleCnf = {
-        debug: false, transform: [babelify],
+        debug: setting.debug, transform: [babelify],
     }
     var bundler = browserify(bundleCnf)
     setting.libs[i || 0].forEach(lib => bundler.require(lib))
     bundler.bundle()
         .pipe(source(`${setting.appname}-${i}.js`))
         .pipe(buffer())
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+        .pipe(setting.debug ? sourcemaps.init() : setting.noop())
+        .pipe(setting.debug ? setting.noop() : uglify())
+        .pipe(setting.debug ? sourcemaps.write('./') : setting.noop())
         .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
         .on('error', function(err, ...args) {
             setting.log(err, ...args)

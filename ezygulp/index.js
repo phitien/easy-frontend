@@ -45,7 +45,7 @@ const apptasks = function(setting, gulp) {
                                 setTimeout(function() {injectFn(setting, function() {
                                     if (setting.argv('run', setting.argv('s', setting.argv('S'))))
                                         runFn(setting, cb)
-                                })}, 10000)
+                                })}, setting.delay || 10000)
                             })
                         })
                     })

@@ -1,57 +1,59 @@
-module.exports = exports = function(config) {
+module.exports = exports = function(setting) {
     var fs = require('fs')
-    var name, appname, path
-    var tasks = config.setting.argv.tasks()
-    if (tasks.length) {
-        var otasks = tasks.filter(t => !/^(init|make|mkapp|mk)$/.test(t))
-        name = otasks.length ? otasks[0] : name
-    }
+    var exec = require('child_process').exec
+    var names = setting.argv.tasks()
+    names.shift()
     var readline = require('readline')
     var rl = readline.createInterface(process.stdin, process.stdout)
-
-    function instruction() {config.setting.log(`Please enter another name or 1 to exit: `)}
-    function checkName(ok, ko) {
-        appname = name.replace(/\W/g, '')
-        if (appname == 1) rl.close()
-        else if (appname) {
-            path = config.setting.ezy ? `${config.setting.ezy_apps}/${appname}` : `${config.setting.pwd}/${appname}`
-            fs.stat(`${path}`, function(err, stat) {
+    function checkAndDoJob() {
+        var dir = setting.ezy ? setting.ezy_apps : setting.argv('dir|d', setting.pwd)
+        names.forEach((name,i) => {
+            var cb = i < names.length - 1 ? (e => {}) : (e => process.exit(0))
+            var appname = name.replace(/\W/g, '')
+            var path = `${dir}/${appname}`
+            if (appname) fs.stat(`${path}`, function(err, stat) {
                 if (!err) {
-                    config.setting.log(`Name '${appname}' already exists at ${path}`)
-                    ko()
+                    setting.log(setting.chalk.red(`App '${appname}' already exists at ${path}`))
+                    cb()
                 }
-                else ok()
+                else doJob(name, appname, dir, cb)
             })
-        }
-        else {
-            config.setting.log(`Name is incorrect, it should not be empty and contain alphabets or number only`)
-            ko()
-        }
+            else {
+                setting.log(setting.chalk.red(`Name '${appname}' is incorrect, it should not be empty and contain alphabets or number only`))
+                cb()
+            }
+        })
     }
-    function askForName() {
-        rl.setPrompt('Please enter a name: ')
+    function askForNames() {
+        var prompt = `Please enter name(s) separated by space(s): `
+        rl.setPrompt(prompt)
         rl.prompt()
         rl.on('line', function(line) {
-            name = line
-            checkName(rl.close.bind(rl), instruction)
+            names = line.split(' ').filter(n => n)
+            if (!names.length) setting.log(prompt)
+            else rl.close()
         })
-        .on('close', doCreate)
+        .on('close', checkAndDoJob)
     }
-    function doCreate() {
-        if (!appname) return
-        if (appname == '1') return
-        const {exec} = require('child_process')
-        exec(`cd ${config.setting.ezy_home} && gulp mkapp -n="${name}" ${config.setting.ezy ? '' : `-path="${path}"`}`, (err, stdout, stderr) => {
-            if (err) config.setting.log(err)
-            if (stderr) config.setting.log(stderr)
-            exec(`cd ${path} && npm install`, (err, stdout, stderr) => {
-                if (err) config.setting.log(err)
-                if (stderr) config.setting.log(stderr)
-                config.setting.log(`App '${name}' is created at '${path}'`)
-                process.exit()
+    function doJob(name, appname, dir, cb) {
+        setting.log(`Creating app: ${name} ...`)
+        exec(`cd ${setting.ezy_home} && gulp mkapp -name="${name}" -dir="${dir}"`, (err, stdout, stderr) => {
+            if (err) {
+                setting.log(`EZY Error: Could not create app '${name}' at ${dir}`, err)
+                cb()
+            }
+            else if (stderr) {
+                setting.log(setting.chalk.red(stderr.trim()))
+                cb()
+            }
+            else exec(`cd "${dir}/${appname}" && npm install`, (err, stdout, stderr) => {
+                if (err) setting.log(err)
+                else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
+                setting.log(`App '${name}' is created at '${dir}/${appname}'`)
+                cb()
             })
         })
     }
-    if (!name) askForName()
-    else checkName(doCreate, askForName)
+    if (!names.length) askForNames()
+    else checkAndDoJob()
 }

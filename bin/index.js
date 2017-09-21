@@ -13,40 +13,35 @@ var rmapp = require('./rmapp')
 var info = require('./info')
 var list = require('./list')
 var run = require('./run')
+var deploy = require('./deploy')
 
 var polish = require('../ezygulp/polish')
-var setting = {}
+var setting = {EZY_HOME: '.ezy', version: '1.0.0'}
 polish(setting, gulp)
 
-var config = {EZY_HOME: '.ezy', version: '1.0.0', setting: setting}
+var task = setting.argv.task()
 
-//Show current version
-if (config.setting.argv.has('v|version')) version(config)
-//List all commands
-else if (config.setting.argv.hasOption('\\?') || config.setting.argv.has('help')) help(config)
 //install command implementation
-else if (config.setting.argv.has('install|update|i|u')) install(config)
+if (setting.argv.isTask(task, 'install|update|i|u')) install(setting)
 //rebuild command implementation
-else if (config.setting.argv.has('rebuild|repair|r')) rebuild(config)
+else if (setting.argv.isTask(task, 'rebuild|repair|r')) rebuild(setting)
 //uninstall command implementation
-else if (config.setting.argv.has('uninstall|un')) uninstall(config)
+else if (setting.argv.isTask(task, 'uninstall|un')) uninstall(setting)
 //push command implementation
-else if (config.setting.argv.has('contribute|c')) contribute(config)
-//mkapp, rmapp command implementation
-else if (config.setting.argv.empty()) mkapp(config)
-else if (config.setting.argv.has('init|make|mkapp|mk') || config.setting.argv.has('remove|rmapp|rm')) {
-    var mkIdx = config.setting.argv.indexOf('init|make|mkapp|mk')
-    var rmIdx = config.setting.argv.indexOf('remove|rmapp|rm')
-    if (mkIdx >= 0 && rmIdx >= 0) {
-        if (mkIdx < rmIdx) mkapp(config)
-        else rmapp(config)
-    }
-    else if (mkIdx < 0) rmapp(config)
-    else if (rmIdx < 0) mkapp(config)
-}
+else if (setting.argv.isTask(task, 'contribute|con')) contribute(setting)
+//mkapp command implementation
+else if (setting.argv.empty() || setting.argv.isTask(task, 'init|make|mkapp|mk')) mkapp(setting)
+//rmapp command implementation
+else if (setting.argv.isTask(task, 'remove|rmapp|rm')) rmapp(setting)
+//deploy command implementation
+else if (setting.argv.isTask(task, 'deploy') || setting.argv.hasOption('d|D')) deploy(setting)
 //push command implementation
-else if (config.setting.argv.has('info')) info(config)
+else if (setting.argv.isTask(task, 'info') || setting.argv.hasOption('i|I')) info(setting)
 //list all command implementation
-else if (config.setting.argv.has('list|ls')) list(config)
+else if (setting.argv.isTask(task, 'list|ls') || setting.argv.hasOption('l|L')) list(setting)
+//Help command
+else if (setting.argv.isTask(task, 'help') || setting.argv.hasOption('\\?')) help(setting)
+//Version
+else if (setting.argv.isTask(task, 'version|Version') || setting.argv.hasOption('v|V')) version(setting)
 //Commands implementations
-else run(config)
+else run(setting)

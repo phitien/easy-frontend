@@ -20,42 +20,27 @@ module.exports = exports = function(setting, gulp) {
     setting.env = process.env.NODE_ENV = setting.argv('env', process.env.NODE_ENV || 'dev')
     setting.port = setting.argv('port', setting.port || 2810)
     setting.livereload = setting.argv('livereload', setting.livereload || 1028)
-    setting.debug = Boolean.valueOf(setting.argv('debug|d', 1))
+    setting.debug = setting.argv('debug', true) ? true : false
+    setting.production = setting.argv('production') ? true : false
+    if (setting.production) process.env.NODE_ENV = 'production'
 
     setting.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
     setting.path = function(s) {return setting.trim(s).replace(/_/g, '/')}
     setting.normalizeName = function(s) {return setting.trim(s || '').replace(/\W/g, '').toLowerCase()}
     setting.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
-    try {
-        setting.gutil = require('gulp-util')
-        setting.log = setting.debug ? setting.gutil.log : function(...args) {}
-    }
-    catch(e) {
-        setting.log = setting.debug ? function(...args) {console.log(...args)}: function(...args) {}
-    }
-    try {setting.chalk = require('chalk')}
-    catch(e) {
-        function chalk(s) {return s}
-        setting.chalk = chalk
-        setting.chalk.red = chalk
-        setting.chalk.green = chalk
-        setting.chalk.blue = chalk
-        setting.chalk.cyan = chalk
-        setting.chalk.yellow = chalk
-        setting.chalk.magenta = chalk
-        setting.chalk.gray = chalk
-        setting.chalk.black = chalk
-        setting.chalk.white = chalk
-    }
+    setting.gutil = require('gulp-util')
+    setting.log = setting.debug ? setting.gutil.log : function(...args) {}
+    setting.noop = setting.gutil.noop
+    setting.chalk = require('chalk')
     setting.ondata = function() {}
     setting.onerror = function(...args) {
         setting.log(...args)
         this.emit('end')
     }
 
-    setting.name = setting.argv('name|n', setting.appname || '').replace(/^\W/g, '').replace(/\W$/g, '')
+    setting.name = setting.argv.option('name|n', setting.name || '').replace(/^\W/g, '').replace(/\W$/g, '')
     setting.normalizedName = setting.normalizeName(setting.name)
-    setting.appname = setting.normalizedName
+    setting.appname = setting.appname || setting.normalizedName
     setting.APPNAME = setting.name.toUpperCase()
     setting.AppName = setting.name.toCamelCase(true)
     setting.apptitle = setting.argv('apptitle|title', setting.apptitle || setting.AppName)
@@ -64,8 +49,8 @@ module.exports = exports = function(setting, gulp) {
     setting.baseurl = setting.argv('baseurl|url', setting.baseurl || '')
 
     setting.ezy_home = process.env.EZY_HOME
-    setting.ezy_dir = `${setting.ezy_home}/ezy`
     setting.ezy_apps = `${setting.ezy_home}/apps`
+    setting.ezy_dir = `${setting.ezy_home}/ezy`
     setting.ezy_common = `${setting.ezy_dir}/common`
     setting.ezy_config = `${setting.ezy_dir}/config`
     setting.ezy_components = `${setting.ezy_dir}/components`
@@ -75,7 +60,7 @@ module.exports = exports = function(setting, gulp) {
     setting.ezy_public_static = `${setting.ezy_public}/static`
     setting.ezy_gulp = `${setting.ezy_dir}/gulp`
 
-    setting.sample_dir = `${setting.ezy_home}/sample`
+    setting.sample_dir = setting.argv('sample', `${setting.ezy_home}/sample`)
     setting.sample_actions = `${setting.sample_dir}/actions`
     setting.sample_components = `${setting.sample_dir}/components`
     setting.sample_config = `${setting.sample_dir}/config`
@@ -88,7 +73,9 @@ module.exports = exports = function(setting, gulp) {
     setting.sample_static = `${setting.sample_dir}/static`
     setting.sample_templates = `${setting.sample_dir}/templates`
 
-    setting.app_dir = setting.app_home = setting.ezy ? `${setting.ezy_apps}/${setting.appname}` : setting.pwd
+    setting.apps_dir = setting.ezy ? setting.ezy_apps : setting.argv('dir|d', setting.pwd)
+
+    setting.app_dir = `${setting.apps_dir}/${setting.appname}`
     setting.app_actions = `${setting.app_dir}/actions`
     setting.app_components = `${setting.app_dir}/components`
     setting.app_config = `${setting.app_dir}/config`
@@ -100,9 +87,9 @@ module.exports = exports = function(setting, gulp) {
     setting.app_sass = `${setting.app_dir}/sass`
     setting.app_static = `${setting.app_dir}/static`
     setting.app_templates = `${setting.app_dir}/templates`
-    setting.public = setting.argv('public', `${setting.app_dir}/src/main/resources/${setting.profile}`)
+
+    setting.public = `${setting.app_dir}/src/main/resources/${setting.profile}`
     setting.public_static = `${setting.public}/static`
-    setting.path = setting.argv('path', setting.ezy ? setting.app_dir : `${setting.pwd}/${setting.appname}`)
 
     setting.gulpfile = './gulpfile.js'
 
@@ -147,7 +134,7 @@ module.exports = exports = function(setting, gulp) {
     setting.commands = {
         app: {
             key: `/**NEWAPP**/`,
-            text: function(cb) {return `try {apptasks(require('apps/${setting.appname}/gulp'), require('gulp'))} catch(e) {console.log(e)}`},
+            text: function(cb) {return `apptasks(require('apps/${setting.appname}/gulp'), require('gulp'))`},
             addon: function(cb) {return `${this.text()}
 /**NEWAPP**/`},
             removal: function(cb) {return `${this.text()}
@@ -174,7 +161,7 @@ module.exports = exports = function(setting, gulp) {
     }
 
     setting.gulp.task(`${setting.appname ? `${setting.appname}:` : ''}info`, function(cb) {
-        var props = ['ezy', 'name', 'port', 'profile', 'path', 'ezy_dir', 'app_dir', 'public']
+        var props = ['ezy', 'name', 'port', 'profile', 'ezy_home', 'apps_dir', 'app_dir', 'public', 'debug', 'production']
         props.forEach(function(p) {
             setting.log(`${p}: ${setting[p]}`)
         })

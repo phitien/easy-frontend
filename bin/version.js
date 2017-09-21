@@ -1,3 +1,3 @@
-module.exports = exports = function(config) {
-    config.setting.log(`${config.version}`)
+module.exports = exports = function(setting) {
+    setting.log(`${setting.version}`)
 }

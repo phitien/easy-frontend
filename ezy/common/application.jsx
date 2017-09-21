@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
-import {Router, Route, Switch} from 'react-router'
+import {ConnectedRouter} from 'react-router-redux'
+import {Switch, Route} from 'react-router'
 import {Subscriber, Publisher} from './PubSub'
 import {history} from './history'
 import {utils} from './utils'
@@ -49,14 +50,11 @@ export class RouteApplication extends Application {
     get history() {return this.__history || history}
     set history(v) {this.__history = v}
 
-    renderRoute(props, i) {
-        return React.createElement(Route, this.utils.assign({key: i}, props.props || props))
-    }
     renderApplication() {
         if (this.routes && this.history)
-        return <Router routes={this.routes} history={history}>
-            {this.routes}
-        </Router>
+        return <ConnectedRouter history={history}>
+            <Switch>{this.routes}</Switch>
+        </ConnectedRouter>
         else if (!this.routes) throw `${this.klass}: No routes provided`
         else if (!this.history) throw `${this.klass}: No history provided`
     }

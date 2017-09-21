@@ -236,7 +236,8 @@ export class Cmp extends Container {
         return this.showIndicator ? <Loader className={this.indicatorClassName}/> : null
     }
     renderNagativeCmp() {return null}
-    renderChildren() {return Array.isArray(this.children) ? this.children.map((c,i) => React.cloneElement(c, {key: i, className: this.childrenClassName})) : this.children}
+    renderChildren() {return Array.isArray(this.children) ?
+        this.children.filter(c => c).map((c,i) => React.cloneElement(c, {key: i, className: this.childrenClassName})) : this.children}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {
         return <div className={this.className} data-cmpId={this.cmpId}>
@@ -246,6 +247,7 @@ export class Cmp extends Container {
         </div>
     }
     render() {
+        return <div>asd</div>
         if (this.shouldCmpRender) return this.renderPositiveCmp()
         return this.renderNagativeCmp()
     }

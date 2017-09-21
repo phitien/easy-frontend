@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-redux'
 import {Cmp} from 'ezy/common'
 
 export class Menu extends Cmp {

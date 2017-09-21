@@ -8,7 +8,7 @@ const jsFn = function(setting, cb) {
     setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}js'`)
     var bundleCnf = {
         debug: setting.debug, transform: [babelify], entries: [`${setting.app_dir}/index.jsx`], extensions: ['.jsx'],
-        paths: ['.', './node_modules', setting.ezy_home, `${setting.ezy_home}/node_modules`, setting.app_home, `${setting.app_home}/node_modules`]
+        paths: ['.', './node_modules', setting.app_home, `${setting.app_home}/node_modules`, setting.ezy_home, `${setting.ezy_home}/node_modules`]
     }
     var bundler = browserify(bundleCnf)
     setting.libs.forEach(libs => libs.forEach(lib => bundler.external(lib)))
@@ -20,9 +20,9 @@ const jsFn = function(setting, cb) {
         })
         .pipe(source(`${setting.appname}.js`))
         .pipe(buffer())
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+        .pipe(setting.debug ? sourcemaps.init() : setting.noop())
+        .pipe(setting.debug ? setting.noop() : uglify())
+        .pipe(setting.debug ? sourcemaps.write('./') : setting.noop())
         .pipe(setting.gulp.dest(`${setting.public_static}/${setting.appname}`, {overwrite: true}))
         .on('end', cb)
 }

@@ -1,18 +1,19 @@
-module.exports = exports = function(config) {
+module.exports = exports = function(setting) {
     var fs = require('fs')
-    const {exec} = require('child_process')
+    var exec = require('child_process').exec
     const push = function () {
-        config.setting.log(`EZY Pushing ..., it takes about 5-10 mins to finished process`)
-        exec(`cd ${process.env.HOME}/${config.EZY_HOME} && git add . && git commit -am "${config.argv.find('-m') || 'Auto message'}" && git push`, (err, stdout, stderr) => {
-            if (err) config.setting.log(`EZY Error: Could not push to repo`, err)
-            config.setting.log(stdout.trim())
-            config.setting.log(stderr)
-            config.setting.log(`EZY is pushed`)
-            return
+        setting.log(`EZY Pushing ..., it takes about 5-10 mins to finished process`)
+        exec(`cd ${setting.ezy_home} && git add . && git commit -am "${setting.argv.find('-m') || 'Auto message'}" && git push`, (err, stdout, stderr) => {
+            if (err) setting.log(`EZY Error: Could not push to repo`, err)
+            else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
+            else {
+                setting.log(stdout.trim())
+                setting.log(`EZY is pushed`)
+            }
         })
     }
-    fs.stat(`${process.env.HOME}/${config.EZY_HOME}`, (err, stat) => {
-        if (err) return config.setting.log(`EZY Error: ${process.env.HOME}/${config.EZY_HOME} not found`)
+    fs.stat(`${setting.ezy_home}`, (err, stat) => {
+        if (err) return setting.log(`EZY Error: ${setting.ezy_home} not found`)
         else return push()
     })
 }

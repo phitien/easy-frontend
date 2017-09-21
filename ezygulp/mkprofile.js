@@ -5,7 +5,7 @@ const mkprofileFn = function(setting, cb) {
     setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}mkprofile'`)
     var profile = setting.normalizedName
     if (!profile) {
-        setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:mkprofile --name=name`)
+        setting.log(`Profile name is missing, syntax: gulp ${setting.ezy ? `${setting.appname}:` : ''}mkprofile --name=name`)
         cb()
         return
     }
@@ -32,7 +32,12 @@ const rmprofileFn = function(setting, cb) {
     setting.log(`Running  '${setting.ezy ? `${setting.appname}:` : ''}rmprofile'`)
     var profile = setting.normalizedName
     if (!profile) {
-        setting.log(`Profile name is missing, syntax: gulp ${setting.appname}:rmprofile --name=name`)
+        setting.log(`Profile name is missing, syntax: gulp ${setting.ezy ? `${setting.appname}:` : ''}rmprofile --name=name`)
+        cb()
+        return
+    }
+    else if (profile == 'base' || profile == 'index') {
+        setting.log(`Profile name is invalid, should not be index or base`)
         cb()
         return
     }
