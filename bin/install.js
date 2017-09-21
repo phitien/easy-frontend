@@ -1,6 +1,8 @@
+var exec = require('child_process').exec
+
 const build = function (setting, EZY_HOME) {
     setting.log(`EZY Installing ..., it takes about 5-10 mins to finished process`)
-    exec(`cd ${EZY_HOME} && npm i gulp@^3.9.1 -D && && npm i gulp@^3.9.1 -g && npm i && npm i -g`, (err, stdout, stderr) => {
+    exec(`cd ${EZY_HOME} && npm i gulp@^3.9.1 -D && npm i gulp@^3.9.1 -g && npm i && npm i -g`, (err, stdout, stderr) => {
         if (err) setting.log(`EZY Error: Could not update EZY modules`, err)
         else if (stderr) setting.log(setting.chalk.red(stderr.trim()))
         else exec(`cd ${EZY_HOME} && cat ~/.bash_profile | sed '/EZY_HOME/d' 2>&1 | tee ~/.bash_profile && echo export \"EZY_HOME=\"$(pwd)\"\" >> ~/.bash_profile`, (err, stdout, stderr) => {
