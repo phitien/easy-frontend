@@ -9,6 +9,7 @@ import {Notifier}  from './Notifier'
 import {UserBox} from './UserBox'
 import {AppVersion} from './AppVersion'
 import {Space} from './Space'
+import {Message} from './Message'
 
 export class Page extends Cmp {
     static autoProps() {return super.autoProps().concat([
@@ -71,35 +72,30 @@ export class Page extends Cmp {
     get contentCmps() {
         return this.nagative ? this.nagativeContent : this.positiveContent
     }
-    set lastMessage(msg) {
-        this.messages.push(msg)
-        this.refresh()
-    }
     get pubsub() {
         return this.utils.assign(super.pubsub, {
-            add_message: (...args) => {},
+            add_message: (e) => {
+                let [msg] = e.detail
+                this.messages.push(msg)
+                this.refresh()
+            },
+            remove_message: (e) => {
+                let [msg] = e.detail
+                this.messages.splice(this.messages.indexOf(msg), 1)
+                this.refresh()
+            },
         })
     }
     renderModals() {return this.renderObject(this.props.modals)}
     renderHeader() {return <div className='header'>{this.renderObject(this.headerCmps)}</div>}
     renderFooter() {return <div className='footer'>{this.renderObject(this.footerCmps)}</div>}
     renderContent() {return <div className='content'>{this.renderObject(this.contentCmps)}</div>}
-    renderMessage(m) {
-        let text, error = false
-        if (typeof m == 'object') {
-            text = m.text
-            error = m.error
-        }
-        else text = m
-        return <div className={`message ${error ? 'error' : ''}`}>{text}</div>
+    renderMessage(m,i) {
+        return <Message key={i} cmpData={m}/>
     }
     renderMessages() {
-        this.messages = Array.isArray(this.messages) ? this.messages.filter(i => i) : []
-        let results = []
-        while(this.messages.length) {
-            results.push(this.renderMessage(this.messages.shift()))
-        }
-        return <div className='messages'>{this.renderObject(results)}</div>
+        this.messages = [].concat(this.messages).filter(m => m)
+        return <div className='messages'>{this.messages.reverse().map((m,i) => this.renderMessage(m,i))}</div>
     }
     renderToolbar() {
         return <div className='content-toolbar'>{this.renderObject(this.toolbarCmps)}</div>

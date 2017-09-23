@@ -107,6 +107,9 @@ export class PubSubContainer extends BaseContainer {
             user_logged_out: this.userLoggedOut,
         }
     }
+    set lastMessage(msg) {
+        new Publisher('add_message', msg, this)
+    }
     onRouteEntered = (...args) => {}
     onRouteChanged = (...args) => {}
     onCacheChanged = (...args) => {}
@@ -212,6 +215,20 @@ export class Container extends ApiContainer {
 export class Cmp extends Container {
     get className() {return `${this.cmpClassName || ''} ${this.props.className || ''} ${this.shouldCmpRender ? '' : 'cmp-negative'}`}
     get children() {return this.props.children}
+    cmpDidMount() {}
+    componentDidMount() {
+        super.componentDidMount()
+        this.cmpDidMount()
+    }
+    cmpWillUpdate(nextProps, nextState) {}
+    componentWillUpdate(nextProps, nextState) {
+        super.componentWillUpdate(nextProps, nextState)
+        this.cmpWillUpdate(nextProps, nextState)
+    }
+    cmpDidUpdate(prevProps, prevState) {}
+    componentDidUpdate(prevProps, prevState) {
+        this.cmpDidUpdate(prevProps, prevState)
+    }
     renderObject(o) {
         if (!Array.isArray(o)) return o
         o = o.filter(i => i)
@@ -225,7 +242,7 @@ export class Cmp extends Container {
     renderChildren() {return this.renderObject(this.children)}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {
-        return <div className={this.className} data-cmpId={this.cmpId}>
+        return <div className={this.className} data-cmpId={this.cmpId} id={this.cmpId}>
             {this.renderCmp()}
             {this.renderIndicator()}
         </div>

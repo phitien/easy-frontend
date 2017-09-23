@@ -13,6 +13,6 @@ export class TablePage extends Page {
         />
     }
     get rightPanel() {
-        return 'RightPanel'
+        // return 'RightPanel'
     }
 }

@@ -16,11 +16,12 @@ a {
     i {cursor: pointer;}
     &:hover {}
 }
-input {
-    border: none;margin: 0;padding: 0;
+input[type=text],input[type=number],input[type=password],input[type=url],input[type=email] {
+    border: 1px solid $input-bd-color;margin: 0;padding: 0 3px;
     outline: none;
     height: $input-height;
     font-size: $font-size;
+    vertical-align: top;
 }
 table {
     border-spacing: 0;
@@ -28,7 +29,7 @@ table {
 tr {
 }
 th, td {
-    padding: 3px 0;
+    padding: 3px;
     margin: 0;
     vertical-align: middle;
     text-align: left;
@@ -79,9 +80,25 @@ th, td {
 .messages {
     position: fixed;top: $header-height;right: 0;width: $messages-box-width;
     padding: 0;margin: 0;
-    color: $messages-color;
-    background-color: $messages-bg-color;
-    display: flex;align-items: center;justify-content: center;
+    display: flex;align-items: flex-start;justify-content: center;flex-direction: column;
+    background-color: transparent;
+    padding-right: $mapa/2;
+    .message {
+        width: 100%;
+        color: $message-color;
+        background-color: $message-bg-color;
+        line-height: $line-height;
+        padding: $mapa/2;
+        margin: $mapa/2 0;
+        &.error {
+            color: $message-error-color;
+            background-color: $message-error-bg-color;
+        }
+        &.warning {
+            color: $message-warning-color;
+            background-color: $message-warning-bg-color;
+        }
+    }
 }
 .page {
     &.page-has-left-panel .content {
@@ -95,6 +112,7 @@ th, td {
 }
 .app-links {
     ul {
+        display: none;
         margin: 0;padding: 0;
         position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $app-links-width;
         color: $app-links-color;
@@ -186,7 +204,7 @@ th, td {
     .ezy-table-header,.ezy-table-body,.ezy-table-footer {
         width: 100%;
         table {
-            width: 100%;
+            table-layout: fixed;
         }
     }
     .ezy-table-body {
@@ -206,6 +224,44 @@ th, td {
             background-color: $table-row-hover-bg-color;
         }
     }
-    .ezy-table-col, .ezy-table-cell {
+    .ezy-table-cell {
+        .ezy-table-cell-wrapper {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            left: 0 !important;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .ui-resizable-w {
+            display: none;
+        }
+        .ui-resizable-e {
+            width: 16px;
+            &:hover {
+                background-color: rgba(0,0,0,.1);
+            }
+        }
+    }
+    .ezy-table-cell:hover {
+        color: $table-cell-hover-color;
+        background-color: $table-cell-hover-bg-color;
+    }
+}
+.ezy-button {
+    display: inline-flex;align-items: center;justify-content: flex-start;
+    height: 24px;margin: 0;padding: 0 2px;
+    cursor: pointer;border: none;
+    box-shadow: 1px 3px 7px rgba(0,0,0,.3);
+    color: $button-color;
+    background-color: $button-bg-color;
+    outline: none;
+    i {
+        font-size: 16px;margin-right: 3px;
+    }
+    &:hover {
+        box-shadow: 1px 5px 7px rgba(0,0,0,.3);
     }
 }

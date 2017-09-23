@@ -20,8 +20,12 @@ $content-main-bg-color: #ffffff;
 $content-right-color: #000000;
 $content-right-bg-color: #ffffff;
 
-$messages-color: #ffffff;
-$messages-bg-color: transparent;
+$message-color: #000000;
+$message-error-color: #ffffff;
+$message-warning-color: #ffffff;
+$message-bg-color: #2cafff;
+$message-error-bg-color: #f93434;
+$message-warning-bg-color: #d4c824;
 
 $app-links-color: #ffffff;
 $app-links-color-hover: #000000;
@@ -40,4 +44,12 @@ $table-row-odd-bg-color: rgba(0,0,0,.1);
 $table-row-even-color: #000000;
 $table-row-even-bg-color: #ffffff;
 $table-row-hover-color: #000000;
-$table-row-hover-bg-color: rgba(0,0,0,.4);
+$table-row-hover-bg-color: rgba(0,0,0,.3);
+
+$table-cell-hover-color: #ffffff;
+$table-cell-hover-bg-color: rgba(0,0,0,.5);
+
+$input-bd-color: rgba(0,0,0,.3);
+
+$button-color: #000017;
+$button-bg-color: #e8e8e8;

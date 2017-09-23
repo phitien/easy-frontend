@@ -16,6 +16,7 @@ export class Table extends FlexCmp {
         {section: 'cmp', name: 'showBody', title: 'Show Body', type: 'SelectField', value: true, required: false, desc: null, options: [true, false]},
         {section: 'cmp', name: 'showFooter', title: 'Show Footer', type: 'SelectField', value: true, required: false, desc: null, options: [true, false]},
         {section: 'cmp', name: 'columns', title: 'Columns', type: 'TextField', value: [], required: false, desc: null},
+        {section: 'cmp', name: 'fit', title: 'Fit', type: 'SelectField', value: true, required: false, desc: null, options: [true, false]},
     ])}
     get cmpClassName() {return `ezy-table`}
     get cols(){return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns).filter(c => c && c.show)}
@@ -30,6 +31,12 @@ export class Table extends FlexCmp {
             this.refresh()
         }
     }
+    get onRowSelected() {
+        return (row, v) => {
+            row.selected = v
+            this.refresh()
+        }
+    }
     get children() {
         return [
             this.showControl && this.controlPos == 'top' ? <TableControll owner={this}/> : null,
@@ -38,6 +45,32 @@ export class Table extends FlexCmp {
             this.showFooter ? <TableFooter owner={this}/> : null,
             this.showControl && this.controlPos != 'top' ? <TableControll owner={this}/> : null,
         ]
+    }
+    colsSync() {
+        jQuery(`#${this.cmpId} .ezy-table-body table tr:first-child .ezy-table-cell-wrapper`).each((i,e) => {
+            let col = jQuery(`#${this.cmpId} .ezy-table-header tr:first-child td:nth-child(${i+1}) .ezy-table-cell-wrapper`)
+            let cell = jQuery(e)
+            let w = cell.outerWidth()
+            cell.outerWidth(w)
+            col.outerWidth(w)
+            if (this.cols[i].resizable) col.resizable({
+                handles: 'e,w',
+                minWidth: 40,
+                alsoResize: `#${this.cmpId} .ezy-table-body tr td:nth-child(${i+1}) .ezy-table-cell-wrapper`
+            })
+        })
+    }
+    cmpDidUpdate() {
+        if (this.fit) setTimeout(e => {
+            let body = jQuery(`#${this.cmpId} .ezy-table-body table`)
+            let fw = body.parent().innerWidth()
+            let w = body.outerWidth()
+            let last =  jQuery(`#${this.cmpId} .ezy-table-body table tr:first-child td:last-child .ezy-table-cell-wrapper`)
+            let cw = last.outerWidth()
+            if (fw > w) last.width(cw + fw - w)
+            this.colsSync()
+        }, 1)
+        else this.colsSync()
     }
 }
 export class TableControll extends Cmp {
@@ -94,19 +127,24 @@ export class TableHeader extends Cmp {
     }
 }
 export class TableCol extends Cmp {
-    get cmpClassName() {return `ezy-table-col`}
+    get cmpClassName() {return `ezy-table-cell`}
     get owner() {return this.props.owner}
     get cols(){return this.owner.cols}
     get rows() {return this.owner.rows}
     get col() {return this.props.col}
     get type() {return this.col.type}
     get data() {return this.col.data}
-    renderCol() {
-        if (this.type == 'checkbox') return <Checkbox onChange={this.owner.selectAll}/>
+    get checked() {
+        return this.rows.find(r => !r.selected) ? false : true
+    }
+    renderCell() {
+        if (this.type == 'checkbox') return <Checkbox checked={this.checked} onChange={this.owner.selectAll}/>
         else return this.col.name || this.col.title || this.col.label
     }
     render() {
-        return <th className={this.className}>{this.renderCol()}</th>
+        return <td className={this.className}><div className={`${this.cmpClassName}-wrapper`}>
+            {this.renderCell()}
+        </div></td>
     }
 }
 export class TableBody extends Cmp {
@@ -144,11 +182,11 @@ export class TableCell extends Cmp {
     get data() {return this.col.data}
     get field() {return this.col.field}
     get selected() {return this.row.selected}
-    get onSelect() {
-        return v => this.row.selected = v
+    set selected(v) {
+        this.owner.onRowSelected(this.row, v)
     }
     renderCell() {
-        if (this.type == 'checkbox') return <Checkbox checked={this.selected} onChange={this.onSelect}/>
+        if (this.type == 'checkbox') return <Checkbox checked={this.selected} onChange={v => this.selected = v}/>
         else {
             let data = function(f) {return this.row[f]}.bind(this)
             if (this.data) {
@@ -160,7 +198,9 @@ export class TableCell extends Cmp {
         }
     }
     render() {
-        return <td className={this.className}>{this.renderCell()}</td>
+        return <td className={this.className}><div className={`${this.cmpClassName}-wrapper`}>
+            {this.renderCell()}
+        </div></td>
     }
 }
 export class TableFooter extends Cmp {

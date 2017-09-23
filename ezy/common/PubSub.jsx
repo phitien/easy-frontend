@@ -1,6 +1,6 @@
 export class Publisher {
     constructor(n, ...args) {
-        dispatchEvent(new CustomEvent(n, detail: args))
+        dispatchEvent(new CustomEvent(n, {detail: args}))
     }
 }
 export class Subscriber {

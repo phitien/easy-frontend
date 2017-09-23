@@ -3,4 +3,5 @@ export {TablePage} from './TablePage'
 export {LineChartPage} from './LineChartPage'
 export {BarChartPage} from './BarChartPage'
 export {PieChartPage} from './PieChartPage'
+export {MessagesPage} from './MessagesPage'
 /**NEWPAGE**/
