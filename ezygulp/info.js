@@ -27,7 +27,7 @@ module.exports = exports = function(config, gulp) {
 
     config.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
     config.path = function(s) {return config.trim(s).replace(/_/g, '/')}
-    config.normalizeName = function(s) {return config.trim(s || '').replace(/\W/g, '').toLowerCase()}
+    config.normalizeName = function(s) {return config.trim(s || '').toCamelCase().replace(/\W/g, '')}
     config.files = function(dir, ext) {return [`${dir}/${ext || '*'}`,`${dir}/**/${ext || '*'}`]}
     config.gutil = require('gulp-util')
     config.log = config.debug ? config.gutil.log : function(...args) {}
@@ -72,6 +72,7 @@ module.exports = exports = function(config, gulp) {
     config.sample_reducers = `${config.sample_dir}/reducers`
     config.sample_sass = `${config.sample_dir}/sass`
     config.sample_static = `${config.sample_dir}/static`
+    config.sample_static_data = `${config.sample_static}/data`
     config.sample_templates = `${config.sample_dir}/templates`
 
     config.newapp_dir = config.argv('dir|d')
@@ -88,6 +89,7 @@ module.exports = exports = function(config, gulp) {
     config.app_reducers = `${config.app_dir}/reducers`
     config.app_sass = `${config.app_dir}/sass`
     config.app_static = `${config.app_dir}/static`
+    config.app_static_data = `${config.app_static}/data`
     config.app_templates = `${config.app_dir}/templates`
     config.keywords = [
         'name',
@@ -155,7 +157,7 @@ module.exports = exports = function(config, gulp) {
 /**NEWPAGE**/`},
             pageRemoval: function(...args){return `${this.pageAddonText(...args)}
 `},
-            routeAddonText: function(name, Name, NAME) {return `{path: \`\${config.apppath}/${name}\`, component: wrap(pages.${Name}Page)},`},
+            routeAddonText: function(name, Name, NAME) {return `, {path: \`\${config.apppath}/${name}\`, component: wrap(pages.${Name}Page)}`},
             routeAddon: function(...args){return `${this.routeAddonText(...args)}
 /**NEWPAGE**/`},
             routeRemoval: function(...args){return `${this.routeAddonText(...args)}
@@ -164,6 +166,11 @@ module.exports = exports = function(config, gulp) {
             sassAddon: function(...args){return `${this.sassAddonText(...args)}
 /**NEWPAGE**/`},
             sassRemoval: function(...args){return `${this.sassAddonText(...args)}
+`},
+            applinksAddonText: function(name, Name, NAME) {return `, {"url": "/${name}", "title": "${Name}"}`},
+            applinksAddon: function(...args){return `${this.applinksAddonText(...args)}
+]`},
+            applinksRemoval: function(...args){return `${this.applinksAddonText(...args)}
 `},
         }
     }

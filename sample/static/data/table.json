@@ -1,0 +1,23 @@
+{
+    "previous": "",
+    "next": "",
+    "page": 2,
+    "total": 200,
+    "size": 20,
+    "columns": [
+        {"type": "checkbox", "title": "Col1", "show": true},
+        {"field": "col1", "title": "Col2", "show": true},
+        {"field": "col2", "title": "Col3", "show": true},
+        {"type": "custom", "title": "Col3", "show": true, "data": "data('col1') + data('col2')"}
+    ],
+    "rows": [
+        {"col1": "cell1.1", "col2": "cell1.2"},
+        {"col1": "cell2.1", "col2": "cell2.2"},
+        {"col1": "cell3.1", "col2": "cell3.2"},
+        {"col1": "cell4.1", "col2": "cell4.2"},
+        {"col1": "cell5.1", "col2": "cell5.2"},
+        {"col1": "cell6.1", "col2": "cell6.2"},
+        {"col1": "cell7.1", "col2": "cell7.2"},
+        {"col1": "cell8.1", "col2": "cell8.2"}
+    ]
+}

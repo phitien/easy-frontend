@@ -31,7 +31,6 @@ const mkpageFn = function(config, cb) {
             .pipe(rename(`page-${name}.scss`))
             .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
             .on('end', function() {
-                console.log(name, Name, NAME)
                 config.src(`${config.app_pages}/index.jsx`)
                 .pipe(replace(config.commands.page.key, config.commands.page.pageAddon(name, Name, NAME)))
                 .pipe(config.gulp.dest(`${config.app_pages}`, {overwrite: true}))
@@ -43,7 +42,12 @@ const mkpageFn = function(config, cb) {
                         config.src(`${config.app_sass}/index.scss`)
                         .pipe(replace(config.commands.page.key, config.commands.page.sassAddon(name, Name, NAME)))
                         .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
-                        .on('end', cb)
+                        .on('end', function() {
+                            config.src(`${config.app_static_data}/applinks.json`)
+                            .pipe(replace(']', config.commands.page.applinksAddon(name, Name, NAME)))
+                            .pipe(config.gulp.dest(`${config.app_static_data}`, {overwrite: true}))
+                            .on('end', cb)
+                        })
                     })
                 })
             })
@@ -75,13 +79,18 @@ const rmpageFn = function(config, cb) {
             .pipe(replace(config.commands.page.sassRemoval(name, Name, NAME), ''))
             .pipe(config.gulp.dest(`${config.app_sass}`, {overwrite: true}))
             .on('end', function() {
-                config.src([
-                    `${config.app_pages}/${Name}Page.jsx`,
-                    `${config.app_sass}/page-${name}.scss`
-                ])
-                .pipe(clean({force: true}))
-                .on('data', config.ondata)
-                .on('end', cb)
+                config.src(`${config.app_static_data}/applinks.json`)
+                .pipe(replace(config.commands.page.applinksRemoval(name, Name, NAME), ''))
+                .pipe(config.gulp.dest(`${config.app_static_data}`, {overwrite: true}))
+                .on('end', function() {
+                    config.src([
+                        `${config.app_pages}/${Name}Page.jsx`,
+                        `${config.app_sass}/page-${name}.scss`
+                    ])
+                    .pipe(clean({force: true}))
+                    .on('data', config.ondata)
+                    .on('end', cb)
+                })
             })
         })
     })

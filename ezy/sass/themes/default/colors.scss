@@ -1,20 +1,43 @@
-$color: #24292e;
-$background-color: #ffffff;
-
-$header-color: #ffffff;
-$header-background-color: #24292e;
-$footer-color: #ffffff;
-$footer-background-color: #24292e;
-$content-color: #24292e;
-$content-background-color: #ffffff;
-$content-left-color: #24292e;
-$content-left-background-color: #ffffff;
-$content-main-color: #24292e;
-$content-main-background-color: #ffffff;
-$content-right-color: #24292e;
-$content-right-background-color: #ffffff;
-$messages-color: #ffffff;
-$messages-background-color: transparent;
-
 $primary1: #ffffff;
 $primary2: #000000;
+
+$color: #000000;
+$bg-color: #ffffff;
+$bd-color: #000000;
+
+$header-color: #ffffff;
+$header-bg-color: #000000;
+
+$footer-color: #ffffff;
+$footer-bg-color: #000000;
+
+$content-color: #000000;
+$content-bg-color: #ffffff;
+$content-left-color: #000000;
+$content-left-bg-color: #ffffff;
+$content-main-color: #000000;
+$content-main-bg-color: #ffffff;
+$content-right-color: #000000;
+$content-right-bg-color: #ffffff;
+
+$messages-color: #ffffff;
+$messages-bg-color: transparent;
+
+$app-links-color: #ffffff;
+$app-links-color-hover: #000000;
+$app-links-bg-color: rgba(0,0,0,.95);
+$app-links-bg-color-hover: rgba(256,256,256,.95);
+$app-links-border-color: #ffffff;
+
+$select-options-color: #000000;
+$select-options-color-hover: #ffffff;
+$select-options-bd-color: #000000;
+$select-options-bg-color: rgba(256,256,256,.95);
+$select-options-bg-color-hover: rgba(0,0,0,.95);
+
+$table-row-odd-color: #000000;
+$table-row-odd-bg-color: rgba(0,0,0,.1);
+$table-row-even-color: #000000;
+$table-row-even-bg-color: #ffffff;
+$table-row-hover-color: #000000;
+$table-row-hover-bg-color: rgba(0,0,0,.4);

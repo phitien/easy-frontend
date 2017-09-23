@@ -1,37 +1,40 @@
 import React from 'react'
-import {Link} from 'react-router-redux'
-import {Cmp} from 'ezy/common'
+import {Link} from 'react-router-dom'
+import {FlexCmp} from 'ezy/common'
 
-export class Menu extends Cmp {
+export class Menu extends FlexCmp {
+    get cmpClassName() {return ``}
     get level() {return this.props.level || 0}
-    get cmpDefaultData() {return []}
-    get children() {
-        return this.renderMenu(this.cmpData, this.className, this.props.subMenuClassName)
-    }
     get getNodeClassName() {
-        return n => `${location.pathname == n.url ? 'active' : ''} level${this.level} ${this.hasChildren(n) ? 'has-children' : ''}`
+        return n => {
+            let url = `${this.root}${(n.url || '').replace(/^\//g, '')}`.replace(/\/$/g, '')
+            return `${location.pathname == url ? 'active' : ''} level${this.level} ${this.hasChildren(n) ? 'has-children' : ''}`
+        }
     }
     get hasChildren() {
-        return n => n.children && n.children.length > 0
+        return n => n.children && n.children.length
     }
-    renderMenu(items, className, subMenuClassName) {
-        if (!Array.isArray(items) || items.length == 0) return null
-        return
-        <ul className={className}>{items.map((item, i) => {
+    get root() {return `${this.props.root || ''}/`}
+    renderMenu(items, className) {
+        items = [].concat(items).filter(item => item)
+        if (!items.length) return null
+        return <ul className={this.className}>{items.map((item, i) => {
+            let url = `${this.root}${(item.url || '#').replace(/^\//g, '')}`.replace(/\/$/g, '')
             return item.html ?
             <li key={i} className={this.getNodeClassName(item)}>{item.html}</li> :
             <li key={i} className={this.getNodeClassName(item)}>
-                <Link href={item.url || '#'} onClick={item.onClick || (e => this.utils.history.push(item.url || '#'))}>
+                <Link to={url} onClick={item.onClick || (e => this.utils.history.push(url))}>
                     {item.title}
                 </Link>
                 {!item.description ? null :
                 <div className='description'>{item.description}</div>}
                 <Menu cmpData={item.children}
-                    level={this.level + 1}
-                    className={subMenuClassName}
-                    subMenuClassName={subMenuClassName}/>
+                    level={this.level + 1}/>
             </li>
             })}
         </ul>
+    }
+    render() {
+        return this.renderMenu(this.cmpData, this.className)
     }
 }

@@ -1,0 +1,7 @@
+[
+{"url": "/", "title": "Home"}
+, {"url": "/table", "title": "Table"}
+, {"url": "/lineChart", "title": "LineChart"}
+, {"url": "/barChart", "title": "BarChart"}
+, {"url": "/pieChart", "title": "PieChart"}
+]

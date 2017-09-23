@@ -25,6 +25,7 @@ class Utilities {
     get config() {return config}
     get user() {return user}
     get history() {return history}
+    get log() {return console.log}
     get clone() {return o => {
         try {return JSON.parse(JSON.stringify(o))} catch(e) {console.log(e)}
     }}

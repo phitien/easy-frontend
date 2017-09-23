@@ -2,6 +2,7 @@ import axios from 'axios'
 import when from 'when'
 import assign from 'object-assign'
 import syncReq from 'sync-request'
+import {config} from './config'
 
 const successResStatusCodes = [200,201,202,203,204,205,206,207,208,226]
 export function isSuccesRes(res) {return res && successResStatusCodes.includes(res.statusCode || res.status)}
@@ -19,19 +20,22 @@ export class Request {
     set payload(o) {this.__options.data = o}
     get options() {return this.__options}
     set options(opts) {this.__options = opts}
+    get defaultHeaders() {return {
+        [config.authTokenName]: null
+    }}
 
     option = (n, v) => {
         this.__options[n] = v
         return this
     }
-    headers = (headers) => this.option('headers', assign(this.defaultHeaders, headers))
-    header = (n, v) => this.headers = assign({}, this.__options.headers, {[n]: v})
+    headers = (headers) => this.option('headers', assign({}, this.defaultHeaders, headers))
+    header = (n, v) => this.headers({[n]: v})
     url = (v) => this.option('url', v)
     method = (v) => this.option('method', v.toLowerCase())
     data = (v) => {
         this.option('data', v)
-        if (this.__options.method == 'get') {
-            const url = this.__options.url
+        if (this.__options.method == 'get' && v) {
+            const url = this.__options.url || ''
             this.option('url', this.buildUrl(url, this.buildQuery(v)))
         }
         return this
@@ -63,7 +67,9 @@ export class Request {
         try {args.map(fn => fn(payload))} catch(e) {console.log(e)}
         return this
     }
-    exec = (sync) => sync ? this.sync() : this.async()
+    exec = (sync) => {
+        if (this.__options.url) return sync ? this.sync() : this.async()
+    }
     async = () => {
         this.__dispatch(undefined, ...this.__before)
         return when(axios(this.__options))

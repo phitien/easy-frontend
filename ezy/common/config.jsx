@@ -13,14 +13,14 @@ class Config {
     }
     set(...args) {
         let keys = []
-        args.filter(c => c && typeof c == 'object').forEach(c => keys = keys.concat(Object.keys(c)))
-        keys = Array.from(new Set(keys))
+        let configs = [].concat(args, config).filter(c => c && typeof c == 'object')
+        configs.forEach(c => keys = keys.concat(Object.keys(c)))
+        keys = Array.from(new Set(keys.sort()))
         keys.forEach(k => {
-            args.filter(c => c && typeof c == 'object').forEach(c => {
-                let o = c[k]
-                if (o !== undefined) {
-                    if (o === null)  this.__config[k] = o
-                    else if (Array.isArray(o)) this.__config[k] = o
+            configs.forEach(c => {
+                if (c.hasOwnProperty(k)) {
+                    let o = c[k]
+                    if (o === null || Array.isArray(o)) this.__config[k] = o
                     else if (typeof o == 'object') this.__config[k] = assign({}, this.__config[k], o)
                     else this.__config[k] = o
                 }
@@ -39,7 +39,7 @@ class Config {
         this.set({
             profile: 'base',
             noAuthentication: false,
-            authTokenName: 'ezy-frontend-token',
+            authTokenName: 'ezy-token',
             userProfileCacheName: 'user-profile',
             defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
             apiBaseUrl: '',
@@ -54,6 +54,7 @@ class Config {
                 lastLogin: null,
             }
         }, ...args)
+        window.config = this
     }
 }
 

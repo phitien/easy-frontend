@@ -6,56 +6,81 @@ body {
     font-family: $font-family;
     font-size: $font-size;
     color: $color;
-    background-color: $background-color;
+    background-color: $bg-color;
     margin: 0;padding: 0;
+    * {box-sizing: border-box;}
 }
 a {
     text-decoration: none;
+    color: inherit;
     i {cursor: pointer;}
     &:hover {}
+}
+input {
+    border: none;margin: 0;padding: 0;
+    outline: none;
+    height: $input-height;
+    font-size: $font-size;
+}
+table {
+    border-spacing: 0;
+}
+tr {
+}
+th, td {
+    padding: 3px 0;
+    margin: 0;
+    vertical-align: middle;
+    text-align: left;
 }
 .space {
     flex: 1;
 }
 .header {
+    overflow: hidden;
     position: fixed;top: 0;right: 0;left: 0;height: $header-height;
     color: $header-color;
-    background-color: $header-background-color;
+    background-color: $header-bg-color;
     display: flex;align-items: center;justify-content: center;
+    z-index: 1;
+    i {cursor: pointer;}
 }
 .content {
+    overflow: hidden;
     position: fixed;top: $header-height;right: 0;bottom: $footer-height;left: 0;
     color: $content-color;
-    background-color: $content-background-color;
+    background-color: $content-bg-color;
     .content-left {
         display: none;
         position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $content-left-width;
         color: $content-left-color;
-        background-color: $content-left-background-color;
+        background-color: $content-left-bg-color;
     }
     .content-main {
+        overflow: auto;
         position: fixed;top: $header-height;bottom: $footer-height;left: 0;right: 0;
         color: $content-main-color;
-        background-color: $content-main-background-color;
+        background-color: $content-main-bg-color;
     }
     .content-right {
         display: none;
         position: fixed;top: $header-height;bottom: $footer-height;right: 0;width: $content-left-width;
         color: $content-right-color;
-        background-color: $content-right-background-color;
+        background-color: $content-right-bg-color;
     }
 }
 .footer {
+    overflow: hidden;
     position: fixed;bottom: 0;right: 0;left: 0;height: $footer-height;
     color: $footer-color;
-    background-color: $footer-background-color;
+    background-color: $footer-bg-color;
     display: flex;align-items: center;justify-content: center;
 }
 .messages {
     position: fixed;top: $header-height;right: 0;width: $messages-box-width;
-    padding: $mapa/2;
+    padding: 0;margin: 0;
     color: $messages-color;
-    background-color: $messages-background-color;
+    background-color: $messages-bg-color;
     display: flex;align-items: center;justify-content: center;
 }
 .page {
@@ -66,5 +91,121 @@ a {
     &.page-has-right-panel .content {
         .content-main {right: $content-right-width;}
         .content-right {display: block;}
+    }
+}
+.app-links {
+    ul {
+        margin: 0;padding: 0;
+        position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $app-links-width;
+        color: $app-links-color;
+        background-color: $app-links-bg-color;
+        li {
+            border-bottom: 1px solid $app-links-border-color;
+            a {
+                display: block;
+                padding: $mapa/2 $mapa/2;
+            }
+            &:hover, &.active {
+                color: $app-links-color-hover;
+                background-color: $app-links-bg-color-hover;
+            }
+            &:first-child {
+            }
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+.ezy-select {
+    position: relative;display: inline-block;
+    .ezy-select-text {
+        height: $select-option-height;
+        background-color: #ffffff;
+        border: 1px solid $select-options-bd-color;
+        display: flex;align-items: center;justify-content: flex-start;
+        min-width: 24px;
+        cursor: pointer;
+        > input {
+            padding: 0 $mapa/4 - 1px !important;
+            height: $select-option-height - 2px !important;
+            border: none !important;
+            width: 100%;
+        }
+        > div {
+            padding: 0 $mapa/4;
+        }
+    }
+    .ezy-select-options {
+        position: absolute;top: $select-option-height;z-index: 1;
+        min-width: 100%;
+        border-bottom: 1px solid $select-options-bd-color;
+        border-left: 1px solid $select-options-bd-color;
+        border-right: 1px solid $select-options-bd-color;
+        max-height: $select-option-height * 8;
+        overflow-y: auto;
+    }
+    .ezy-select-option {
+        cursor: pointer;height: 24px;padding: 0 $mapa/4;
+        display: flex;align-items: center;justify-content: flex-start;
+        border-top: 1px solid $select-options-bd-color;
+        color: $select-options-color;
+        background-color: $select-options-bg-color;
+        &:hover {
+            color: $select-options-color-hover;
+            background-color: $select-options-bg-color-hover;
+        }
+    }
+}
+.ezy-checkbox {
+    i {cursor: pointer;}
+}
+.ezy-table {
+    height: 100%;overflow: hidden;
+    display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
+    > * {width: 100%;}
+    .ezy-table-control {
+        display: flex;align-items: center;justify-content: flex-start;
+        i {cursor: pointer;}
+    }
+    .ezy-table-page-size {
+        input {
+            width: 30px;
+            padding: 0 $mapa/4;
+            border: 1px solid $bd-color;
+        }
+    }
+    .ezy-table-pagination {
+        display: flex;align-items: center;justify-content: flex-start;
+        .ezy-select {width: 30px;}
+        input {
+            padding: 0 $mapa/4;
+            border: 1px solid $bd-color;
+        }
+    }
+    .ezy-table-header,.ezy-table-body,.ezy-table-footer {
+        width: 100%;
+        table {
+            width: 100%;
+        }
+    }
+    .ezy-table-body {
+        flex: 1;overflow: auto;
+    }
+    .ezy-table-row {
+        &:nth-child(odd) {
+            color: $table-row-odd-color;
+            background-color: $table-row-odd-bg-color;
+        }
+        &:nth-child(even) {
+            color: $table-row-even-color;
+            background-color: $table-row-even-bg-color;
+        }
+        &:hover {
+            color: $table-row-hover-color;
+            background-color: $table-row-hover-bg-color;
+        }
+    }
+    .ezy-table-col, .ezy-table-cell {
     }
 }
