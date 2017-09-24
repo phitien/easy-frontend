@@ -12,9 +12,7 @@ const onRouteChanged = (...args) => dispatchEvent(new CustomEvent('route_entered
 export const routes = [
 {path: `${config.apppath}/`, component: wrap(pages.HomePage)}
 , {path: `${config.apppath}/table`, component: wrap(pages.TablePage)}
-, {path: `${config.apppath}/lineChart`, component: wrap(pages.LineChartPage)}
-, {path: `${config.apppath}/barChart`, component: wrap(pages.BarChartPage)}
-, {path: `${config.apppath}/pieChart`, component: wrap(pages.PieChartPage)}
 , {path: `${config.apppath}/messages`, component: wrap(pages.MessagesPage)}
+, {path: `${config.apppath}/chart`, component: wrap(pages.ChartPage)}
 /**NEWPAGE**/
 ].map((r,i) => <Route key={i} exact {...r}/>)

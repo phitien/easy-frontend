@@ -2,6 +2,7 @@ export {Menu} from './Menu'
 export {Message} from './Message'
 export {TableControl, TableHeader, TableBody, TableFooter, Table, TableCell, TableRow, TableHeaderCell} from './table'
 export {Button, Checkbox, Email, Number, Password, Text, Url, Select} from './input'
+export {Chart, ChartSeries} from './chart'
 
 export {AppLinks} from './AppLinks'
 export {AppName} from './AppName'

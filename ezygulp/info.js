@@ -21,9 +21,9 @@ module.exports = exports = function(config, gulp) {
     config.version = config.argv('version|v', config.version || '1.0.0')
     config.port = config.argv('port', config.port || 2810)
     config.livereload = config.argv('livereload', config.livereload || 1028)
-    config.debug = config.argv('debug', true) ? true : false
     config.production = config.argv('production') ? true : false
     if (config.production) process.env.NODE_ENV = 'production'
+    config.debug = config.argv('debug', !config.production) ? true : false
 
     config.trim = function(s) {return s.replace(/^\W/g, '').replace(/\W$/g, '').trim()}
     config.path = function(s) {return config.trim(s).replace(/_/g, '/')}
