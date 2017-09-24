@@ -62,6 +62,7 @@ th, td {
         position: fixed;top: $header-height;bottom: $footer-height;left: 0;right: 0;
         color: $content-main-color;
         background-color: $content-main-bg-color;
+        display: flex;flex-direction: column;
     }
     .content-right {
         display: none;

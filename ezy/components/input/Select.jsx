@@ -30,6 +30,11 @@ export class Select extends Cmp {
         let options = [this.placeholder ? {value: null, text: this.placeholder, placeholder: true} : null].concat(this.options).filter(o => o)
         return this.search ? options.filter(o => `${this.getText(o)}`.indexOf(this.search) >= 0) : options
     }
+    cmpDidMount() {
+        addEventListener('click', e => {
+            if (!e.target.closest('.ezy-select-options')) this.showR = false
+        }, true)
+    }
     onSearch = e => this.searchR = e.target.value
     onShow = e => this.showR = true
     getText(o) {

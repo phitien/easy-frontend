@@ -1,5 +1,5 @@
 .ezy-table {
-    height: 100%;overflow: hidden;
+    overflow: hidden;flex: 1;
     display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
     > * {width: 100%;}
     .ezy-table-control {
@@ -25,8 +25,11 @@
     }
     .ezy-table-header,.ezy-table-body,.ezy-table-footer {
         width: 100%;
+        table {table-layout: fixed;}
+    }
+    .ezy-table-body {
+        flex: 1;overflow: auto;
         table {
-            table-layout: fixed;
             tr {
                 &:nth-child(odd) {
                     color: $table-row-odd-color;
@@ -46,29 +49,26 @@
                 color: $table-cell-hover-color;
                 background-color: $table-cell-hover-bg-color;
             }
-            td.asc,td.desc {
-                position: relative;
-                &:before {
-                    content: '';display: block;width: 0;height: 0;
-                    position: absolute;top: 0;
-                    border-left: 5px solid transparent;
-                    border-right: 5px solid transparent;
-                    border-bottom-color: inherit;
-                    border-top-color: inherit;
-                }
-            }
-            td.asc:before {border-bottom: 5px solid;}
-            td.desc:before {border-top: 5px solid;}
         }
     }
-    .ezy-table-body {
-        flex: 1;overflow: auto;
-    }
     .ezy-table-header table {
-        tr:nth-child(odd),tr:nth-child(even),tr:hover{
+        tr {
             color: $table-row-header-color;
             background-color: $table-row-header-bg-color;
         }
+        td.asc,td.desc {
+            position: relative;
+            &:before {
+                content: '';display: block;width: 0;height: 0;
+                position: absolute;top: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom-color: inherit;
+                border-top-color: inherit;
+            }
+        }
+        td.asc:before {border-bottom: 5px solid;}
+        td.desc:before {border-top: 5px solid;}
     }
     .ezy-table-cell-wrapper {
         overflow: hidden;

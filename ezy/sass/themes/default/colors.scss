@@ -42,14 +42,14 @@ $select-options-bg-color-hover: rgba(0,0,0,.95);
 $table-row-header-color: #ffffff;
 $table-row-header-bg-color: rgba(0,0,0,.7);
 $table-row-odd-color: #000000;
-$table-row-odd-bg-color: rgba(0,0,0,.1);
+$table-row-odd-bg-color: rgba(0,0,0,.05);
 $table-row-even-color: #000000;
-$table-row-even-bg-color: #ffffff;
+$table-row-even-bg-color: rgba(0,0,0,.15);
 $table-row-hover-color: #000000;
-$table-row-hover-bg-color: rgba(0,0,0,.15);
+$table-row-hover-bg-color: rgba(0,0,0,.2);
 
-$table-cell-hover-color: #ffffff;
-$table-cell-hover-bg-color: rgba(0,0,0,.3);
+$table-cell-hover-color: #000000;
+$table-cell-hover-bg-color: #ffffff;
 
 $input-bd-color: rgba(0,0,0,.3);
 

@@ -31,6 +31,9 @@ export class Table extends FlexCmp {
             if (r) this.refresh()
         }, transform: true, required: false, desc: null},
     ])}
+    get output() {
+        return this.rows.filter(r => r.selected)
+    }
     get cmpClassName() {return `ezy-table`}
     get cols(){return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns).filter(c => c && c.show)}
     get rows() {return [].concat(this.cmpData ? this.cmpData.rows : null).filter(r => r && !r.hidden)}

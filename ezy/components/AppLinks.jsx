@@ -17,6 +17,12 @@ export class AppLinks extends RegCmp {
             /> : null
         ]
     }
+    get onShow() {
+        return e => jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500)
+    }
+    get onHide() {
+        return e => jQuery(`#${this.cmpId} > ul`).hide('slide', {direction: 'left'}, 500)
+    }
     get onClick() {
         return e => {
             if (!this.added){
@@ -25,12 +31,17 @@ export class AppLinks extends RegCmp {
             }
             else {
                 this.show = !this.show
-                if (this.show) jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500)
-                else jQuery(`#${this.cmpId} > ul`).hide('slide', {direction: 'left'}, 500)
+                if (this.show) this.onShow()
+                else this.onHide()
             }
         }
     }
+    cmpDidMount() {
+        addEventListener('click', e => {
+            if (!e.target.closest('.app-links ul')) this.onHide()
+        }, true)
+    }
     cmpDidUpdate() {
-        if (this.show) setTimeout(e => jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500), 100)
+        if (this.show) setTimeout(this.onShow, 100)
     }
 }
