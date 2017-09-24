@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 
-export class Logo extends Cmp {
+export class Logo extends RegCmp {
     get cmpClassName() {return 'logo'}
     get children() {
         return <Link to={this.config.apppath}>

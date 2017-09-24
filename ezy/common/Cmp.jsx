@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom'
 import {utils} from './utils'
 import {config} from './config'
 import {Publisher, Subscriber, Unsubscriber} from './PubSub'
+import {regCmps} from './application'
 
 export class BaseContainer extends React.Component {
     static autoProps() {return [
-        {section: 'base', name: 'cmpId', title: 'ID', type: 'TextField', value: null, required: true, desc: null},
-        {section: 'base', name: 'cmpData', r: true, title: 'Data', type: 'TextField', value: null, required: true, desc: null},
-        {name: '__mounted', title: '__mounted', type: 'TextField', value: false, required: true, desc: null},
+        {section: 'base', name: 'cmpId', title: 'ID', type: 'Text', value: null, required: true, desc: null},
+        {section: 'base', name: 'cmpData', r: true, title: 'Data', type: 'Text', value: null, required: true, desc: null},
+        {name: '__mounted', title: '__mounted', type: 'Text', value: false, required: true, desc: null},
     ]}
     static utilities = utils
     static configuration = config
@@ -16,7 +17,7 @@ export class BaseContainer extends React.Component {
     aPropRefresh(n, v, r) {}
     getAProp(n, t) {
         let v = this.state.__auto_props[n]
-        if (t == 'function') {
+        if (t) {
             if (typeof v == 'function') v = v.bind(this)
             else if (typeof v == 'string') {
                 eval(`v = ${v}.bind(this)`)
@@ -91,6 +92,8 @@ export class BaseContainer extends React.Component {
     get isLogged() {return this.utils.cache.get(this.config.authTokenName)}
     get config() {return config}
     get log(){ return this.utils.log}
+    get output() {return null}
+    get regCmps() {return regCmps}
     refresh(state, ...args) {if (this.__mounted) {
         this.utils.assign(this.state, {key: Math.random()}, state)
         this.setState(this.state, ...args)
@@ -133,18 +136,21 @@ export class PubSubContainer extends BaseContainer {
 }
 export class ApiContainer extends PubSubContainer {
     static autoProps() {return super.autoProps().concat([
-        {section: 'api', name: 'apiUrl', title: 'Url', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'api', name: 'apiParams', title: 'Params', type: 'TextField', value: null, required: false, desc: null},
+        {section: 'api', name: 'apiUrl', title: 'Url', type: 'Text', value: null, required: false, desc: null},
+        {section: 'api', name: 'apiParams', title: 'Params', type: 'Text', value: null, required: false, desc: null},
+        {section: 'api', name: 'apiParamsRefine', transform: true, title: 'Params', type: 'Text', value: function(p) {
+            return p
+        }, required: false, desc: null},
         {section: 'api', name: 'apiMethod', title: 'Method', type: 'SelectField', value: 'get', required: false, desc: null, options: ['get', 'post', 'put', 'delete', 'options']},
-        {section: 'api', name: 'apiDataField', title: 'Data field', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'api', name: 'apiFailureMessage', title: 'Failure message', type: 'TextField', value: 'Could not load data.', required: false, desc: null},
+        {section: 'api', name: 'apiDataField', title: 'Data field', type: 'Text', value: null, required: false, desc: null},
+        {section: 'api', name: 'apiFailureMessage', title: 'Failure message', type: 'Text', value: 'Could not load data.', required: false, desc: null},
         {section: 'api', name: 'apiPageIndicator', title: 'Page loading', type: 'SelectField', value: false, required: false, desc: null, options: [true, false]},
         {section: 'api', name: 'apiCmpIndicator', title: 'Component loading', type: 'SelectField', value: false, required: false, desc: null, options: [true, false]},
-        {section: 'api', name: 'apiBefore', transform: 'function', title: 'Pre-call', type: 'TextField', value: function(e) {}, required: false, desc: null},
-        {section: 'api', name: 'apiAfter', transform: 'function', title: 'Post-call', type: 'TextField', value: function(e) {}, required: false, desc: null},
-        {section: 'api', name: 'apiSuccess', transform: 'function', title: 'Success', type: 'TextField', value: function(data) {this.cmpDataR = data}, required: false, desc: null},
-        {section: 'api', name: 'apiFailure', transform: 'function', title: 'Failure', type: 'TextField', value: function(res) {}, required: false, desc: null},
-        {section: 'api', name: 'apiCanLoad', transform: 'function', title: 'Conditions', type: 'TextField', value: function(e) {return true}, required: true, desc: null},
+        {section: 'api', name: 'apiBefore', transform: true, title: 'Pre-call', type: 'Text', value: function(e) {}, required: false, desc: null},
+        {section: 'api', name: 'apiAfter', transform: true, title: 'Post-call', type: 'Text', value: function(e) {}, required: false, desc: null},
+        {section: 'api', name: 'apiSuccess', transform: true, title: 'Success', type: 'Text', value: function(data) {this.cmpDataR = data}, required: false, desc: null},
+        {section: 'api', name: 'apiFailure', transform: true, title: 'Failure', type: 'Text', value: function(res) {}, required: false, desc: null},
+        {section: 'api', name: 'apiCanLoad', transform: true, title: 'Conditions', type: 'Text', value: function(e) {return true}, required: true, desc: null},
     ])}
     aPropRefresh(n, v, r) {
         if (['apiUrl', 'apiParams', 'apiMethod'].indexOf(n) >= 0) this.apiLoad()
@@ -161,9 +167,12 @@ export class ApiContainer extends PubSubContainer {
         return data
     }
     apiLoad() {
-        if (this.apiCanLoad())
+        if (this.apiCanLoad()) {
+            let apiParams = this.apiParams
+            if (typeof apiParams == 'string' && this.regCmps.has(apiParams)) apiParams = this.regCmps.get(apiParams).output
+            else if (typeof apiParams == 'function') apiParams = apiParams()
             this.utils.request(this.apiUrl, this.apiMethod)
-            .data(this.apiParams)
+            .data(this.apiParamsRefine(apiParams))
             .before(e => {
                 if (this.apiPageIndicator) this.pageIndicator = true
                 else if (this.apiCmpIndicator) this.cmpIndicator = true
@@ -183,11 +192,12 @@ export class ApiContainer extends PubSubContainer {
                 this.apiAfter()
             })
             .exec()
+        }
     }
 }
 export class Container extends ApiContainer {
     static autoProps() {return super.autoProps().concat([
-        {section: 'style', name: 'indicatorClassName', title: 'Indicator', type: 'TextField', value: 'circle3', required: false, desc: null},
+        {section: 'style', name: 'indicatorClassName', title: 'Indicator', type: 'Text', value: 'circle3', required: false, desc: null},
     ])}
     get shouldCmpRender() {return true}
     get showIndicator() {return this.state.showIndicator}
@@ -260,15 +270,25 @@ export class Loader extends Cmp {
         </div>
     }
 }
-export class FlexCmp extends Cmp {
+export class RegCmp extends Cmp {
+    componentDidMount() {
+        super.componentDidMount()
+        new Publisher('cmp_mounted', this)
+    }
+    componentWillUnmount() {
+        super.componentWillUnmount()
+        new Publisher('cmp_unmounted', this)
+    }
+}
+export class FlexCmp extends RegCmp {
     static autoProps() {return super.autoProps().concat([
-        {section: 'style', name: 'padding', title: 'Padding', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'margin', title: 'Margin', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'background', title: 'Background', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'border', title: 'Border', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'boxShadow', title: 'Box shadow', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'borderRadius', title: 'Border radius', type: 'TextField', value: null, required: false, desc: null},
-        {section: 'style', name: 'style', title: 'Style', type: 'TextField', value: null, required: false, desc: null},
+        {section: 'style', name: 'padding', title: 'Padding', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'margin', title: 'Margin', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'background', title: 'Background', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'border', title: 'Border', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'boxShadow', title: 'Box shadow', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'borderRadius', title: 'Border radius', type: 'Text', value: null, required: false, desc: null},
+        {section: 'style', name: 'style', title: 'Style', type: 'Text', value: null, required: false, desc: null},
     ])}
     static isFlex() {return true}
     static excludingProps() {return []}

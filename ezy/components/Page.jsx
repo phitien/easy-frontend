@@ -13,9 +13,9 @@ import {Message} from './Message'
 
 export class Page extends Cmp {
     static autoProps() {return super.autoProps().concat([
-        {name: 'messages', title: 'Messages', type: 'TextField', value: [], required: false, desc: null},
-        {name: 'toolbarCmps', title: 'Toolbar items', type: 'TextField', value: [], required: false, desc: null},
-        {name: 'headerCmps', title: 'Header components', type: 'TextField', value: [
+        {name: 'messages', title: 'Messages', type: 'Text', value: [], required: false, desc: null},
+        {name: 'toolbarCmps', title: 'Toolbar items', type: 'Text', value: [], required: false, desc: null},
+        {name: 'headerCmps', title: 'Header components', type: 'Text', value: [
             <AppLinks/>,
             <Logo/>,
             <AppName/>,
@@ -25,7 +25,7 @@ export class Page extends Cmp {
             <UserBox/>,
             <Help/>,
         ], required: false, desc: null},
-        {name: 'footerCmps', title: 'Footer components', type: 'TextField', value: [
+        {name: 'footerCmps', title: 'Footer components', type: 'Text', value: [
             <AppVersion/>,
             <Space/>,
         ], required: false, desc: null},

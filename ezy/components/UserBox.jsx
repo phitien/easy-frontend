@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-redux'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 
-export class UserBox extends Cmp {
+export class UserBox extends RegCmp {
     get cmpClassName() {return 'user-box'}
     get children() {
         return [

@@ -1,8 +1,8 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 import {Menu} from './Menu'
 
-export class AppLinks extends Cmp {
+export class AppLinks extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'show', value: false},
         {section: 'cmp', name: 'added', value: false},

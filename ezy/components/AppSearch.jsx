@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 
-export class AppSearch extends Cmp {
+export class AppSearch extends RegCmp {
     get cmpClassName() {return 'app-search'}
     get children() {
         return <i className='material-icons' onClick={this.props.onClick}>search</i>

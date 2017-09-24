@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 
-export class Help extends Cmp {
+export class Help extends RegCmp {
     get cmpClassName() {return 'help'}
     get children() {
         return <i className='material-icons' onClick={this.props.onClick}>help</i>

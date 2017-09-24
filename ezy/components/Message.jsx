@@ -1,7 +1,7 @@
 import React from 'react'
-import {FlexCmp, Publisher} from 'ezy/common'
+import {Cmp, Publisher} from 'ezy/common'
 
-export class Message extends FlexCmp {
+export class Message extends Cmp {
     get cmpClassName() {return `message`}
     cmpDidMount() {
         jQuery(this.dom).fadeOut(7000, e => {

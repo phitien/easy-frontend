@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {RegCmp} from 'ezy/common'
 
-export class AppVersion extends Cmp {
+export class AppVersion extends RegCmp {
     get cmpClassName() {return 'version'}
     get children() {
         return this.config.version

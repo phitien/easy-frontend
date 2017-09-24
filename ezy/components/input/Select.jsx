@@ -1,20 +1,22 @@
 import React from 'react'
-import {FlexCmp, Cmp} from 'ezy/common'
+import {Cmp} from 'ezy/common'
 
-export class Select extends FlexCmp {
+export class Select extends Cmp {
     static autoProps() {return super.autoProps().concat([
-        {section: 'cmp', name: 'options', title: 'Options', type: 'TextField', value: [], required: false, desc: null},
-        {section: 'cmp', name: 'value', title: 'Selected', type: 'TextField', value: null, required: false, desc: null},
+        {section: 'cmp', name: 'options', title: 'Options', type: 'Text', value: [], required: false, desc: null},
+        {section: 'cmp', name: 'value', title: 'Value', type: 'Text', value: null, required: false, desc: null},
+        {section: 'cmp', name: 'defaultValue', title: 'Default Value', type: 'Text', value: null, required: false, desc: null},
         {section: 'cmp', name: 'searchable', title: 'Searchable', type: 'SelectField', value: false, required: false, desc: null, options: [true,  false]},
         {section: 'cmp', name: 'search', title: 'Search', type: 'HiddenField', value: '', required: false, desc: null},
-        {section: 'cmp', name: 'placeholder', title: 'Placeholder', type: 'TextField', value: '', required: false, desc: null},
+        {section: 'cmp', name: 'placeholder', title: 'Placeholder', type: 'Text', value: '', required: false, desc: null},
         {section: 'cmp', name: 'show', title: 'Show', type: 'SelectField', value: false, required: false, desc: null, options: [true,  false]},
     ])}
     get cmpClassName() {return `ezy-select`}
+    get output() {return this.getValue(this.value || this.defaultValue)}
     get onChange() {
         return (o,i,e) => {
-            this.value = o
-            this.showR = false
+            this.show = false
+            this.valueR = o
             typeof this.props.onChange == 'function' ? this.props.onChange(this.value, this.value, e) : false
         }
     }
@@ -38,7 +40,7 @@ export class Select extends FlexCmp {
         return o && typeof o == 'object' ? o.value : o
     }
     renderText() {
-        let text = this.getText(this.value)
+        let text = this.getText(this.value || this.defaultValue)
         text = this.placeholder ? text || this.placeholder : text
         return <div className='ezy-select-text' style={this.props.style} onClick={this.onShow}>
             {this.show && this.searchable ? <input type='text' defaultValue={text} onChange={this.onSearch}/> :
@@ -50,8 +52,8 @@ export class Select extends FlexCmp {
     }
     renderOption(o,i) {
         let text = this.getText(o)
-        let value = this.value == o
-        let className = `ezy-select-option ${o.placeholder ? 'placeholder' : ''} ${value ? 'value' : ''}`
+        let value = (this.value || this.defaultValue) == o
+        let className = `ezy-select-option ${o.placeholder ? 'placeholder' : ''} ${value ? 'selected' : ''}`
         return <div key={i} className={className} onClick={this.onChange.bind(this, o, i)}>
             {text}
         </div>

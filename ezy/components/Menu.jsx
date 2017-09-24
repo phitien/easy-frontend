@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {FlexCmp} from 'ezy/common'
+import {Cmp} from 'ezy/common'
 
-export class Menu extends FlexCmp {
+export class Menu extends Cmp {
     get cmpClassName() {return ``}
     get level() {return this.props.level || 0}
     get getNodeClassName() {
