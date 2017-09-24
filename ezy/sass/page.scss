@@ -1,0 +1,10 @@
+.page {
+    &.page-has-left-panel .content {
+        .content-main {left: $content-left-width;}
+        .content-left {display: block;}
+    }
+    &.page-has-right-panel .content {
+        .content-main {right: $content-right-width;}
+        .content-right {display: block;}
+    }
+}

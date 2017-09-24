@@ -1,0 +1,25 @@
+.app-links {
+    ul {
+        display: none;
+        margin: 0;padding: 0;
+        position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $app-links-width;
+        color: $app-links-color;
+        background-color: $app-links-bg-color;
+        li {
+            border-bottom: 1px solid $app-links-border-color;
+            a {
+                display: block;
+                padding: $mapa/2 $mapa/2;
+            }
+            &:hover, &.active {
+                color: $app-links-color-hover;
+                background-color: $app-links-bg-color-hover;
+            }
+            &:first-child {
+            }
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}

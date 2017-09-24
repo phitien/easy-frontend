@@ -9,150 +9,52 @@ body {
     background-color: $bg-color;
     margin: 0;padding: 0;
     * {box-sizing: border-box;}
-}
-a {
-    text-decoration: none;
-    color: inherit;
-    i {cursor: pointer;}
-    &:hover {}
-}
-input[type=text],input[type=number],input[type=password],input[type=url],input[type=email] {
-    border: 1px solid $input-bd-color;margin: 0;padding: 0 3px;
-    outline: none;
-    height: $input-height;
-    font-size: $font-size;
-    vertical-align: top;
-}
-table {
-    border-spacing: 0;
-}
-tr {
-}
-th, td {
-    padding: 3px;
-    margin: 0;
-    vertical-align: middle;
-    text-align: left;
+    a {
+        text-decoration: none;
+        color: inherit;
+        i {cursor: pointer;}
+        &:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+    input[type=text],input[type=number],input[type=password],input[type=url],input[type=email] {
+        border: 1px solid $input-bd-color;margin: 0;padding: 0 3px;
+        outline: none;
+        height: $input-height;
+        font-size: $font-size;
+        vertical-align: top;
+    }
+    table {
+        border-spacing: 0;
+    }
+    tr {
+    }
+    th, td {
+        padding: 3px;
+        margin: 0;
+        vertical-align: middle;
+        text-align: left;
+    }
 }
 .space {
     flex: 1;
 }
-.header {
-    overflow: hidden;
-    position: fixed;top: 0;right: 0;left: 0;height: $header-height;
-    color: $header-color;
-    background-color: $header-bg-color;
-    display: flex;align-items: center;justify-content: center;
-    z-index: 1;
-    i {cursor: pointer;}
-}
-.content {
-    overflow: hidden;
-    position: fixed;top: $header-height;right: 0;bottom: $footer-height;left: 0;
-    color: $content-color;
-    background-color: $content-bg-color;
-    .content-left {
-        display: none;
-        position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $content-left-width;
-        color: $content-left-color;
-        background-color: $content-left-bg-color;
-    }
-    .content-main {
-        overflow: auto;
-        position: fixed;top: $header-height;bottom: $footer-height;left: 0;right: 0;
-        color: $content-main-color;
-        background-color: $content-main-bg-color;
-        display: flex;flex-direction: column;
-    }
-    .content-right {
-        display: none;
-        position: fixed;top: $header-height;bottom: $footer-height;right: 0;width: $content-left-width;
-        color: $content-right-color;
-        background-color: $content-right-bg-color;
-    }
-}
-.footer {
-    overflow: hidden;
-    position: fixed;bottom: 0;right: 0;left: 0;height: $footer-height;
-    color: $footer-color;
-    background-color: $footer-bg-color;
-    display: flex;align-items: center;justify-content: center;
-}
-.messages {
-    position: fixed;top: $header-height;right: 0;width: $messages-box-width;
-    padding: 0;margin: 0;
-    display: flex;align-items: flex-start;justify-content: center;flex-direction: column;
-    background-color: transparent;
-    padding-right: $mapa/2;
-    .message {
-        width: 100%;
-        color: $message-color;
-        background-color: $message-bg-color;
-        line-height: $line-height;
-        padding: $mapa/2;
-        margin: $mapa/2 0;
-        &.error {
-            color: $message-error-color;
-            background-color: $message-error-bg-color;
-        }
-        &.warning {
-            color: $message-warning-color;
-            background-color: $message-warning-bg-color;
-        }
-    }
-}
-.page {
-    &.page-has-left-panel .content {
-        .content-main {left: $content-left-width;}
-        .content-left {display: block;}
-    }
-    &.page-has-right-panel .content {
-        .content-main {right: $content-right-width;}
-        .content-right {display: block;}
-    }
-}
-.app-links {
-    ul {
-        display: none;
-        margin: 0;padding: 0;
-        position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $app-links-width;
-        color: $app-links-color;
-        background-color: $app-links-bg-color;
-        li {
-            border-bottom: 1px solid $app-links-border-color;
-            a {
-                display: block;
-                padding: $mapa/2 $mapa/2;
-            }
-            &:hover, &.active {
-                color: $app-links-color-hover;
-                background-color: $app-links-bg-color-hover;
-            }
-            &:first-child {
-            }
-            &:last-child {
-                border-bottom: none;
-            }
-        }
-    }
-}
-.ezy-button {
-    display: inline-flex;align-items: center;justify-content: flex-start;
-    height: 24px;margin: 0;padding: 0 2px;
-    cursor: pointer;border: none;
-    box-shadow: 1px 3px 7px rgba(0,0,0,.3);
-    color: $button-color;
-    background-color: $button-bg-color;
-    outline: none;
-    i {
-        font-size: 16px;margin-right: 3px;
-    }
-    &:hover {
-        box-shadow: 1px 5px 7px rgba(0,0,0,.3);
-    }
-}
+
+@import "./button";
 @import "./checkbox";
 @import "./select";
-@import "./table";
 @import "./search-form";
 @import "./chart";
+
+@import "./table";
+
+@import "./applinks";
+@import "./userbox";
+@import "./messages";
+@import "./modals";
+
+@import "./header";
+@import "./content";
+@import "./footer";
+@import "./page";

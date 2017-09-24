@@ -89,7 +89,7 @@ export class BaseContainer extends React.Component {
     get uuid() {return this.state.__uuid}
     get utils() {return utils}
     get user() {return this.utils.user}
-    get isLogged() {return this.utils.cache.get(this.config.authTokenName)}
+    get isLogged() {return this.utils.cache.get(this.config.authTokenName) ? true : false}
     get config() {return config}
     get log(){ return this.utils.log}
     get output() {return null}
@@ -112,6 +112,9 @@ export class PubSubContainer extends BaseContainer {
     }
     set lastMessage(msg) {
         new Publisher('add_message', msg, this)
+    }
+    showModal(bodyCmps, title, showClose, onClose, headerCmps, footerCmps, beforeClose, afterClose, draggable) {
+        new Publisher('add_modal', {bodyCmps, title, showClose, onClose, headerCmps, footerCmps, beforeClose, afterClose, draggable}, this)
     }
     onRouteEntered = (...args) => {}
     onRouteChanged = (...args) => {}
@@ -239,11 +242,16 @@ export class Cmp extends Container {
     componentDidUpdate(prevProps, prevState) {
         this.cmpDidUpdate(prevProps, prevState)
     }
-    renderObject(o) {
-        if (!Array.isArray(o)) return o
-        o = o.filter(i => i)
-        if (!o.length) return null
-        return o.map((item,i) => React.cloneElement(item, {key: i}))
+    renderObject(o, props, collection) {
+        let cmps = [].concat(o).filter(c => c)
+        if (!cmps.length) return null
+        return cmps.map((c,i) => {
+            let type = typeof c
+            return type == 'string' || type == 'number' || type == 'boolean' ? o :
+            c.type && typeof c.type == 'string' && collection && collection[c.type] ?
+            React.createElement(collection[c.type], this.utils.assign({key: i}, c.props, props)) :
+            React.cloneElement(c, this.utils.assign({key: i}, props))
+        })
     }
     renderIndicator() {
         return this.showIndicator ? <Loader className={this.indicatorClassName}/> : null

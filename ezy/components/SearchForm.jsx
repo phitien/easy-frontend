@@ -34,14 +34,10 @@ export class SearchForm extends RegCmp {
         )
     }
     renderInputs() {
-        return [<inputs.Text ref={e => this.inputs.query = e} placeholder={this.placeholder}/>].concat(
-            [].concat(this.advanced, this.props.children).map(c =>
-                c.type && typeof c.type == 'string' && inputs[c.type] ?
-                React.createElement(inputs[c.type], this.utils.assign({}, c.props, {ref: (e => this.inputs[c.props.cmpId] = e)})) :
-                c.type && typeof c.type == 'object' ?
-                React.createElement(c.type, this.utils.assign({}, c.props, {ref: (e => this.inputs[c.props.cmpId] = e)})) :
-                React.cloneElement(c, this.utils.assign({}, {ref: (e => this.inputs[c.props.cmpId] = e)}))
-            )
+        return this.renderObject(
+            [<inputs.Text cmpId='query' placeholder={this.placeholder}/>].concat(this.advanced, this.props.children)
+            , {ref: (e => e ? this.inputs[e.cmpId] = e : false)}
+            , inputs
         )
     }
     renderButtons() {

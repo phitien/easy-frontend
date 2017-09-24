@@ -1,0 +1,23 @@
+.messages {
+    position: fixed;top: $header-height;right: 0;width: $messages-box-width;
+    padding: 0;margin: 0;
+    display: flex;align-items: flex-start;justify-content: center;flex-direction: column;
+    background-color: transparent;
+    padding-right: $mapa/2;
+    .message {
+        width: 100%;
+        color: $message-color;
+        background-color: $message-bg-color;
+        line-height: $line-height;
+        padding: $mapa/2;
+        margin: $mapa/2 0;
+        &.error {
+            color: $message-error-color;
+            background-color: $message-error-bg-color;
+        }
+        &.warning {
+            color: $message-warning-color;
+            background-color: $message-warning-bg-color;
+        }
+    }
+}

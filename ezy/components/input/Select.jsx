@@ -33,7 +33,7 @@ export class Select extends Cmp {
     cmpDidMount() {
         addEventListener('click', e => {
             if (!e.target.closest('.ezy-select-options')) this.showR = false
-        }, true)
+        })
     }
     onSearch = e => this.searchR = e.target.value
     onShow = e => this.showR = true

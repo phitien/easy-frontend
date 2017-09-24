@@ -41,7 +41,7 @@ export class AppLinks extends RegCmp {
     cmpDidMount() {
         addEventListener('click', e => {
             if (!e.target.closest('.app-links')) this.onHide()
-        }, true)
+        })
     }
     cmpDidUpdate() {
         if (this.show) setTimeout(this.onShow, 100)

@@ -1,0 +1,12 @@
+.header {
+    overflow: hidden;
+    position: fixed;top: 0;right: 0;left: 0;height: $header-height;
+    color: $header-color;
+    background-color: $header-bg-color;
+    display: flex;align-items: center;justify-content: center;
+    z-index: 1;
+    i {cursor: pointer;}
+    > * {
+        margin: 0 $mapa/4;
+    }
+}

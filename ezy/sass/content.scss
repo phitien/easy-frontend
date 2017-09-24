@@ -1,0 +1,25 @@
+.content {
+    overflow: hidden;
+    position: fixed;top: $header-height;right: 0;bottom: $footer-height;left: 0;
+    color: $content-color;
+    background-color: $content-bg-color;
+    .content-left {
+        display: none;
+        position: fixed;top: $header-height;bottom: $footer-height;left: 0;width: $content-left-width;
+        color: $content-left-color;
+        background-color: $content-left-bg-color;
+    }
+    .content-main {
+        overflow: auto;
+        position: fixed;top: $header-height;bottom: $footer-height;left: 0;right: 0;
+        color: $content-main-color;
+        background-color: $content-main-bg-color;
+        display: flex;flex-direction: column;
+    }
+    .content-right {
+        display: none;
+        position: fixed;top: $header-height;bottom: $footer-height;right: 0;width: $content-left-width;
+        color: $content-right-color;
+        background-color: $content-right-bg-color;
+    }
+}
