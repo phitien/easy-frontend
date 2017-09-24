@@ -92,4 +92,24 @@
     .ezy-table-cell-title {
         cursor: pointer;width: 100%;
     }
+    .ezy-table-columns-settings {
+        position: relative;
+        .ezy-table-columns-settings-list {
+            color: $table-columns-settings-list-color;
+            background-color: $table-columns-settings-list-bg-color;
+            position: absolute;
+            width: $table-columns-settings-list-width;
+            right: 0;
+            z-index: 1;
+            .ezy-checkbox {
+                cursor: pointer;
+                padding: $mapa/4 $mapa/2;
+                label {display: block;flex: 1;height: 100%;}
+                &:hover {
+                    color: $table-columns-settings-item-color;
+                    background-color: $table-columns-settings-item-bg-color;
+                }
+            }
+        }
+    }
 }

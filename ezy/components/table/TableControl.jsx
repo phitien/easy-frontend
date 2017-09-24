@@ -4,9 +4,14 @@ import {Checkbox, Select, Text, Number} from '../input'
 import {Space} from '../Space'
 
 export class TableControl extends Cmp {
+    static autoProps() {return super.autoProps().concat([
+        {section: 'cmp', name: 'showColumnsSetting', title: 'showColumnsSetting', type: 'Select', value: null, required: false, desc: null, options: [true, false]},
+        {section: 'cmp', name: 'columns', title: 'Columns', type: 'Text', value: [], required: false, desc: null},
+    ])}
     get cmpClassName() {return `ezy-table-control`}
     get owner() {return this.props.owner}
     get cols(){return this.owner.cols}
+    get allcols(){return this.owner.allcols}
     get rows() {return this.owner.rows}
     get output() {
         return {
@@ -42,6 +47,11 @@ export class TableControl extends Cmp {
             }
         }
     }
+    cmpDidMount() {
+        addEventListener('click', e => {
+            if (!e.target.closest('.ezy-table-columns-settings-list')) this.showColumnsSettingR = false
+        }, true)
+    }
     renderPageSize() {
         return <div className='ezy-table-page-size'>
             <Number ref={e => this.pageSize = e} step={5} defaultValue={this.owner.pageSize}/> per page
@@ -66,7 +76,14 @@ export class TableControl extends Cmp {
     }
     renderColumnsSetting() {
         return <div className='ezy-table-columns-settings'>
-                <i className='material-icons'>settings</i>
+                <i className='material-icons' onClick={e => this.showColumnsSettingR = true}>settings</i>
+                {!this.showColumnsSetting ? null :
+                <div className='ezy-table-columns-settings-list'>{this.allcols.map((c,i) =>
+                <Checkbox key={i} defaultChecked={c.show} label={c.title || c.name || c.field}
+                    onChange={v => {
+                        c.show = v
+                        this.owner.refresh()
+                    }}/>)}</div>}
             </div>
     }
     get children() {

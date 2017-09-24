@@ -136,9 +136,6 @@ th, td {
         }
     }
 }
-.ezy-checkbox {
-    i {cursor: pointer;}
-}
 .ezy-button {
     display: inline-flex;align-items: center;justify-content: flex-start;
     height: 24px;margin: 0;padding: 0 2px;
@@ -154,6 +151,7 @@ th, td {
         box-shadow: 1px 5px 7px rgba(0,0,0,.3);
     }
 }
+@import "./checkbox";
 @import "./select";
 @import "./table";
 @import "./search-form";

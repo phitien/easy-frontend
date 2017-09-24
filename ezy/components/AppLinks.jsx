@@ -18,10 +18,16 @@ export class AppLinks extends RegCmp {
         ]
     }
     get onShow() {
-        return e => jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500)
+        return e => {
+            this.show = true
+            jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500)
+        }
     }
     get onHide() {
-        return e => jQuery(`#${this.cmpId} > ul`).hide('slide', {direction: 'left'}, 500)
+        return e => {
+            this.show = false
+            jQuery(`#${this.cmpId} > ul`).hide('slide', {direction: 'left'}, 500)
+        }
     }
     get onClick() {
         return e => {
@@ -29,16 +35,12 @@ export class AppLinks extends RegCmp {
                 this.added = true
                 this.showR = true
             }
-            else {
-                this.show = !this.show
-                if (this.show) this.onShow()
-                else this.onHide()
-            }
+            this.onShow()
         }
     }
     cmpDidMount() {
         addEventListener('click', e => {
-            if (!e.target.closest('.app-links ul')) this.onHide()
+            if (!e.target.closest('.app-links')) this.onHide()
         }, true)
     }
     cmpDidUpdate() {
