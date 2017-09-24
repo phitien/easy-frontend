@@ -21,6 +21,9 @@ export class UserProfile extends Model {
         this.default()
         this.cache()
     }
+    afterSave() {
+        // this.cache()
+    }
     afterPropSave(k, v) {
         this.cache()
     }

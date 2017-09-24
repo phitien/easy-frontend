@@ -7,6 +7,7 @@ export class Model {
     }
     get data() {return this.getData()}
     set data(v) {this.setData(v)}
+    afterSave() {}
     afterPropSave(k, v) {}
     __auto_props() {
         Object.keys(this.__data).forEach(k => {
@@ -36,6 +37,7 @@ export class Model {
                 }
             })
         })
+        this.afterSave()
         this.__auto_props()
     }
     default() {

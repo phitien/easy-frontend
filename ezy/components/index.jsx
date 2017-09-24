@@ -5,6 +5,7 @@ export {TableControl, TableHeader, TableBody, TableFooter, Table, TableCell, Tab
 export {Button, Checkbox, Email, Number, Password, Text, Url, Select} from './input'
 export {Chart, ChartSeries} from './chart'
 
+export {Form} from './Form'
 export {AppLinks} from './AppLinks'
 export {AppName} from './AppName'
 export {AppSearch} from './AppSearch'

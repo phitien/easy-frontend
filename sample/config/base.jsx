@@ -6,7 +6,8 @@ module.exports = exports = {
     apiBaseUrl: '',
     api: {
         applinks: '/static/demo/data/applinks.json',
-        table: '/static/demo/data/table.json'
+        table: '/static/demo/data/table.json',
+        login: '/static/demo/data/login.json'
     },
     standardUserData: {
         firstName: null,

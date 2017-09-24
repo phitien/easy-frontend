@@ -113,21 +113,31 @@ export class PubSubContainer extends BaseContainer {
     set lastMessage(msg) {
         new Publisher('add_message', msg, this)
     }
-    showModal(bodyCmps, title, showClose, onClose, headerCmps, footerCmps, beforeClose, afterClose, draggable) {
-        new Publisher('add_modal', {bodyCmps, title, showClose, onClose, headerCmps, footerCmps, beforeClose, afterClose, draggable}, this)
+    set showPageIndicator(showPageIndicator) {
+        new Publisher(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)
     }
-    onRouteEntered = (...args) => {}
-    onRouteChanged = (...args) => {}
-    onCacheChanged = (...args) => {}
-    onUserRegistered = (...args) => {}
-    onUserLoggedIn = (...args) => {}
-    onUserLoggedOut = (...args) => {}
-    routeEntered = (e) => this.onRouteEntered(...e.detail)
-    routeChanged = (e) => this.onRouteChanged(...e.detail)
-    cacheChanged = (e) => this.onCacheChanged(...e.detail)
-    userRegistered = (e) => this.onUserRegistered(...e.detail)
-    userLoggedIn = (e) => this.onUserLoggedIn(...e.detail)
-    userLoggedOut = (e) => this.onUserLoggedOut(...e.detail)
+    set hideModals(hideModals) {
+        hideModals ? new Publisher('hide_modals', hideModals, this) : false
+    }
+    login(token) {
+        if (token) {
+            this.utils.cache.set(this.config.authTokenName, token)
+            new Publisher('user_logged_in')
+        }
+    }
+    logout(token) {
+        this.utils.cache.remove(this.config.authTokenName)
+        new Publisher('user_logged_out')
+    }
+    showModal(bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable) {
+        new Publisher('add_modal', {bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable}, this)
+    }
+    routeEntered = (e) => {}
+    routeChanged = (e) => {}
+    cacheChanged = (e) => {}
+    userRegistered = (e) => {}
+    userLoggedIn = (e) => {}
+    userLoggedOut = (e) => {}
     componentDidMount() {
         super.componentDidMount()
         new Subscriber(this.pubsub, this)
@@ -205,12 +215,6 @@ export class Container extends ApiContainer {
     get shouldCmpRender() {return true}
     get showIndicator() {return this.state.showIndicator}
     set showIndicator(showIndicator) {this.refresh({showIndicator})}
-    set showPageIndicator(showPageIndicator) {
-        new Publisher('showPageIndicator', showPageIndicator, this)
-    }
-    set hideModals(hideModals) {
-        new Publisher('hideModals', hideModals, this)
-    }
     cmpConstructor(props) {}
     cmpPropsToState(props) {}
     componentWillUpdate(nextProps, nextState) {
@@ -228,6 +232,7 @@ export class Container extends ApiContainer {
 export class Cmp extends Container {
     get className() {return `${this.cmpClassName || ''} ${this.props.className || ''} ${this.shouldCmpRender ? '' : 'cmp-negative'}`}
     get children() {return this.props.children}
+    get nagativeChildren() {return this.props.nagativeChildren}
     cmpDidMount() {}
     componentDidMount() {
         super.componentDidMount()
@@ -256,7 +261,11 @@ export class Cmp extends Container {
     renderIndicator() {
         return this.showIndicator ? <Loader className={this.indicatorClassName}/> : null
     }
-    renderNagativeCmp() {return null}
+    renderNagativeCmp() {
+        return <div className={this.className} data-cmpId={this.cmpId} id={this.cmpId}>
+            {this.renderObject([].concat(this.nagativeChildren))}
+        </div>
+    }
     renderChildren() {return this.renderObject(this.children)}
     renderCmp() {return this.renderChildren()}
     renderPositiveCmp() {

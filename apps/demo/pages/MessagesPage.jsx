@@ -4,6 +4,7 @@ import {Page} from '../components/Page'
 
 export class MessagesPage extends Page {
     get pageClassName() {return 'page-messages'}
+    get shouldCmpRender() {return this.isLogged}
     get leftPanel() {
         return 'LeftPanel'
     }

@@ -36,7 +36,7 @@ export class Modal extends FlexCmp {
     cmpDidMount() {
         jQuery(`.modal-content`).draggable({handle: '.modal-title'})
         if (this.time > 0) jQuery(this.dom).fadeOut(this.time, this.onClose)
-        if (this.outside) addEventListener('click', e => !e.target.closest(`${this.cmoId} .modal-content`) ? this.onClose() : false)
+        if (this.outside) addEventListener('click', e => !e.target.closest(`${this.cmoId} .modal-content`) ? this.onClose() : false, true)
         if (this.escape) addEventListener('keydown', e => e.key == 'Escape' ? this.onClose() : false, true)
     }
     renderHeader() {

@@ -16,5 +16,7 @@ export class Text extends Cmp {
         }
     }
     get output() {return this.value}
+    focus = e => this.dom.focus()
+    blur = e => this.dom.blur()
     render = () => <input type={this.type} ref={e => this.input = e} onChange={e => this.valueR = e.target.value} {...this.inputProps}/>
 }

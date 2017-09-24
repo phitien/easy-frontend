@@ -11,6 +11,7 @@ import {AppVersion} from './AppVersion'
 import {Space} from './Space'
 import {Message} from './Message'
 import {Modal} from './Modal'
+import {LoginForm} from './LoginForm'
 
 export class Page extends Cmp {
     static autoProps() {return super.autoProps().concat([
@@ -45,7 +46,6 @@ export class Page extends Cmp {
     }
     get leftPanelCollapsed() {return this.props.leftPanelCollapsed}
     get rightPanelCollapsed() {return this.props.rightPanelCollapsed}
-    get nagative() {return this.props.nagative}
     get children() {
         return [
             this.renderHeader(),
@@ -68,14 +68,13 @@ export class Page extends Cmp {
             <div className='content-wrapper'>{this.renderObject(this.positiveContentCmps)}</div>,
         ]
     }
-    get nagativeContent() {
-        return null
-    }
     get contentCmps() {
-        return this.nagative ? this.nagativeContent : this.positiveContent
+        return this.shouldCmpRender ? this.positiveContent : this.nagativeContent
     }
     get pubsub() {
         return this.utils.assign(super.pubsub, {
+            show_pageIndicator: (e) => this.showIndicator = true,
+            hide_pageIndicator: (e) => this.showIndicator = false,
             add_message: (e) => {
                 let [msg] = e.detail
                 this.messages.push(msg)
@@ -96,12 +95,30 @@ export class Page extends Cmp {
                 this.modals.splice(this.modals.indexOf(modal), 1)
                 this.refresh()
             },
+            hide_modals: (e) => {
+                this.modals = []
+                this.refresh()
+            },
             ask_to_remove_modal: (e) => {
                 let [modal] = e.detail
                 if (modal == this.modals[this.modals.length - 1]) new Publisher('remove_modal_approved', modal)
             }
         })
     }
+    get nagativeChildren() {
+        return [
+            this.renderHeader(),
+            this.renderContent(),
+            this.renderFooter(),
+            this.renderMessages(),
+            this.renderModals(),
+        ]
+    }
+    get nagativeContent() {
+        return <LoginForm/>
+    }
+    userLoggedIn = e => this.refresh()
+    userLoggedOut = e => this.refresh()
     renderModal(m,i) {
         return <Modal key={i} cmpData={m} {...m}/>
     }
@@ -125,4 +142,5 @@ export class Page extends Cmp {
     renderLeftPanel() {return this.leftPanel ? <div className='content-left'>{this.renderObject(this.leftPanel)}</div> : null}
     renderMainPanel() {return this.mainPanel ? <div className='content-main'>{this.renderObject(this.mainPanel)}</div> : null}
     renderRightPanel() {return this.rightPanel ? <div className='content-right'>{this.renderObject(this.rightPanel)}</div> : null}
+
 }

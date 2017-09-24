@@ -1,9 +1,10 @@
 import React from 'react'
 import {RegCmp} from 'ezy/common'
+import {Button} from './input'
 
 export class AppSearch extends RegCmp {
     get cmpClassName() {return 'app-search'}
     get children() {
-        return <i className='material-icons' onClick={this.props.onClick}>search</i>
+        return <Button icon='search' onClick={this.props.onClick}/>
     }
 }

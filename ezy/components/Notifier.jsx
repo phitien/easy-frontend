@@ -1,10 +1,10 @@
 import React from 'react'
-import {Link} from 'react-router-redux'
 import {RegCmp} from 'ezy/common'
+import {Button} from './input'
 
 export class Notifier extends RegCmp {
     get cmpClassName() {return 'notifier'}
     get children() {
-        return <i className='material-icons' onClick={this.props.onClick}>notifications</i>
+        return <Button icon='notifications' onClick={this.props.onClick}/>
     }
 }

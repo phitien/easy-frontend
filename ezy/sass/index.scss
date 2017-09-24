@@ -24,6 +24,7 @@ body {
         height: $input-height;
         font-size: $font-size;
         vertical-align: top;
+        box-shadow: 1px 3px 7px rgba(0,0,0,0.3);
     }
     table {
         border-spacing: 0;

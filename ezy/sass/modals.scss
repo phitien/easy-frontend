@@ -11,7 +11,8 @@
             position: relative;
             margin: 0;padding: 0;border-radius: 0;border: none;
             .modal-close-icon {
-                position: absolute;top: -12px;right: -12px;
+                font-size: 16px;
+                position: absolute;top: -8px;right: -8px;
                 border-radius: 50%;
                 color: #fff;
                 background-color: #000;
@@ -23,7 +24,7 @@
             }
             .modal-header {
                 margin: 0;border-radius: 0;border: none;
-                padding: $mapa/4;
+                padding: 0;
             }
             .modal-body {
                 margin: 0;border-radius: 0;border: none;
@@ -34,7 +35,7 @@
             }
             .modal-title {
                 cursor: move;
-                padding: $mapa/4;
+                padding: $mapa/2;
             }
         }
     }

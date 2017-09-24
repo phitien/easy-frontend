@@ -9,4 +9,15 @@
     > * {
         margin: 0 $mapa/4;
     }
+    .app-name {
+        h1,h2,h3,h4 {
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    .ezy-button {
+        @extend .white;
+        margin: 0 $mapa/4;
+    }
 }
