@@ -12,12 +12,12 @@ export class Button extends Cmp {
     get cmpClassName() {return 'ezy-button'}
     get output() {return this.text}
     renderImage = () => this.img ? <img src={this.img}/> : <i className='material-icons'>{this.icon}</i>
-    render = () => (this.icon || this.img) && this.text ?
-        <button type={this.type} className={this.className} onClick={this.onClick}>
+    render = () => (this.icon || this.img) && (this.text || this.children) ?
+        <button id={this.cmpId} type={this.type} className={this.className} onClick={this.onClick}>
             {this.renderImage()}
-            <span>{this.text}</span>
+            <span>{this.text || this.children}</span>
         </button> :
-        <button type={this.type} className={this.className} onClick={this.onClick}>
-            {this.icon || this.img ? this.renderImage() : this.text || 'Button'}
+        <button id={this.cmpId} type={this.type} className={this.className} onClick={this.onClick}>
+            {this.icon || this.img ? this.renderImage() : (this.text || this.children) || 'Button'}
         </button>
 }

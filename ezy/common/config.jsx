@@ -43,6 +43,7 @@ class Config {
             userProfileName: 'user-profile',
             defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
             apiBaseUrl: '',
+            cansignup: false,
             api: {},
             standardUserData: {
                 firstName: null,
@@ -58,6 +59,12 @@ class Config {
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v2.10'
+            },
+            google: {
+                cookiepolicy: 'single_host_origin',
+                scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read',
+                clientid: '79031405463-57jk2oa1f90lh6j25j2f81vicdlv5oju.apps.googleusercontent.com',
+                clientsecret: '5CfFa3pAYG1F-3l0rm6-n6ga'
             }
         }, ...args)
         window.config = this

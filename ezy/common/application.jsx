@@ -48,8 +48,6 @@ export class Application {
         new Subscriber({
             resize: this.resize,
             refresh: this.refresh,
-            logout: this.logout,
-            login: this.login,
             cmp_mounted: this.cmp_mounted,
             cmp_unmounted: this.cmp_unmounted,
         })

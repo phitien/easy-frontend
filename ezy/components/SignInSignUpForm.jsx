@@ -9,53 +9,83 @@ export class SignInSignUpForm extends Form {
         {name: 'email', title: 'Email', type: 'Text', value: 'Enter your email'},
         {name: 'password', title: 'Password', type: 'Text', value: 'Enter your password'},
         {name: 'facebook', title: 'Log in with Facebook', type: 'Text', value: 'Log in with Facebook'},
-        {name: 'gmail', title: 'Log in with Google email', type: 'Text', value: 'Log in with Google email'},
+        {name: 'google', title: 'Log in with Google email', type: 'Text', value: 'Log in with Google email'},
         {name: 'signin', title: 'Show Sign In', type: 'Select', value: true, options: [true, false]},
         {name: 'signup', title: 'Show Sign Up', type: 'Select', value: true, options: [true, false]},
     ])}
+    get pubsub() {
+        return this.utils.assign(super.pubsub, {
+            gapi_loaded: this.gapi_loaded,
+        })
+    }
     get cmpClassName() {return 'login-form'}
     get children() {
         return [
             this.title ? <H1 cmpId='signinsignup-form-title'>{this.title}</H1> : null,
-            this.facebook ? <A className='signinsignup-form-facebook' onClick={this.fbLogin}>{this.facebook}</A> : null,
-            this.gmail ? <A className='signinsignup-form-gmail'>{this.gmail}</A> : null,
+            this.facebook ? <Button cmpId='signinsignup-form-facebook' className='signinsignup-form-facebook' onClick={this.fbLogin}><i className='fa fa-facebook'></i> <span>{this.facebook}</span></Button> : null,
+            this.google ? <Button cmpId='signinsignup-form-google' className='signinsignup-form-google' onClick={this.ggLogin}><i className='fa fa-google'></i> <span>{this.google}</span></Button> : null,
             <Text cmpId='signinsignup-form-email' placeholder={this.email}/>,
             <Password cmpId='signinsignup-form-password' placeholder={this.password}/>,
             <Div className='signinsignup-form-buttons'>
                 {this.signin ? <Button cmpId='signinsignup-form-signin' text='Sign In' type='submit'/> : null}
-                {this.signup ? <Button cmpId='signinsignup-form-signup' text='Sign Up' type='submit'/> : null}
+                {this.config.cansignup && this.signup ? <Button cmpId='signinsignup-form-signup' text='Sign Up' type='submit'/> : null}
             </Div>,
         ]
     }
     action = this.config.api.login
+    gapi_loaded = () => {
+        gapi.load('auth2', e => {
+            gapi.auth2.init(this.config.google)
+            .then(auth2 => {
+                let element = this.elements['signinsignup-form-google']
+                if (element && element.dom) auth2.attachClickHandler(element.dom, {}, function(user) {
+                    var authRes = user.getAuthResponse()
+                    var bprofile = user.getBasicProfile()
+                    var profile = {
+                        email: bprofile.getEmail(),
+                        first_name: bprofile.getGivenName(),
+                        last_name: bprofile.getFamilyName(),
+                        short_name: bprofile.getName(),
+                        name: bprofile.getName(),
+                        avatar: bprofile.Paa,
+                    }
+                    if (authRes && authRes.access_token) dispatchEvent(new CustomEvent('user_logged_in', {detail: ['google', authRes.access_token, profile]}))
+                    else dispatchEvent(new CustomEvent('user_logged_out', {detail: ['google']}))
+                })
+            })
+        })
+    }
+    ggLogin = e => {}
     fbLogin = e => {
         FB.getLoginStatus(res => {
-            if (res.authResponse) FB.logout(res => {})
-            FB.login(res => {
-                this.login(res.authResponse.accessToken, 'facebook')
+            const update = res => {
+                let token = res.authResponse.accessToken
                 if (res.authResponse) {
                     FB.api('/me', {fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name'}, profile => {
                         FB.api('/me/picture?width=60&height=60', res => {
-                            this.user.data = this.utils.assign({}, profile, {account: profile.id, avatar: res.data.url})
+                            dispatchEvent(new CustomEvent('user_logged_in', {detail: ['facebook', token, this.utils.assign({}, profile, {account: profile.id, avatar: res.data.url})]}))
                             this.showPageIndicator = false
                         })
                     })
                 }
-            })
+            }
+            if (res.authResponse) update(res)
+            else FB.login(res => update)
         })
+    }
+    userLoggedIn = e => {
+        let [type, token, profile] = e.detail
+        this.login(token, type)
+        this.user.data = profile
+        this.hideModals = true
     }
     doSubmit = e => {
         this.utils.request(this.action)
         .before(e => this.showPageIndicator = true)
         .after(e => this.showPageIndicator = false)
-        .success(res => this.loginSuccess(res.data))
+        .success(res => dispatchEvent(new CustomEvent('user_logged_in', {detail: ['manual', res.data.token, res.data.profile]})))
         .failure(res => this.lastMessage = 'Login unsuccessfully!!')
         .exec()
-    }
-    loginSuccess = data => {
-        this.user.data = data.profile
-        this.login(data.token)
-        this.hideModals = true
     }
     validate = () => {
         const me = this
@@ -68,7 +98,22 @@ export class SignInSignUpForm extends Form {
         return true
     }
     cmpDidMount() {
-        this.utils.loadJs('', 'facebook-config', `window.fbAsyncInit = function() {FB.init(${JSON.stringify(this.config.facebook)});FB.AppEvents.logPageView()}`)
-        this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk')
+        if (this.facebook) {
+            this.utils.loadJs('', 'facebook-config', `window.fbAsyncInit = function() {
+                FB.init(${JSON.stringify(this.config.facebook)})
+                FB.AppEvents.logPageView()
+            }`)
+            this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk')
+        }
+        if (this.google) {
+            if (typeof gapi != 'undefined') this.gapi_loaded()
+            else {
+                this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
+                this.utils.loadJs('', 'google-platform-callback', `function gapi_loaded() {
+                    dispatchEvent(new CustomEvent('gapi_loaded'))
+                }`)
+                this.utils.loadJs('https://apis.google.com/js/platform.js?onload=gapi_loaded', 'google-platform')
+            }
+        }
     }
 }

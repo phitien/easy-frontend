@@ -122,20 +122,21 @@ class Utilities {
     get delete() {return (url, data) => this.request(url, 'delete', data)}
     get options() {return (url, data) => this.request(url, 'options', data)}
     get upload() {return (url, data) => this.post(url, 'post', data).header('content-type', 'multipart/form-data')}
-    get append() {return (tagName, props) => {
+    get append() {return (tagName, props, last) => {
         if (!tagName || !props || !props.id || !document || document.getElementById(props.id)) return
         let tags = document.getElementsByTagName(tagName),
-            last = tags.length > 0 ? tags[tags.length - 1] : null,
             el = document.createElement(tagName)
+        last = last && tags.length > 0 ? tags[tags.length - 1] : null
         this.assign(el, props)
-        document.body.appendChild(el)
+        if (last) last.parentNode.insertBefore(el, last.nextSibling)
+        else document.body.appendChild(el)
     }}
     get loadJs() {return (src, id, innerHTML) => {
         let props = assign({id}, src ? {src} : null, innerHTML ? {innerHTML} : null)
         this.append('script', props)
     }}
     get loadCss() {return (href, id) => this.append('link', {id, href, type: 'text/css', rel: 'stylesheet'})}
-    get loadMeta() {return (name, content, id) => this.append('meta', {id, name, content})}
+    get loadMeta() {return (name, content) => this.append('meta', {id: name, name, content}, true)}
 }
 
 export const utils = new Utilities()

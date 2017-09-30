@@ -9,7 +9,7 @@ export class UserBox extends RegCmp {
     get nagativeChildren() {
         return [
             <Button text='Sign In' onClick={this.showSignInSignUpForm}/>,
-            <Button text='Sign Up'/>,
+            this.config.cansignup ? <Button text='Sign Up'/> : null,
         ]
     }
     get children() {

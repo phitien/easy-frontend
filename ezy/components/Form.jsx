@@ -20,7 +20,7 @@ export class Form extends RegCmp {
     get cmpClassName() {return 'form'}
     render() {
         return <form className={this.className} method={this.method} action={this.action} ref={e => this.form = e} onSubmit={this.onSubmit}>
-            {[].concat(this.children).filter(c => c).map((c,i) => React.cloneElement(c, {key: i, ref: e => e ? this.elements[e.cmpId] = e : false}))}
+            {[].concat(this.children).filter(c => c).map((c,i) => React.cloneElement(c, {key: i, ref: c.props.ref ? c.props.ref : (e => e ? this.elements[e.cmpId] = e : false)}))}
         </form>
     }
 }
