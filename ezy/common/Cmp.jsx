@@ -119,14 +119,18 @@ export class PubSubContainer extends BaseContainer {
     set hideModals(hideModals) {
         hideModals ? new Publisher('hide_modals', hideModals, this) : false
     }
-    login(token) {
+    login(token, type) {
         if (token) {
             this.utils.cache.set(this.config.authTokenName, token)
+            if (type) this.utils.cache.set('login-source', type)
+            else this.utils.cache.remove('login-source')
             new Publisher('user_logged_in')
         }
     }
     logout(token) {
         this.utils.cache.remove(this.config.authTokenName)
+        this.utils.cache.remove(this.config.userProfileName)
+        this.utils.cache.remove('login-source')
         new Publisher('user_logged_out')
     }
     showModal(bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable) {

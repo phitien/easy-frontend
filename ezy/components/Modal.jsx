@@ -13,7 +13,7 @@ export class Modal extends FlexCmp {
             return true
         }},
         {name: 'escape', title: 'Press ESC to clode', type: 'Select', value: true, options: [true, false]},
-        {name: 'outside', title: 'Click outside to clode', type: 'Select', value: true, options: [true, false]},
+        {name: 'outside', title: 'Click outside to clode', type: 'Select', value: false, options: [true, false]},
         {name: 'beforeClose', title: 'Before Close', transform: true, type: 'Text', value: function() {}},
         {name: 'afterClose', title: 'After Close', transform: true, type: 'Text', value: function() {}},
         {name: 'time', title: 'Auto close time', type: 'Text', value: -1},
@@ -36,7 +36,7 @@ export class Modal extends FlexCmp {
     cmpDidMount() {
         jQuery(`.modal-content`).draggable({handle: '.modal-title'})
         if (this.time > 0) jQuery(this.dom).fadeOut(this.time, this.onClose)
-        if (this.outside) addEventListener('click', e => !e.target.closest(`${this.cmoId} .modal-content`) ? this.onClose() : false, true)
+        if (this.outside) addEventListener('click', e => !e.target.closest(`#${this.cmpId} .modal-content`) ? this.onClose() : false, true)
         if (this.escape) addEventListener('keydown', e => e.key == 'Escape' ? this.onClose() : false, true)
     }
     renderHeader() {

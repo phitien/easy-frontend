@@ -1,5 +1,12 @@
 .user-box {
     display: flex;align-items: center;justify-content: center;
+    img {
+        width: $line-height;height: $line-height;
+        border-radius: 50%;
+    }
+    .ezy-button.person {
+        border-radius: 10px;
+    }
 }
 body .page .login-form {
     display: flex;align-items: center;justify-content: center;

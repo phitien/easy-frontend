@@ -9,6 +9,7 @@
         background-color: rgba(0,0,0,.3);
         .modal-content {
             position: relative;
+            min-width: 300px;
             margin: 0;padding: 0;border-radius: 0;border: none;
             .modal-close-icon {
                 font-size: 16px;

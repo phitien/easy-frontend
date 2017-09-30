@@ -95,17 +95,15 @@ class Utilities {
     get dateOf() {return (o) => this.datetimeOf(o, this.dateFormat)}
     get timeOf() {return (o) => this.datetimeOf(o, this.timeFormat)}
     get random() {return (min, max) => Math.floor(Math.random() * (max - min + 1)) + min}
-    get include() {return (o, props) => {
-        if (!props) return {}
-        props = [].concat(props)
+    get include() {return (o, ...props) => {
+        if (!props.length) return o
         return Object.keys(o).reduce((rs, k) => {
             props.includes(k) ? rs[k] = o[k] : false
             return rs
         }, {})
     }}
-    get exclude() {return (o, props) => {
-        if (!props) return {}
-        props = [].concat(props)
+    get exclude() {return (o, ...props) => {
+        if (!props.length) return o
         return Object.keys(o).reduce((rs, k) => {
             !props.includes(k) ? rs[k] = o[k] : false
             return rs
@@ -125,16 +123,15 @@ class Utilities {
     get options() {return (url, data) => this.request(url, 'options', data)}
     get upload() {return (url, data) => this.post(url, 'post', data).header('content-type', 'multipart/form-data')}
     get append() {return (tagName, props) => {
-        if (!tagName || !props || props.id || !document || !document.getELementById(props.id)) return
+        if (!tagName || !props || !props.id || !document || document.getElementById(props.id)) return
         let tags = document.getElementsByTagName(tagName),
             last = tags.length > 0 ? tags[tags.length - 1] : null,
-            el = document.createELement(tagName)
+            el = document.createElement(tagName)
         this.assign(el, props)
-        if (last) last.parentNode.insertBefore(el, last.nextSibling)
-        else document.body.appendChild(el)
+        document.body.appendChild(el)
     }}
-    get loadJs() {return (src, id, script) => {
-        let props = assign({id, src}, script ? {innerHTML: script} : {})
+    get loadJs() {return (src, id, innerHTML) => {
+        let props = assign({id}, src ? {src} : null, innerHTML ? {innerHTML} : null)
         this.append('script', props)
     }}
     get loadCss() {return (href, id) => this.append('link', {id, href, type: 'text/css', rel: 'stylesheet'})}

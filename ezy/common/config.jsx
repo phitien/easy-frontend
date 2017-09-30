@@ -40,7 +40,7 @@ class Config {
             profile: 'base',
             noAuthentication: false,
             authTokenName: 'ezy-token',
-            userProfileCacheName: 'user-profile',
+            userProfileName: 'user-profile',
             defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
             apiBaseUrl: '',
             api: {},
@@ -52,6 +52,12 @@ class Config {
                 occupation: null,
                 gender: null,
                 lastLogin: null,
+            },
+            facebook: {
+                appId: '1441631579219785',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v2.10'
             }
         }, ...args)
         window.config = this

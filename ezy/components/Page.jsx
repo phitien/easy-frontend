@@ -11,7 +11,7 @@ import {AppVersion} from './AppVersion'
 import {Space} from './Space'
 import {Message} from './Message'
 import {Modal} from './Modal'
-import {LoginForm} from './LoginForm'
+import {SignInSignUpForm} from './SignInSignUpForm'
 
 export class Page extends Cmp {
     static autoProps() {return super.autoProps().concat([
@@ -115,7 +115,7 @@ export class Page extends Cmp {
         ]
     }
     get nagativeContent() {
-        return <LoginForm/>
+        return <SignInSignUpForm/>
     }
     userLoggedIn = e => this.refresh()
     userLoggedOut = e => this.refresh()

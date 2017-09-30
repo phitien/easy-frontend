@@ -1,3 +1,4 @@
+import assign from 'object-assign'
 import {config} from './config'
 
 export class Model {
@@ -23,29 +24,15 @@ export class Model {
     }
     getData() {return this.__data}
     setData(...args) {
-        let keys = []
-        args.filter(c => c && typeof c == 'object').forEach(c => keys = keys.concat(Object.keys(c)))
-        keys = Array.from(new Set(keys))
-        keys.forEach(k => {
-            args.forEach(c => {
-                let o = c[k]
-                if (o !== undefined) {
-                    if (o === null)  this.__data[k] = o
-                    else if (Array.isArray(o)) this.__data[k] = o
-                    else if (typeof o == 'object') this.__data[k] = assign({}, this.__data[k], o)
-                    else this.__data[k] = o
-                }
-            })
-        })
+        args.filter(c => c && typeof c == 'object').forEach(c => assign(this.__data, c))
         this.afterSave()
         this.__auto_props()
     }
     default() {
-        this.__data = {}
-        this.setData(this.defaultModelData)
+        this.__data = assign({}, this.defaultModelData)
     }
     constructor(...args) {
         this.default()
-        this.setData(...args)
+        if (args.length) this.setData(...args)
     }
 }
