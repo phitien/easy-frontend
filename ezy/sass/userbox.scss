@@ -18,3 +18,11 @@ body .page .login-form {
         margin: $mapa/4 0;
     }
 }
+@media screen and (max-width: $mobile-w) {
+    .user-box {
+        .ezy-button.person {
+            i,img {margin-right: 0;}
+            span {display: none;}
+        }
+    }
+}

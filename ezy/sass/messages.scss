@@ -21,3 +21,10 @@
         }
     }
 }
+
+@media screen and (max-width: $mobile-w) {
+    .messages {
+        position: fixed;bottom: $footer-height;top: initial;
+        padding-right: 0;
+    }
+}

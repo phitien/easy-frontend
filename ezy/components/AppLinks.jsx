@@ -12,22 +12,22 @@ export class AppLinks extends RegCmp {
     get children() {
         return [
             <Button icon='menu' onClick={this.onClick}/>,
-            this.added || this.show ? <Menu
+            this.added || this.show ? <div className='app-links-menu'><Menu
                 root={this.config.apppath}
                 apiUrl={this.config.api.applinks}
-            /> : null
+            /></div> : null
         ]
     }
     get onShow() {
         return e => {
             this.show = true
-            jQuery(`#${this.cmpId} > ul`).show('slide', {direction: 'left'}, 500)
+            jQuery(`#${this.cmpId} .app-links-menu`).show('slide', {direction: 'left'}, 500)
         }
     }
     get onHide() {
         return e => {
             this.show = false
-            jQuery(`#${this.cmpId} > ul`).hide('slide', {direction: 'left'}, 500)
+            jQuery(`#${this.cmpId} .app-links-menu`).hide('slide', {direction: 'left'}, 500)
         }
     }
     get onClick() {
@@ -41,7 +41,8 @@ export class AppLinks extends RegCmp {
     }
     cmpDidMount() {
         addEventListener('click', e => {
-            if (!e.target.closest('.app-links')) this.onHide()
+            if (e.target.closest(`#${this.cmpId} .app-links-menu`)) this.onHide()
+            else if (!e.target.closest(`#${this.cmpId}`)) this.onHide()
         }, true)
     }
     cmpDidUpdate() {

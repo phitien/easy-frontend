@@ -21,3 +21,10 @@
         margin: 0 $mapa/4;
     }
 }
+@media screen and (max-width: $mobile-w) {
+    .header {
+        > * {
+            margin: 0;
+        }
+    }
+}
