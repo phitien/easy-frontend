@@ -14,7 +14,7 @@ export class Modal extends FlexCmp {
         }},
         {name: 'escape', title: 'Press ESC to clode', type: 'Select', value: true, options: [true, false]},
         {name: 'enter', title: 'Press ENTER to clode', type: 'Select', value: true, options: [true, false]},
-        {name: 'outside', title: 'Click outside to clode', type: 'Select', value: false, options: [true, false]},
+        {name: 'outside', title: 'Click outside to clode', type: 'Select', value: true, options: [true, false]},
         {name: 'beforeClose', title: 'Before Close', transform: true, type: 'Text', value: function() {}},
         {name: 'afterClose', title: 'After Close', transform: true, type: 'Text', value: function() {}},
         {name: 'time', title: 'Auto close time', type: 'Text', value: -1},

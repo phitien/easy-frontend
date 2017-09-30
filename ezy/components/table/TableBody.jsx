@@ -5,7 +5,7 @@ import {TableRow} from './TableRow'
 export class TableBody extends Cmp {
     get cmpClassName() {return `ezy-table-body`}
     get owner() {return this.props.owner}
-    get cols(){return this.owner.cols}
+    get cols() {return this.owner.cols}
     get rows() {return this.owner.rows}
     get children() {
         return <table><tbody>

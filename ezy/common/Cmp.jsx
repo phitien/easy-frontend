@@ -91,7 +91,7 @@ export class BaseContainer extends React.Component {
     get user() {return this.utils.user}
     get isLogged() {return this.utils.cache.get(this.config.authTokenName) ? true : false}
     get config() {return config}
-    get log(){ return this.utils.log}
+    get log() { return this.utils.log}
     get output() {return null}
     get regCmps() {return regCmps}
     refresh(state, ...args) {if (this.__mounted) {

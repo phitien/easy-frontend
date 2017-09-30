@@ -5,14 +5,14 @@ import {Button} from './input'
 
 export class AppLinks extends RegCmp {
     static autoProps() {return super.autoProps().concat([
-        {section: 'cmp', name: 'show', value: false},
-        {section: 'cmp', name: 'added', value: false},
+        {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
+        {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
     ])}
     get cmpClassName() {return 'app-links'}
     get children() {
         return [
             <Button icon='menu' onClick={this.onClick}/>,
-            this.added || this.show ? <div className='app-links-menu'><Menu
+            this.added || this.open ? <div className='app-links-menu'><Menu
                 root={this.config.apppath}
                 apiUrl={this.config.api.applinks}
             /></div> : null
@@ -20,21 +20,21 @@ export class AppLinks extends RegCmp {
     }
     get onShow() {
         return e => {
-            this.show = true
+            this.open = true
             jQuery(`#${this.cmpId} .app-links-menu`).show('slide', {direction: 'left'}, 500)
         }
     }
     get onHide() {
         return e => {
-            this.show = false
+            this.open = false
             jQuery(`#${this.cmpId} .app-links-menu`).hide('slide', {direction: 'left'}, 500)
         }
     }
     get onClick() {
         return e => {
-            if (!this.added){
+            if (!this.added) {
                 this.added = true
-                this.showR = true
+                this.openR = true
             }
             this.onShow()
         }
@@ -46,6 +46,6 @@ export class AppLinks extends RegCmp {
         }, true)
     }
     cmpDidUpdate() {
-        if (this.show) setTimeout(this.onShow, 100)
+        if (this.open) setTimeout(this.onShow, 100)
     }
 }

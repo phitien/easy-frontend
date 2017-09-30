@@ -41,3 +41,12 @@
         }
     }
 }
+@media screen and (max-width: $mobile-w) {
+    .modals .modal .modal-content {
+        min-width: initial;
+        width: 100%;
+    }
+    .modals .modal .modal-content .modal-close-icon {
+        display: none;
+    }
+}

@@ -35,8 +35,8 @@ export class Table extends FlexCmp {
         return this.rows.filter(r => r.selected)
     }
     get cmpClassName() {return `ezy-table`}
-    get cols(){return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns).filter(c => c && c.show)}
-    get allcols(){return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)}
+    get cols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns).filter(c => c && c.show)}
+    get allcols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)}
     get rows() {return [].concat(this.cmpData ? this.cmpData.rows : null).filter(r => r && !r.hidden)}
     get totalPage() {return this.cmpData ? Math.ceil(this.cmpData.total/(this.cmpData.size || this.cmpData.total)) : 0}
     get pageSize() {return this.cmpData ? this.cmpData.size || 20 : 20}

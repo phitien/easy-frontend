@@ -10,8 +10,8 @@ export class TableControl extends Cmp {
     ])}
     get cmpClassName() {return `ezy-table-control`}
     get owner() {return this.props.owner}
-    get cols(){return this.owner.cols}
-    get allcols(){return this.owner.allcols}
+    get cols() {return this.owner.cols}
+    get allcols() {return this.owner.allcols}
     get rows() {return this.owner.rows}
     get output() {
         return {

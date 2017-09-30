@@ -33,6 +33,12 @@ export class SignInSignUpForm extends Form {
         ]
     }
     action = this.config.api.login
+    userLoggedIn = e => {
+        let [type, token, profile] = e.detail
+        this.login(token, type)
+        this.user.data = profile
+        this.hideModals = true
+    }
     gapi_loaded = () => {
         gapi.load('auth2', e => {
             gapi.auth2.init(this.config.google)
@@ -73,12 +79,6 @@ export class SignInSignUpForm extends Form {
             else FB.login(res => update)
         })
     }
-    userLoggedIn = e => {
-        let [type, token, profile] = e.detail
-        this.login(token, type)
-        this.user.data = profile
-        this.hideModals = true
-    }
     doSubmit = e => {
         this.utils.request(this.action)
         .before(e => this.showPageIndicator = true)
@@ -90,10 +90,10 @@ export class SignInSignUpForm extends Form {
     validate = () => {
         const me = this
         if (!this.elements['signinsignup-form-email'].output) {
-            return this.showModal('Please enter your email', 'Error', e => me.elements['signinsignup-form-email'].focus())
+            return this.showModal('Please enter your email', '', e => me.elements['signinsignup-form-email'].focus())
         }
         else if (!this.elements['signinsignup-form-password'].output) {
-            return this.showModal('Please enter your password', 'Error', e => me.elements['signinsignup-form-password'].focus())
+            return this.showModal('Please enter your password', '', e => me.elements['signinsignup-form-password'].focus())
         }
         return true
     }

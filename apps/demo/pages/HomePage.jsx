@@ -14,6 +14,5 @@ export class HomePage extends Page {
     }
     cmpDidMount() {
         this.showModal(<div>Hi, this is the first modal</div>, 'Hello!!')
-        this.showModal(<div>Hi, this is the second modal</div>, 'Hello!!')
     }
 }

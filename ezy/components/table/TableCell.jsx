@@ -5,7 +5,7 @@ import {Checkbox} from '../input'
 export class TableCell extends Cmp {
     get cmpClassName() {return `ezy-table-cell`}
     get owner() {return this.props.owner}
-    get cols(){return this.owner.cols}
+    get cols() {return this.owner.cols}
     get rows() {return this.owner.rows}
     get row() {return this.props.row}
     get col() {return this.props.col}
