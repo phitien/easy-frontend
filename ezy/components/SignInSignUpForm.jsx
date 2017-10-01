@@ -97,7 +97,7 @@ export class SignInSignUpForm extends Form {
         }
         return true
     }
-    cmpDidUpdate(prevProps, prevState) {
+    cmpDidMount() {
         if (this.facebook) this.utils.trigger('facebook_init')
         if (this.google) this.utils.trigger('google_init')
     }

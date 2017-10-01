@@ -9,6 +9,8 @@ import {utils} from './utils'
 
 export const regCmps = new Map()
 
+let cacheAuth2
+
 export class Application {
     constructor(config) {
         this.config = config
@@ -37,16 +39,25 @@ export class Application {
     }
     google_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
-        this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => {
-            gapi.load('auth2', e => {
-                gapi.auth2.init(this.config.google)
-                .then(auth2 => {
-                    if (typeof cb == 'function') cb({detail: [auth2]})
-                    else this.utils.trigger('google_loaded', auth2)
-                })
+        if (!cacheAuth2) {
+            this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
+            this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => {
+                setTimeout(e => {
+                    gapi.load('auth2', e => {
+                        gapi.auth2.init(this.config.google)
+                        .then(auth2 => {
+                            cacheAuth2 = auth2
+                            if (typeof cb == 'function') cb({detail: [cacheAuth2]})
+                            else this.utils.trigger('google_loaded', cacheAuth2)
+                        })
+                    })
+                }, 500)
             })
-        })
+        }
+        else {
+            if (typeof cb == 'function') cb({detail: [cacheAuth2]})
+            else this.utils.trigger('google_loaded', cacheAuth2)
+        }
     }
     socket_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
