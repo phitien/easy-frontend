@@ -20,17 +20,55 @@ export class Application {
     set container(v) {this.__container = v}
     get store() {return this.__store}
     set store(v) {this.__store = v}
+    get utils() {return utils}
 
-    cmp_mounted = (e) => {
-        let cmp = e.detail[0]
+    facebook_init = e => {
+        const cb = e && e.detail.length ? e.detail[0] : null
+        this.utils.loadJs('', 'fbAsyncInit', null, `
+            window.fbAsyncInit = function() {
+                FB.init(${JSON.stringify(this.config.facebook)})
+                FB.AppEvents.logPageView()
+            }
+        `)
+        this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', e => {
+            if (typeof cb == 'function') cb()
+            else this.utils.trigger('facebook_loaded')
+        })
+    }
+    google_init = e => {
+        const cb = e && e.detail.length ? e.detail[0] : null
+        this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
+        this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => {
+            gapi.load('auth2', e => {
+                gapi.auth2.init(this.config.google)
+                .then(auth2 => {
+                    if (typeof cb == 'function') cb({detail: [auth2]})
+                    else this.utils.trigger('google_loaded', auth2)
+                })
+            })
+        })
+    }
+    socket_init = e => {
+        const cb = e && e.detail.length ? e.detail[0] : null
+        this.utils.loadJs('/socket.io/socket.io.js', 'socket-io', e => {
+            if (typeof cb == 'function') cb()
+            else this.utils.trigger('socket_loaded')
+        })
+    }
+    cmp_mounted = e => {
+        let [cmp] = e.detail
         this.regCmps.set(cmp.cmpId, cmp)
     }
-    cmp_unmounted = (e) => {
-        let cmp = e.detail[0]
+    cmp_unmounted = e => {
+        let [cmp] = e.detail
         this.regCmps.delete(cmp.cmpId)
     }
     renderApplication() {throw `${this.klass}: No children`}
-    afterRender () {}
+    afterRender = e => {
+        this.facebook_init()
+        this.google_init()
+        this.socket_init()
+    }
     render() {
         if (this.store && this.container) {
             ReactDOM.render(
@@ -38,7 +76,6 @@ export class Application {
                     {this.renderApplication()}
                 </Provider>
                 , document.getElementById(this.container)
-                , this.afterRender
             )
         }
         else if (!this.store) throw `${this.klass}: No store provided`
@@ -46,12 +83,17 @@ export class Application {
     }
     dispatch() {
         new Subscriber({
+            unload: this.unload,
             resize: this.resize,
             refresh: this.refresh,
+            facebook_init: this.facebook_init,
+            google_init: this.google_init,
+            socket_init: this.socket_init,
             cmp_mounted: this.cmp_mounted,
             cmp_unmounted: this.cmp_unmounted,
         })
-        this.render()
+        try {this.render()} catch(e) {console.log(e)}
+        this.afterRender()
     }
 }
 

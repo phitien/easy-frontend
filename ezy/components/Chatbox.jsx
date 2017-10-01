@@ -1,5 +1,5 @@
 import React from 'react'
-import {ToggleCmp, Publisher} from 'ezy/common'
+import {ToggleCmp} from 'ezy/common'
 import {Button, Text} from './input'
 
 export class Chatbox extends ToggleCmp {
@@ -15,7 +15,7 @@ export class Chatbox extends ToggleCmp {
         return e => {
             e.preventDefault()
             e.stopPropagation()
-            new Publisher('remove_chatbox', this.cmpData, this)
+            this.utils.trigger('remove_chatbox', this.cmpData, this)
         }
     }
     get sendMessage() {

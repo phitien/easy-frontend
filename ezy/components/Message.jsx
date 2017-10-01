@@ -1,11 +1,11 @@
 import React from 'react'
-import {Cmp, Publisher} from 'ezy/common'
+import {Cmp} from 'ezy/common'
 
 export class Message extends Cmp {
     get cmpClassName() {return `message`}
     cmpDidMount() {
         jQuery(this.dom).fadeOut(7000, e => {
-            new Publisher('remove_message', this.cmpData, this)
+            this.utils.trigger('remove_message', this.cmpData, this)
         })
     }
     render() {

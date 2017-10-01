@@ -15,6 +15,7 @@ import {config} from './config'
 import {user} from './UserProfile'
 import {history} from './history'
 import {Request} from './Request'
+import {Publisher, Subscriber, Unsubscriber} from './PubSub'
 
 class Utilities {
     get assign() {return assign}
@@ -26,6 +27,7 @@ class Utilities {
     get user() {return user}
     get history() {return history}
     get log() {return console.log}
+    get trigger() {return (...args) => new Publisher(...args)}
     get clone() {return o => {
         try {return JSON.parse(JSON.stringify(o))} catch(e) {console.log(e)}
     }}
@@ -123,7 +125,12 @@ class Utilities {
     get options() {return (url, data) => this.request(url, 'options', data)}
     get upload() {return (url, data) => this.post(url, 'post', data).header('content-type', 'multipart/form-data')}
     get append() {return (tagName, props, last) => {
-        if (!tagName || !props || !props.id || !document || document.getElementById(props.id)) return
+        if (!tagName || !props || !props.id || !document || document.getElementById(props.id))
+            return props.onload ? props.onload() : true
+        props = Object.keys(props).reduce((rs, k) => {
+            if (props[k]) rs[k] = props[k]
+            return rs
+        }, {})
         let tags = document.getElementsByTagName(tagName),
             el = document.createElement(tagName)
         last = last && tags.length > 0 ? tags[tags.length - 1] : null

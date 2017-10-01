@@ -1,5 +1,5 @@
 import React from 'react'
-import {FlexCmp, Publisher} from 'ezy/common'
+import {FlexCmp} from 'ezy/common'
 
 export class Modal extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
@@ -9,7 +9,7 @@ export class Modal extends FlexCmp {
         {name: 'footerCmps', title: 'Footer components', type: 'Text', value: []},
         {name: 'showClose', title: 'Show Close Icon', type: 'Select', value: true, options: [true, false]},
         {name: 'canClose', title: 'Can Close', transform: true, type: 'Text', value: function() {
-            new Publisher('ask_to_remove_modal', this.cmpData, this)
+            this.utils.trigger('ask_to_remove_modal', this.cmpData, this)
             return true
         }},
         {name: 'escape', title: 'Press ESC to clode', type: 'Select', value: true, options: [true, false]},
@@ -27,7 +27,7 @@ export class Modal extends FlexCmp {
                 let [modal] = e.detail
                 if (modal == this.cmpData) {
                     this.beforeClose()
-                    new Publisher('remove_modal', this.cmpData, this)
+                    this.utils.trigger('remove_modal', this.cmpData, this)
                     this.afterClose()
                 }
             },

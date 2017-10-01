@@ -55,7 +55,9 @@ class Config {
                 lastLogin: null,
             },
             facebook: {
-                appId: '1441631579219785',
+                appId: '497063317337038',
+                // appSecret: '457f3d775f0b159f0ee99d76907c899e',
+                // clientToken: '71aabf44dba2903aa2174a566021d009',
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v2.10'

@@ -123,37 +123,37 @@ export class PubSubContainer extends BaseContainer {
         }
     }
     set lastMessage(msg) {
-        new Publisher('add_message', msg, this)
+        this.utils.trigger('add_message', msg, this)
     }
     set lastInbox(msg) {
-        new Publisher('add_chatbox', msg, this)
+        this.utils.trigger('add_chatbox', msg, this)
     }
     set messageTo(msg) {
-        new Publisher('send_chatbox', msg, this)
+        this.utils.trigger('send_chatbox', msg, this)
     }
     set showPageIndicator(showPageIndicator) {
-        new Publisher(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)
+        this.utils.trigger(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)
     }
     set hideModals(hideModals) {
-        hideModals ? new Publisher('hide_modals', hideModals, this) : false
+        hideModals ? this.utils.trigger('hide_modals', hideModals, this) : false
     }
     login(token, type) {
         if (token) {
             this.utils.cache.set(this.config.authTokenName, token)
             if (type) this.utils.cache.set('login-source', type)
             else this.utils.cache.remove('login-source')
-            new Publisher('user_logged_in')
+            this.utils.trigger('user_logged_in')
         }
     }
     logout(token) {
-        new Publisher('user_pre_logged_out')
+        this.utils.trigger('user_pre_logged_out')
         this.utils.cache.remove(this.config.authTokenName)
         this.utils.cache.remove(this.config.userProfileName)
         this.utils.cache.remove('login-source')
-        new Publisher('user_logged_out')
+        this.utils.trigger('user_logged_out')
     }
     showModal(bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable) {
-        new Publisher('add_modal', {bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable}, this)
+        this.utils.trigger('add_modal', {bodyCmps, title, afterClose, showClose, onClose, headerCmps, footerCmps, beforeClose, draggable}, this)
     }
     routeEntered = (e) => {}
     routeChanged = (e) => {}
@@ -314,11 +314,11 @@ export class Loader extends Cmp {
 export class RegCmp extends Cmp {
     componentDidMount() {
         super.componentDidMount()
-        new Publisher('cmp_mounted', this)
+        this.utils.trigger('cmp_mounted', this)
     }
     componentWillUnmount() {
         super.componentWillUnmount()
-        new Publisher('cmp_unmounted', this)
+        this.utils.trigger('cmp_unmounted', this)
     }
 }
 export class FlexCmp extends RegCmp {

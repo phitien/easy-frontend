@@ -27,6 +27,12 @@ export class SignInSignUpForm extends Form {
             </Div>,
         ]
     }
+    get pubsub() {
+        return this.utils.assign(super.pubsub, {
+            facebook_loaded: this.facebook_loaded,
+            google_loaded: this.google_loaded,
+        })
+    }
     action = this.config.api.login
     userLoggedIn = e => {
         let [type, token, profile] = e.detail
@@ -34,27 +40,26 @@ export class SignInSignUpForm extends Form {
         this.user.data = profile
         this.hideModals = true
     }
-    gapi_loaded = () => {
-        gapi.load('auth2', e => {
-            gapi.auth2.init(this.config.google)
-            .then(auth2 => {
-                let element = this.elements['signinsignup-form-google']
-                if (element && element.dom) auth2.attachClickHandler(element.dom, {}, function(user) {
-                    var authRes = user.getAuthResponse()
-                    var bprofile = user.getBasicProfile()
-                    var profile = {
-                        email: bprofile.getEmail(),
-                        first_name: bprofile.getGivenName(),
-                        last_name: bprofile.getFamilyName(),
-                        short_name: bprofile.getName(),
-                        name: bprofile.getName(),
-                        avatar: bprofile.Paa,
-                    }
-                    if (authRes && authRes.access_token) dispatchEvent(new CustomEvent('user_logged_in', {detail: ['google', authRes.access_token, profile]}))
-                    else dispatchEvent(new CustomEvent('user_logged_out', {detail: ['google']}))
-                })
+    facebook_loaded = e => {}
+    google_loaded = e => {
+        let [auth2] = e.detail
+        if (typeof auth2 != 'undefined') {
+            let element = this.elements['signinsignup-form-google']
+            if (element && element.dom) auth2.attachClickHandler(element.dom, {}, function(user) {
+                var authRes = user.getAuthResponse()
+                var bprofile = user.getBasicProfile()
+                var profile = {
+                    email: bprofile.getEmail(),
+                    first_name: bprofile.getGivenName(),
+                    last_name: bprofile.getFamilyName(),
+                    short_name: bprofile.getName(),
+                    name: bprofile.getName(),
+                    avatar: bprofile.Paa,
+                }
+                if (authRes && authRes.access_token) dispatchEvent(new CustomEvent('user_logged_in', {detail: ['google', authRes.access_token, profile]}))
+                else dispatchEvent(new CustomEvent('user_logged_out', {detail: ['google']}))
             })
-        })
+        }
     }
     ggLogin = e => {}
     fbLogin = e => {
@@ -92,19 +97,8 @@ export class SignInSignUpForm extends Form {
         }
         return true
     }
-    cmpDidMount() {
-        if (this.facebook) {
-            this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', e => {
-                FB.init(this.config.facebook)
-                FB.AppEvents.logPageView()
-            })
-        }
-        if (this.google) {
-            if (typeof gapi != 'undefined') this.gapi_loaded()
-            else {
-                this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
-                this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => this.gapi_loaded())
-            }
-        }
+    cmpDidUpdate(prevProps, prevState) {
+        if (this.facebook) this.utils.trigger('facebook_init')
+        if (this.google) this.utils.trigger('google_init')
     }
 }
