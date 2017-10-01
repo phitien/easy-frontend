@@ -131,12 +131,13 @@ class Utilities {
         if (last) last.parentNode.insertBefore(el, last.nextSibling)
         else document.body.appendChild(el)
     }}
-    get loadJs() {return (src, id, innerHTML) => {
-        let props = assign({id}, src ? {src} : null, innerHTML ? {innerHTML} : null)
-        this.append('script', props)
+    get loadJs() {return (src, id, onload, innerHTML) => {
+        this.append('script', {src, id, onload, innerHTML}, false)
     }}
-    get loadCss() {return (href, id) => this.append('link', {id, href, type: 'text/css', rel: 'stylesheet'})}
-    get loadMeta() {return (name, content) => this.append('meta', {id: name, name, content}, true)}
+    get loadCss() {return (href, id, onload) =>
+        this.append('link', {id, href, type: 'text/css', rel: 'stylesheet', onload}, false)}
+    get loadMeta() {return (name, content) =>
+        this.append('meta', {id: name, name, content}, true)}
 }
 
 export const utils = new Utilities()

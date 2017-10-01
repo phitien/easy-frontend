@@ -8,6 +8,7 @@ export class Search extends Cmp {
         {section: 'cmp', name: 'icon', title: 'Icon', type: 'Text', value: null},
         {section: 'cmp', name: 'img', title: 'Img', type: 'Text', value: null},
         {section: 'cmp', name: 'text', title: 'Text', type: 'Text', value: null},
+        {section: 'cmp', name: 'onToggleText', transform: true, title: 'Handler', type: 'Text', value: null},
         {section: 'cmp', name: 'type', title: 'Type', type: 'Select', value: 'button', options: ['button', 'submit']},
         {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
@@ -17,33 +18,38 @@ export class Search extends Cmp {
     get onShow() {
         return e => {
             this.open = true
-            jQuery(`#${this.cmpId} .ezy-text`).show('slide', {direction: 'right'}, 300)
+            this.onToggleText(this.open)
+            jQuery(`#${this.cmpId} .ezy-text`).show('fade', {}, 300)
+            this.searchText.focus()
         }
     }
     get onHide() {
         return e => {
             this.open = false
-            jQuery(`#${this.cmpId} .ezy-text`).hide('slide', {direction: 'right'}, 300)
+            this.onToggleText(this.open)
+            jQuery(`#${this.cmpId} .ezy-text`).hide()
         }
     }
     get onClick() {
         return e => {
             if (!this.added) {
                 this.added = true
-                this.openR = true
+                this.open = true
+                this.onToggleText(this.open)
+                this.refresh(this.onShow)
             }
-            this.onShow()
+            else this.onShow()
         }
     }
     get children() {
         return [
-            this.added || this.open ? <Text /> : null,
+            this.added || this.open ? <Text ref={e => this.searchText = e}/> : null,
             <Button icon={this.icon} img={this.img} text={this.text} type={this.type} onClick={this.onClick}/>,
         ]
     }
     cmpDidMount() {
         addEventListener('click', e => {
-            if (!e.target.closest(`#${this.cmpId} .ezy-text`)) this.onHide()
+            if (!e.target.closest(`#${this.cmpId}`)) this.onHide()
         }, true)
     }
 }

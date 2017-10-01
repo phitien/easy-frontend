@@ -7,7 +7,7 @@ export class Number extends Text {
         {section: 'cmp', name: 'min', title: 'Min', type: 'Number', value: null, required: false, desc: null},
         {section: 'cmp', name: 'max', title: 'Max', type: 'Number', value: null, required: false, desc: null},
     ])}
-    get type() {return 'number'}
+    type = 'number'
     get cmpClassName() {return 'ezy-text ezy-number'}
     get inputProps() {
         return this.utils.assign(super.inputProps, {

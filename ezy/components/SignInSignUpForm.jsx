@@ -13,11 +13,6 @@ export class SignInSignUpForm extends Form {
         {name: 'signin', title: 'Show Sign In', type: 'Select', value: true, options: [true, false]},
         {name: 'signup', title: 'Show Sign Up', type: 'Select', value: true, options: [true, false]},
     ])}
-    get pubsub() {
-        return this.utils.assign(super.pubsub, {
-            gapi_loaded: this.gapi_loaded,
-        })
-    }
     get cmpClassName() {return 'login-form'}
     get children() {
         return [
@@ -99,20 +94,16 @@ export class SignInSignUpForm extends Form {
     }
     cmpDidMount() {
         if (this.facebook) {
-            this.utils.loadJs('', 'facebook-config', `window.fbAsyncInit = function() {
-                FB.init(${JSON.stringify(this.config.facebook)})
+            this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', e => {
+                FB.init(this.config.facebook)
                 FB.AppEvents.logPageView()
-            }`)
-            this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk')
+            })
         }
         if (this.google) {
             if (typeof gapi != 'undefined') this.gapi_loaded()
             else {
                 this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
-                this.utils.loadJs('', 'google-platform-callback', `function gapi_loaded() {
-                    dispatchEvent(new CustomEvent('gapi_loaded'))
-                }`)
-                this.utils.loadJs('https://apis.google.com/js/platform.js?onload=gapi_loaded', 'google-platform')
+                this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => this.gapi_loaded())
             }
         }
     }

@@ -1,71 +1,74 @@
-$primary1: #ffffff;
-$primary2: #000000;
+$primary1: #fff;
+$primary2: #000;
 
-$color: #000000;
-$bg-color: #ffffff;
-$bd-color: #000000;
+$color: #000;
+$bg-color: #fff;
+$bd-color: #000;
 
-$header-color: #ffffff;
-$header-bg-color: #000000;
+$header-color: #fff;
+$header-bg-color: #000;
 
-$footer-color: #ffffff;
-$footer-bg-color: #000000;
+$footer-color: #fff;
+$footer-bg-color: #000;
 
-$content-color: #000000;
-$content-bg-color: #ffffff;
-$content-left-color: #000000;
-$content-left-bg-color: #ffffff;
-$content-main-color: #000000;
-$content-main-bg-color: #ffffff;
-$content-right-color: #000000;
-$content-right-bg-color: #ffffff;
+$content-color: #000;
+$content-bg-color: #fff;
+$content-left-color: #000;
+$content-left-bg-color: #fff;
+$content-main-color: #000;
+$content-main-bg-color: #fff;
+$content-right-color: #000;
+$content-right-bg-color: #fff;
 
-$message-color: #000000;
-$message-error-color: #ffffff;
-$message-warning-color: #ffffff;
+$message-color: #000;
+$message-error-color: #fff;
+$message-warning-color: #fff;
 $message-bg-color: #2cafff;
 $message-error-bg-color: #f93434;
 $message-warning-bg-color: #d4c824;
 
-$app-links-color: #ffffff;
-$app-links-color-hover: #000000;
+$app-links-color: #fff;
+$app-links-color-hover: #000;
 $app-links-bg-color: rgba(0,0,0,.95);
 $app-links-bg-color-hover: rgba(256,256,256,.95);
-$app-links-border-color: #ffffff;
+$app-links-border-color: #fff;
 
-$select-options-color: #000000;
-$select-options-color-hover: #ffffff;
-$select-options-bd-color: #000000;
+$select-options-color: #000;
+$select-options-color-hover: #fff;
+$select-options-bd-color: #000;
 $select-options-bg-color: rgba(256,256,256,.95);
 $select-options-bg-color-hover: rgba(0,0,0,.95);
 
-$table-row-header-color: #ffffff;
+$table-row-header-color: #fff;
 $table-row-header-bg-color: rgba(0,0,0,.7);
-$table-row-odd-color: #000000;
+$table-row-odd-color: #000;
 $table-row-odd-bg-color: rgba(0,0,0,.05);
-$table-row-even-color: #000000;
+$table-row-even-color: #000;
 $table-row-even-bg-color: rgba(0,0,0,.15);
-$table-row-hover-color: #000000;
+$table-row-hover-color: #000;
 $table-row-hover-bg-color: rgba(0,0,0,.2);
 
-$table-cell-hover-color: #000000;
-$table-cell-hover-bg-color: #ffffff;
+$table-cell-hover-color: #000;
+$table-cell-hover-bg-color: #fff;
 
-$table-columns-settings-list-color: #000000;
-$table-columns-settings-list-bg-color: #ffffff;
-$table-columns-settings-item-color: #ffffff;
-$table-columns-settings-item-bg-color: #000000;
+$table-columns-settings-list-color: #000;
+$table-columns-settings-list-bg-color: #fff;
+$table-columns-settings-item-color: #fff;
+$table-columns-settings-item-bg-color: #000;
+
+$chatbox-title-color: #000;
+$chatbox-title-bg-color: #e8e8e8;
 
 $input-bd-color: rgba(0,0,0,.3);
 
 $button-color: #000017;
 $button-bg-color: #e8e8e8;
 
-$black-color: #000000;
-$black-bg-color: #ffffff;
+$black-color: #000;
+$black-bg-color: #fff;
 
-$white-color: #ffffff;
-$white-bg-color: #000000;
+$white-color: #fff;
+$white-bg-color: #000;
 
 .black {
     color: $black-color;

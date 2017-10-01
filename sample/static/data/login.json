@@ -2,8 +2,10 @@
     "token": "dummy-token",
     "profile": {
         "account": "phitien",
-        "email": "im.phitien@gmail.com",
-        "alias": "Phi Tien",
+        "email": "goodsatan1028@yahoo.com",
+        "name": "Phi Tien 1",
+        "first_name": "Phi",
+        "last_name": "Tien",
         "right": []
     }
 }

@@ -20,6 +20,7 @@ module.exports = exports = function(config, gulp) {
     config.env = process.env.NODE_ENV = config.argv('env', process.env.NODE_ENV || 'dev')
     config.version = config.argv('version|v', config.version || '1.0.0')
     config.port = config.argv('port', config.port || 2810)
+    config.socket_port = config.argv('socket', config.socket_port || 10101)
     config.livereload = config.argv('livereload', config.livereload || 1028)
     config.production = config.argv('production') ? true : false
     if (config.production) process.env.NODE_ENV = 'production'
@@ -49,6 +50,7 @@ module.exports = exports = function(config, gulp) {
     config.apppath = config.argv('apppath', config.apppath || `/${config.appname}`)
     config.baseurl = config.argv('baseurl|url', config.baseurl || '')
 
+    config.resources = 'src/main/resources'
     config.ezy_home = process.env.EZY_HOME
     config.ezy_apps = `${config.ezy_home}/apps`
     config.ezy_dir = `${config.ezy_home}/ezy`
@@ -57,7 +59,7 @@ module.exports = exports = function(config, gulp) {
     config.ezy_components = `${config.ezy_dir}/components`
     config.ezy_sass = `${config.ezy_dir}/sass`
     config.ezy_static = `${config.ezy_dir}/static`
-    config.ezy_public = `${process.env.EZY_HOME}/src/main/resources/${config.profile}`
+    config.ezy_public = `${process.env.EZY_HOME}/${config.resources}/${config.profile}`
     config.ezy_public_static = `${config.ezy_public}/static`
     config.ezy_gulp = `${config.ezy_dir}/gulp`
 
@@ -107,8 +109,8 @@ module.exports = exports = function(config, gulp) {
         'debug',
     ]
 
-    config.public = `${config.app_dir}/src/main/resources`
-    config.public_profile = e => `${config.app_dir}/src/main/resources/${config.profile}`
+    config.public = `${config.app_dir}/${config.resources}`
+    config.public_profile = e => `${config.app_dir}/${config.resources}/${config.profile}`
     config.public_static = e => `${config.public_profile()}/static`
 
     config.gulpfile = './gulpfile.js'

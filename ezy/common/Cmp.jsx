@@ -94,9 +94,20 @@ export class BaseContainer extends React.Component {
     get log() { return this.utils.log}
     get output() {return null}
     get regCmps() {return regCmps}
+    get getPropValue() {return (n, df) => this.props.hasOwnProperty(n) ? this.props[n] : df}
+    get getStateValue() {return (n, df) => this.state.hasOwnProperty(n) ? this.state[n] : df}
+    get setStateValue() {return (n, v, r) => {
+        this.state[n] = v
+        r ? this.refresh() : false
+    }}
+    get getAttr() {return (n, df) => this.getStateValue(n, this.getPropValue(n, df))}
+    get setAttr() {return (n, v, r) => this.setStateValue(n, v, r)}
     refresh(state, ...args) {if (this.__mounted) {
-        this.utils.assign(this.state, {key: Math.random()}, state)
-        this.setState(this.state, ...args)
+        if (typeof state == 'function') this.setState(this.state, state)
+        else {
+            this.utils.assign(this.state, {key: Math.random()}, state)
+            this.setState(this.state, ...args)
+        }
     }}
 }
 export class PubSubContainer extends BaseContainer {
@@ -107,11 +118,18 @@ export class PubSubContainer extends BaseContainer {
             cache_changed: this.cacheChanged,
             user_registered: this.userRegistered,
             user_logged_in: this.userLoggedIn,
+            user_pre_logged_out: this.userPreLoggedOut,
             user_logged_out: this.userLoggedOut,
         }
     }
     set lastMessage(msg) {
         new Publisher('add_message', msg, this)
+    }
+    set lastInbox(msg) {
+        new Publisher('add_chatbox', msg, this)
+    }
+    set messageTo(msg) {
+        new Publisher('send_chatbox', msg, this)
     }
     set showPageIndicator(showPageIndicator) {
         new Publisher(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)
@@ -128,6 +146,7 @@ export class PubSubContainer extends BaseContainer {
         }
     }
     logout(token) {
+        new Publisher('user_pre_logged_out')
         this.utils.cache.remove(this.config.authTokenName)
         this.utils.cache.remove(this.config.userProfileName)
         this.utils.cache.remove('login-source')
@@ -142,6 +161,7 @@ export class PubSubContainer extends BaseContainer {
     userRegistered = (e) => {}
     userLoggedIn = (e) => {}
     userLoggedOut = (e) => {}
+    userPreLoggedOut = (e) => {}
     componentDidMount() {
         super.componentDidMount()
         new Subscriber(this.pubsub, this)
@@ -315,5 +335,52 @@ export class FlexCmp extends RegCmp {
     static excludingProps() {return []}
     static normalizeProps(data, instance) {
         return this.utilities.exclude(this.utilities.normalize(data), this.excludingProps())
+    }
+}
+export class ToggleCmp extends FlexCmp {
+    static autoProps() {return super.autoProps().concat([
+        {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
+        {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
+    ])}
+    get selector() {return this.cmpId}
+    get animation() {return {direction: 'left'}}
+    get duration() {return 500}
+    get outside() {return true}
+    get onShow() {
+        return e => {
+            this.open = true
+            jQuery(this.selector).show('slide', this.animation, this.duration)
+        }
+    }
+    get onHide() {
+        return e => {
+            this.open = false
+            jQuery(this.selector).hide('slide', this.animation, this.duration)
+        }
+    }
+    get onToggle() {
+        return e => {
+            if (!this.added) {
+                this.added = true
+                this.open = true
+                this.refresh(this.onShow)
+            }
+            else {
+                this.open = !this.open
+                this.open ? this.onShow() : this.onHide()
+            }
+        }
+    }
+    get onClickOutside() {
+        return e => {
+            if (e.target.closest(this.selector)) this.onHide()
+            else if (!e.target.closest(`#${this.cmpId}`)) this.onHide()
+        }
+    }
+    cmpDidMount() {
+        if (this.outside) addEventListener('click', e => this.onClickOutside(e), true)
+    }
+    cmpDidUpdate() {
+        if (this.open) setTimeout(this.onShow, 100)
     }
 }

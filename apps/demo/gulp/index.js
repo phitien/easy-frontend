@@ -11,5 +11,6 @@ module.exports = exports = {
     "version": "1.0.0",
     "template": "index.html",
     "port": 2810,
+    "socket_port": 10101,
     "livereload": 1028
 }

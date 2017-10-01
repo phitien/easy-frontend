@@ -1,0 +1,54 @@
+.chatboxes {
+    position: fixed;
+    bottom: $footer-height;right: 0;
+    overflow: visible;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    .ezy-chatbox {
+        width: $chatbox-width;
+        display: flex;flex-direction: column;
+        margin-left: $mapa/2;
+        border: 1px solid $bd-color;
+        .ezy-chatbox-title {
+            height: $chatbox-title-height;
+            line-height: $chatbox-title-height;
+            border-bottom: 1px solid $bd-color;
+            cursor: pointer;
+            color: $chatbox-title-color;
+            background-color: $chatbox-title-bg-color;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            span {margin-left: $mapa/4;}
+        }
+        .ezy-chatbox-toggle {
+            display: flex;flex-direction: column;
+            flex: 1;overflow-y: auto;overflow-x: hidden;height: 0;
+            .ezy-chatbox-messages {
+                flex: 1;overflow-y: auto;overflow-x: hidden;height: 0;
+                width: 100%;
+                .ezy-chatbox-message {
+                    margin: 0 $mapa/4;
+                    padding: $mapa/4 0;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    &.theirs {
+                        text-align: left;
+                    }
+                    &.ours {
+                        text-align: right;
+                    }
+                }
+            }
+            .ezy-text {
+                width: 100%;
+            }
+        }
+        &.open {
+            width: $chatbox-full-width;
+            .ezy-chatbox-toggle {
+                height: $chatbox-height;
+            }
+        }
+    }
+}
