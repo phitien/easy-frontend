@@ -20,7 +20,7 @@ module.exports = exports = function(config, gulp) {
     config.env = process.env.NODE_ENV = config.argv('env', process.env.NODE_ENV || 'dev')
     config.version = config.argv('version|v', config.version || '1.0.0')
     config.port = config.argv('port', config.port || 2810)
-    config.socket_port = config.argv('socket', config.socket_port || 10101)
+    config.socket_port = config.argv('socket', config.socket_port)
     config.livereload = config.argv('livereload', config.livereload || 1028)
     config.production = config.argv('production') ? true : false
     if (config.production) process.env.NODE_ENV = 'production'

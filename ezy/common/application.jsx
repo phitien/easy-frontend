@@ -24,6 +24,13 @@ export class Application {
     set store(v) {this.__store = v}
     get utils() {return utils}
 
+    livereload_init = e => {
+        const cb = e && e.detail.length ? e.detail[0] : null
+        this.utils.loadJs(`//${location.hostname}:${this.config.livereload}/livereload.js?snipver=1`, 'livereload', e => {
+            if (typeof cb == 'function') cb()
+            else this.utils.trigger('livereload_loaded')
+        })
+    }
     facebook_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
         this.utils.loadJs('', 'fbAsyncInit', null, `
@@ -61,7 +68,7 @@ export class Application {
     }
     socket_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadJs('/socket.io/socket.io.js', 'socket-io', e => {
+        this.utils.loadJs(`//${location.host}/socket.io/socket.io.js`, 'socket-io', e => {
             if (typeof cb == 'function') cb()
             else this.utils.trigger('socket_loaded')
         })
@@ -79,6 +86,7 @@ export class Application {
         this.facebook_init()
         this.google_init()
         this.socket_init()
+        this.livereload_init()
     }
     render() {
         if (this.store && this.container) {

@@ -1,12 +1,14 @@
-import fs from 'fs'
-import gulp from 'gulp'
-import express from 'express'
-import http from 'http'
-import socket from 'socket.io'
-import redis from 'redis'
-import assign from 'object-assign'
-import info from 'ezygulp/info'
+var gulp = require('gulp')
+var fs = require('fs')
+var express = require('express')
+var http = require('http')
+var socket = require('socket.io')
+var assign = require('object-assign')
+var info = require('ezygulp/info')
 
+module.exports = exports = function(config) {
+
+}
 const config = {}
 info(config, gulp)
 
@@ -29,20 +31,12 @@ app.use('/static/:app', function (req, res, next) {
 app.get('/:app.html(*)', (req, res, next) => res.redirect(301, `/${req.params.app}`))
 app.get('/:app*', handle)
 
-let port = config.socket_port || config.port
+let port = config.port
 
 const server = http.Server(app)
 const io = socket(server)
 
 const sockets = new Map()
-function removeUser(socket) {
-    for ( var k in sockets) {
-        if (sockets[k].id == socket.id) {
-            delete sockets[k]
-            return
-        }
-    }
-}
 
 io.on('connection', socket => {
     io.emit('connect')
@@ -67,8 +61,8 @@ io.on('connection', socket => {
             console.log(data.from, 'to', data.to, data.message)
             let to = sockets.get(data.to)
             let from = sockets.get(data.from)
-            to.socket.emit('chat', assign(data, {from: from ? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
-            from.socket.emit('chat', assign(data, {from: from ? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
+            to.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
+            from.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
         }
     })
 })

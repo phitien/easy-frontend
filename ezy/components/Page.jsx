@@ -160,7 +160,7 @@ export class Page extends Cmp {
     }
     socket_loaded = e => {
         if (typeof io != 'undefined') {
-            this.socket = window.socket = io.connect(`http://localhost:${this.config.socket_port}`)
+            this.socket = window.socket = io.connect(`//${location.host}`)
             const showMessage = data => this.lastMessage = {text: typeof data == 'string' ? data : `${data.title ? `${data.title}:` : ''} ${data.message}`, type: 'chatce'}
             this.socket.on('connect', e => {
                 this.socket.emit('register', this.isLogged ? this.utils.user.data : null)
