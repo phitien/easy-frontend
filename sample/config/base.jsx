@@ -1,13 +1,12 @@
 module.exports = exports = {
     noAuthentication: false,
-    authTokenName: 'ezy-frontend-token',
-    userProfileCacheName: 'user-profile',
     defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
     apiBaseUrl: '',
     api: {
-        applinks: '/static/demo/data/applinks.json',
-        table: '/static/demo/data/table.json',
-        login: '/static/demo/data/login.json'
+        applinks: '/static/{appname}/data/applinks.json',
+        table: '/static/{appname}/data/table.json',
+        login: '/static/{appname}/data/login.json',
+        people: '/{appname}/people'
     },
     standardUserData: {
         firstName: null,

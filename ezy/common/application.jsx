@@ -22,7 +22,6 @@ export class Application {
     set container(v) {this.__container = v}
     get store() {return this.__store}
     set store(v) {this.__store = v}
-    get utils() {return utils}
 
     livereload_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
@@ -40,8 +39,10 @@ export class Application {
             }
         `)
         this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', e => {
-            if (typeof cb == 'function') cb()
-            else this.utils.trigger('facebook_loaded')
+            setTimeout(e => {
+                if (typeof cb == 'function') cb()
+                else this.utils.trigger('facebook_loaded')
+            }, 500)
         })
     }
     google_init = e => {
@@ -68,9 +69,11 @@ export class Application {
     }
     socket_init = e => {
         const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadJs(`//${location.host}/socket.io/socket.io.js`, 'socket-io', e => {
-            if (typeof cb == 'function') cb()
-            else this.utils.trigger('socket_loaded')
+        this.utils.loadJs(`/socket.io/socket.io.js`, 'socket-io', e => {
+            setTimeout(e => {
+                if (typeof cb == 'function') cb()
+                else this.utils.trigger('socket_loaded')
+            }, 500)
         })
     }
     cmp_mounted = e => {

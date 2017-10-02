@@ -21,14 +21,14 @@ export class Request {
     get options() {return this.__options}
     set options(opts) {this.__options = opts}
     get defaultHeaders() {return {
-        [config.authTokenName]: null
+        [config.authTokenKey]: null
     }}
 
     option = (n, v) => {
         this.__options[n] = v
         return this
     }
-    headers = (headers) => this.option('headers', assign({}, this.defaultHeaders, headers))
+    headers = (headers) => this.option('headers', assign({}, this.defaultHeaders, this.__options.headers, headers))
     header = (n, v) => this.headers({[n]: v})
     url = (v) => this.option('url', v)
     method = (v) => this.option('method', v.toLowerCase())

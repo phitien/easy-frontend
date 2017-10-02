@@ -1,0 +1,28 @@
+.people {
+    .people-list {
+        display: none;
+        z-index: 1;
+        position: absolute;
+        top: $header-height;
+        width: $people-list-width;
+        box-shadow: 1px 3px 8px rgba(0,0,0,.3);
+        .person {
+            cursor: pointer;
+            display: flex;align-items: center;justify-content: flex-start;
+            padding: $mapa/6 $mapa/3;
+            color: $people-item-color;
+            background-color: $people-item-bg-color;
+            box-shadow: 1px 3px 8px rgba(0,0,0,.3);
+            img {
+                height: 35px;
+                border-radius: 50%;
+                margin-right: $mapa/3;
+                box-shadow: 1px 3px 8px rgba(0,0,0,.3);
+            }
+            &:hover {
+                color: $people-item-hover-color;
+                background-color: $people-item-hover-bg-color;
+            }
+        }
+    }
+}

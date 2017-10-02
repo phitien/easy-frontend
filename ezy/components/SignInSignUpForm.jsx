@@ -46,17 +46,19 @@ export class SignInSignUpForm extends Form {
         if (typeof auth2 != 'undefined') {
             let element = this.elements['signinsignup-form-google']
             if (element && element.dom) auth2.attachClickHandler(element.dom, {}, function(user) {
-                var authRes = user.getAuthResponse()
-                var bprofile = user.getBasicProfile()
-                var profile = {
+                let authRes = user.getAuthResponse()
+                let bprofile = user.getBasicProfile()
+                let profile = {
                     email: bprofile.getEmail(),
                     first_name: bprofile.getGivenName(),
                     last_name: bprofile.getFamilyName(),
                     short_name: bprofile.getName(),
                     name: bprofile.getName(),
                     avatar: bprofile.Paa,
+                    uuid: `google-${bprofile.getId()}`
                 }
-                if (authRes && authRes.access_token) dispatchEvent(new CustomEvent('user_logged_in', {detail: ['google', authRes.access_token, profile]}))
+                if (authRes && authRes.access_token)
+                    dispatchEvent(new CustomEvent('user_logged_in', {detail: ['google', authRes.access_token, profile]}))
                 else dispatchEvent(new CustomEvent('user_logged_out', {detail: ['google']}))
             })
         }
@@ -67,9 +69,13 @@ export class SignInSignUpForm extends Form {
             const update = res => {
                 let token = res.authResponse.accessToken
                 if (res.authResponse) {
-                    FB.api('/me', {fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name'}, profile => {
+                    FB.api('/me', {
+                        scope: 'email',
+                        info_fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name',
+                        fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name'
+                    }, profile => {
                         FB.api('/me/picture?width=60&height=60', res => {
-                            dispatchEvent(new CustomEvent('user_logged_in', {detail: ['facebook', token, this.utils.assign({}, profile, {account: profile.id, avatar: res.data.url})]}))
+                            dispatchEvent(new CustomEvent('user_logged_in', {detail: ['facebook', token, this.utils.assign({}, profile, {uuid: `facebook-${profile.id}`, avatar: res.data.url})]}))
                             this.showPageIndicator = false
                         })
                     })

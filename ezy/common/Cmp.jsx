@@ -89,7 +89,7 @@ export class BaseContainer extends React.Component {
     get uuid() {return this.state.__uuid}
     get utils() {return utils}
     get user() {return this.utils.user}
-    get isLogged() {return this.utils.cache.get(this.config.authTokenName) ? true : false}
+    get isLogged() {return this.utils.cache.get(this.config.authTokenKey) ? true : false}
     get config() {return config}
     get log() { return this.utils.log}
     get output() {return null}
@@ -139,7 +139,7 @@ export class PubSubContainer extends BaseContainer {
     }
     login(token, type) {
         if (token) {
-            this.utils.cache.set(this.config.authTokenName, token)
+            this.utils.cache.set(this.config.authTokenKey, token)
             if (type) this.utils.cache.set('login-source', type)
             else this.utils.cache.remove('login-source')
             this.utils.trigger('user_logged_in')
@@ -147,7 +147,7 @@ export class PubSubContainer extends BaseContainer {
     }
     logout(token) {
         this.utils.trigger('user_pre_logged_out')
-        this.utils.cache.remove(this.config.authTokenName)
+        this.utils.cache.remove(this.config.authTokenKey)
         this.utils.cache.remove(this.config.userProfileName)
         this.utils.cache.remove('login-source')
         this.utils.trigger('user_logged_out')
@@ -341,6 +341,8 @@ export class ToggleCmp extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
+        {section: 'api', name: 'afterShow', transform: true, title: 'After Show', type: 'Text', value: function(e) {}, required: false, desc: null},
+        {section: 'api', name: 'afterHide', transform: true, title: 'After Hide', type: 'Text', value: function(e) {}, required: false, desc: null},
     ])}
     get selector() {return this.cmpId}
     get animation() {return {direction: 'left'}}
@@ -368,6 +370,7 @@ export class ToggleCmp extends FlexCmp {
             else {
                 this.open = !this.open
                 this.open ? this.onShow() : this.onHide()
+                this.open ? this.afterShow() : this.afterHide()
             }
         }
     }

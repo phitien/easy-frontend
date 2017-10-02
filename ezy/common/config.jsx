@@ -1,6 +1,6 @@
 import assign from 'object-assign'
 
-class Config {
+export class Config {
     __auto_props() {
         Object.keys(this.__config).forEach(k => {
             if (!this.hasOwnProperty(k))
@@ -34,25 +34,24 @@ class Config {
         url = this.__config[url] || url || ''
         return url.replace(/apiBaseUrl/g, this.__config.apiBaseUrl)
     }
+    getConfig() {return this.__config}
     constructor(...args) {
         this.__config = {}
         this.set({
-            profile: 'base',
             noAuthentication: false,
-            authTokenName: 'ezy-token',
-            userProfileName: 'user-profile',
             defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
             apiBaseUrl: '',
             cansignup: false,
             api: {},
             standardUserData: {
-                firstName: null,
-                middleName: null,
-                lastName: null,
+                first_name: null,
+                last_name: null,
+                middle_name: null,
                 birthday: null,
-                occupation: null,
                 gender: null,
-                lastLogin: null,
+                hometown: null,
+                locale: null,
+                link: null,
             },
             facebook: {
                 appId: '497063317337038',

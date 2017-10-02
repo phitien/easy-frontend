@@ -1,6 +1,7 @@
 {
     "token": "dummy-token",
     "profile": {
+        "uuid": "phitien",
         "account": "phitien",
         "email": "goodsatan1028@yahoo.com",
         "name": "Phi Tien 1",

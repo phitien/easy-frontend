@@ -1,10 +1,12 @@
 import assign from 'object-assign'
-import {config} from './config'
 
 export class Model {
-    get config() {return config}
-    get defaultModelData() {
-        return {}
+    get defaultData() {
+        return this.__default = this.__default ? this.__default : {}
+    }
+    set defaultData(v) {
+        this.__default = this.__default ? this.__default : {}
+        assign(this.__default, v)
     }
     get data() {return this.getData()}
     set data(v) {this.setData(v)}
@@ -29,9 +31,10 @@ export class Model {
         this.__auto_props()
     }
     default() {
-        this.__data = assign({}, this.defaultModelData)
+        this.__data = assign({}, this.defaultData)
     }
-    constructor(...args) {
+    constructor(defaultData, ...args) {
+        this.defaultData = defaultData
         this.default()
         if (args.length) this.setData(...args)
     }

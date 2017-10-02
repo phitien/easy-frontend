@@ -20,9 +20,6 @@ export class MessagesPage extends Page {
             <Button icon='send' text='Add warning' onClick={e => {
                 this.text.value ? this.lastMessage = {text: this.text.value, type: 'warning'} : false
             }}/>,
-            <Button icon='send' text='Add chat message' onClick={e => {
-                this.text.value ? socket.emit('chat', {to: 'im.phitien@gmail.com', from: this.utils.user.email, message: this.text.value}) : false
-            }}/>
         ]
     }
     get rightPanel() {

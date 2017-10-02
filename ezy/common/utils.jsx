@@ -12,19 +12,26 @@ import uuid from 'uuid/v1'
 import dateformat from 'dateformat'
 import {cookie, cache, session} from './cache'
 import {config} from './config'
-import {user} from './UserProfile'
+import {UserProfile} from './UserProfile'
 import {history} from './history'
 import {Request} from './Request'
 import {Publisher, Subscriber, Unsubscriber} from './PubSub'
 
 class Utilities {
+    constructor() {}
+    get user() {
+        if (!this.__user) {
+            this.__user = new UserProfile(this.config.userProfileName, this.config.standardUserData)
+            this.__user.data = this.cache.get(this.config.userProfileName)
+        }
+        return this.__user
+    }
     get assign() {return assign}
     get cookie() {return cookie}
     get cache() {return cache}
     get session() {return session}
     get uuid() {return uuid}
     get config() {return config}
-    get user() {return user}
     get history() {return history}
     get log() {return console.log}
     get trigger() {return (...args) => new Publisher(...args)}
@@ -115,8 +122,9 @@ class Utilities {
     get redirect() {return url => window ? open(url) : false}
     get request() {return (url, method, data) => {
         return new Request(url, method)
-                .header(this.config.authTokenName, this.cache.get(this.config.authTokenName))
-                .data(this.clean(data))
+        .header(this.config.authTokenKey, this.cache.get(this.config.authTokenKey))
+        .header(this.config.uuidKey, this.user.uuid)
+        .data(this.clean(data))
     }}
     get get() {return (url, data) => this.request(url, 'get', data)}
     get post() {return (url, data) => this.request(url, 'post', data)}

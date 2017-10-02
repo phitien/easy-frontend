@@ -1,5 +1,4 @@
 import assign from 'object-assign'
-import {utils} from 'ezy/common/utils'
 import {config} from 'ezy/common/config'
 import {getXtore} from 'ezy/common/Xtore'
 
@@ -11,7 +10,6 @@ export class Action {
     get dispatchable() {return true}
     get debug() {return false}
     get config() {return config}
-    get utils() {return utils}
     get store() {return getXtore()}
     get state() {return this.getState(this.name)}
     get fn() {return this.__fn}

@@ -40,7 +40,7 @@ export class Cache {
         localStorage.removeItem(n)
     }
     clean() {
-        let excludes = [config.authTokenName, config.userProfileName]
+        let excludes = [config.authTokenKey, config.userProfileName]
         Object.keys(localStorage).forEach(k => !excludes.includes(k) ? this.remove(k) : false)
         new Publisher('cache_changed')
     }

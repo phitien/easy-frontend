@@ -9,7 +9,7 @@ export class Chatbox extends ToggleCmp {
     get p1() {return this.cmpData.p1}
     get p2() {return this.cmpData.p2}
     get to() {return this.p1 == this.from ? this.p2 : this.p1}
-    get from() {return this.utils.user.email}
+    get from() {return this.utils.user.uuid}
     get shouldCmpRender() {return this.isLogged}
     get removeBox() {
         return e => {
@@ -29,7 +29,7 @@ export class Chatbox extends ToggleCmp {
     get children() {
         return [
             <div className='ezy-chatbox-title' onClick={this.onToggle}>
-                <span>{this.info.name || this.info.email}</span>
+                <span>{this.info.name || this.info.uuid}</span>
                 <Button icon='close' onClick={this.removeBox}/>
             </div>,
             this.added || this.open ? <div className='ezy-chatbox-toggle'>
@@ -40,8 +40,10 @@ export class Chatbox extends ToggleCmp {
     }
     get selector() {return `#${this.cmpId} .ezy-chatbox-toggle`}
     get outside() {return false}
+    get animation() {return {direction: 'down'}}
+    get duration() {return 100}
     renderMessage(m,i) {
-        let cls = `ezy-chatbox-message ${m.from.email == this.from ? 'ours' : 'theirs'}`
+        let cls = `ezy-chatbox-message ${m.from.uuid == this.from ? 'ours' : 'theirs'}`
         return <div key={i} className={cls}>
             {m.message}
         </div>

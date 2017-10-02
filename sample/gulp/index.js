@@ -12,5 +12,9 @@ module.exports = exports = {
     "template": "index.html",
     "port": {port},
     "socket_port": 10101,
-    "livereload": {livereload}
+    "livereload": {livereload},
+    "profile": "base",
+    "authTokenKey": "ezy-token",
+    "uuidKey": "ezy-uuid",
+    "userProfileName": "user-profile"
 }

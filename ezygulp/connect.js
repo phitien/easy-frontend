@@ -1,55 +1,74 @@
+var fs = require('fs')
+var livereload = require('gulp-livereload')
+var socketio = require('socket.io')
+var assign = require('object-assign')
+
+var express = require('express')
+
+const sockets = new Map()
+
+const broadcastConnect = (socket) => socket.emit('connect', {title: 'connection required', message: `Please connect to the ezy system`})
+const userRegister = (socket, user) => {
+    if (user && user.uuid) {
+        console.log(`${user.uuid} connected`)
+        sockets.set(user.uuid, {user, socket})
+        socket.emit('registered', {title: 'root nsp', message: `${user.uuid} registered`})
+    }
+    else {
+        socket.emit('refused', {title: 'root nsp', message: 'anonymous'})
+    }
+}
+const userUnregister = (socket, user) => {
+    if (user && user.uuid) {
+        console.log(`${user.uuid} disconnected`)
+        sockets.delete(user.uuid)
+        socket.emit('disconnected', {title: 'root nsp', message: `${user.uuid} disconnected`})
+    }
+}
+const handleChat = (socket, data) => {
+    if (data.to && sockets.has(data.to)) {
+        console.log(data.from, 'to', data.to, data.message)
+        var to = sockets.get(data.to)
+        var from = sockets.get(data.from)
+        to.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
+        from.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
+    }
+}
+
 const connectFn = function(config, cb) {
-    var fs = require('fs')
-    var express = require('express')
-    var http = require('http')
-    var socket = require('socket.io')
-    var assign = require('object-assign')
-    var livereload = require('gulp-livereload')
+    var connect = require('gulp-connect')
+    config.log(`Running  '${config.ezy ? `${config.appname}:` : ''}connect'`)
 
     const app = express()
-    const port = config.port
-    const server = http.Server(app)
-    const io = socket(server)
-    const sockets = new Map()
-
-    app.use('/static', express.static(config.public_static()))
-    app.get('/:app.html(*)', (req, res, next) => res.redirect(301, `/${req.params.app}`))
-    app.get('/:app*', (req, res, next) => {
-        const root = config.public_profile()
-        return fs.stat(`${root}/${req.params.app}.html`, (err, stat) => err ?
-            res.status(404).send('Not found') : res.sendFile(`${req.params.app}.html`, {root}))
+    app.use(`/${config.appname}/people`, (req, res, next) => {
+        var token = req.headers[config.authTokenKey]
+        res.setHeader('Content-Type', 'application/json')
+        res.send(JSON.stringify(Array.from(sockets).map(s => {
+            var cuuid = req.headers[config.uuidKey]
+            var [uuid, data] = s
+            return cuuid != uuid ? data.user : null
+        }).filter(c => c)))
     })
 
-    io.on('connection', socket => {
-        io.emit('connect')
-        socket.on('register', user => {
-            if (user && user.email) {
-                sockets.set(user.email, {user, socket})
-                console.log(`${user.email} connected`)
-                io.emit('registered', {title: 'root nsp', message: `${user.email} registered`}, socket.id)
-            }
-            else {
-                io.emit('refused', {title: 'root nsp', message: 'anonymous'})
-            }
-        })
-        socket.on('unregister', user => {
-            if (user && user.email) {
-                // sockets.delete(user.email)
-                console.log(`${user.email} disconnected`)
-            }
-        })
-        socket.on('chat', data => {
-            if (data.to && sockets.has(data.to)) {
-                console.log(data.from, 'to', data.to, data.message)
-                let to = sockets.get(data.to)
-                let from = sockets.get(data.from)
-                to.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
-                from.socket.emit('chat', assign(data, {from: from? from.user : {email: data.from}}, {to: to ? to.user : {email: data.to}}))
-            }
-        })
+    var server = connect.server({
+        name: `Application ${config.AppName} - ${config.profile}`,
+        root: [`${config.public_profile()}`],
+        port: config.port,
+        livereload: {port: config.livereload},
+        fallback: `${config.public_profile()}/${config.appname}.html`,
+        middleware: function(connect, opt) {
+            return [app]
+        },
+        serverInit: server => {
+            const io = socketio(server)
+            io.on('connection', function(socket) {
+                broadcastConnect(socket)
+                socket.on('register', data => userRegister(socket, data))
+                socket.on('unregister', data => userUnregister(socket, data))
+                socket.on('chat', data => handleChat(socket, data))
+            })
+        }
     })
-    server.listen(port, e => config.log(`Platform is listening at port ${port}`))
-
     livereload.listen(config.livereload)
     config.gulp.watch([
         `${config.public_static()}/${config.appname}/*${config.appname}*.css`,
@@ -57,7 +76,7 @@ const connectFn = function(config, cb) {
         `${config.public_profile()}/*${config.appname}*.html`,
     ])
     .on('change', livereload.reload)
-    
+
     cb()
 }
 module.exports = exports = function(config) {

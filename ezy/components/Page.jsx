@@ -12,6 +12,7 @@ import {Space} from './Space'
 import {Message} from './Message'
 import {Inbox} from './Inbox'
 import {Chatbox} from './Chatbox'
+import {People} from './People'
 import {Modal} from './Modal'
 import {SignInSignUpForm} from './SignInSignUpForm'
 
@@ -29,6 +30,7 @@ export class Page extends Cmp {
             <AppSearch/>,
             <Inbox/>,
             <Notifier/>,
+            <People/>,
             <UserBox/>,
             <Help/>,
         ]},
@@ -130,17 +132,17 @@ export class Page extends Cmp {
     add_chatbox = e => {
         let [msg] = e.detail
         let box = this.chatboxes.find(b => {
-            if (b.p1 == msg.from.email && b.p2 == msg.to.email) return true
-            if (b.p1 == msg.to.email && b.p2 == msg.from.email) return true
+            if (b.p1 == msg.from.uuid && b.p2 == msg.to.uuid) return true
+            if (b.p1 == msg.to.uuid && b.p2 == msg.from.uuid) return true
             return false
         })
         if (!box) {
             this.chatboxes.push({
-                p1: msg.from.email,
-                p2: msg.to.email,
+                p1: msg.from.uuid,
+                p2: msg.to.uuid,
                 info: msg.from,
                 show: true,
-                messages: [msg]
+                messages: msg.message ? [msg] : []
             })
         }
         else {
@@ -159,17 +161,18 @@ export class Page extends Cmp {
         this.socket.emit('chat', msg)
     }
     socket_loaded = e => {
-        if (typeof io != 'undefined') {
-            this.socket = window.socket = io.connect(`//${location.host}`)
-            const showMessage = data => this.lastMessage = {text: typeof data == 'string' ? data : `${data.title ? `${data.title}:` : ''} ${data.message}`, type: 'chatce'}
-            this.socket.on('connect', e => {
-                this.socket.emit('register', this.isLogged ? this.utils.user.data : null)
+        if (!this.socket) {
+            const socket = io.connect(`//${location.host}`, {reconnect: true})
+            const showMessage = data => this.lastMessage = {text: typeof data == 'string' ? data : `${data.title ? `${data.title}:` : ''} ${data.message}`, type: 'chat'}
+            socket.on('connect', e => {
+                socket.emit('register', this.isLogged ? this.utils.user.data : null)
             })
-            this.socket.on('disconnect', e => {
-                this.socket.emit('unregister', this.isLogged ? this.utils.user.data : null)
+            socket.on('disconnect', e => {
+                socket.emit('unregister', this.isLogged ? this.utils.user.data : null)
             })
-            this.socket.on('registered', data => showMessage(data))
-            this.socket.on('chat', data => this.lastInbox = data)
+            // socket.on('registered', data => showMessage(data))
+            socket.on('chat', data => this.lastInbox = data)
+            this.socket = window.socket = socket
         }
     }
     userLoggedIn = e => this.socket ? this.socket.emit('register', this.utils.user.data) : this.refresh()
@@ -192,7 +195,7 @@ export class Page extends Cmp {
     }
     renderChatboxes() {
         this.chatboxes = [].concat(this.chatboxes).filter(m => m && m.show)
-        return <div className='chatboxes'>{this.chatboxes.map((m,i) => <Chatbox key={i} cmpData={m}/>)}</div>
+        return <div className='chatboxes'>{this.chatboxes.map((m,i) => <Chatbox key={i} open={!m.message} cmpData={m}/>)}</div>
     }
     renderToolbar() {return <div className='content-toolbar'>{this.renderObject(this.toolbarCmps)}</div>}
     renderLeftPanel() {return this.leftPanel ? <div className='content-left'>{this.renderObject(this.leftPanel)}</div> : null}
