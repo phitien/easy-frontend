@@ -131,23 +131,18 @@ export class Page extends Cmp {
     }
     add_chatbox = e => {
         let [msg] = e.detail
-        let box = this.chatboxes.find(b => {
-            if (b.p1 == msg.from.uuid && b.p2 == msg.to.uuid) return true
-            if (b.p1 == msg.to.uuid && b.p2 == msg.from.uuid) return true
-            return false
-        })
+        let box = this.chatboxes.find(b => b.uuids.includes(msg.from.uuid) && b.uuids.includes(msg.to.uuid))
         if (!box) {
             this.chatboxes.push({
-                p1: msg.from.uuid,
-                p2: msg.to.uuid,
-                info: msg.from,
+                people: [msg.from, msg.to],
+                uuids: [msg.from.uuid, msg.to.uuid],
                 show: true,
                 messages: msg.message ? [msg] : []
             })
         }
         else {
             box.show = true
-            box.messages.push(msg)
+            if (msg.message) box.messages.push(msg)
         }
         this.refresh()
     }
@@ -194,8 +189,10 @@ export class Page extends Cmp {
         return <div className='messages'>{this.messages.reverse().map((m,i) => this.renderMessage(m,i))}</div>
     }
     renderChatboxes() {
-        this.chatboxes = [].concat(this.chatboxes).filter(m => m && m.show)
-        return <div className='chatboxes'>{this.chatboxes.map((m,i) => <Chatbox key={i} open={!m.message} cmpData={m}/>)}</div>
+        return <div className='chatboxes'>
+            {[].concat(this.chatboxes).filter(m => m && m.show).map((m,i) =>
+            <Chatbox key={i} open={!m.message} cmpData={m}/>)}
+        </div>
     }
     renderToolbar() {return <div className='content-toolbar'>{this.renderObject(this.toolbarCmps)}</div>}
     renderLeftPanel() {return this.leftPanel ? <div className='content-left'>{this.renderObject(this.leftPanel)}</div> : null}

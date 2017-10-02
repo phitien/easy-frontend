@@ -129,7 +129,7 @@ export class PubSubContainer extends BaseContainer {
         this.utils.trigger('add_chatbox', msg, this)
     }
     set messageTo(msg) {
-        this.utils.trigger('send_chatbox', msg, this)
+        this.utils.trigger('send_chatbox', this.utils.assign(msg, {from: this.utils.user.uuid}), this)
     }
     set showPageIndicator(showPageIndicator) {
         this.utils.trigger(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)

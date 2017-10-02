@@ -5,11 +5,10 @@ import {Button, Text} from './input'
 export class Chatbox extends ToggleCmp {
     get cmpClassName() {return `ezy-chatbox ${this.open ? 'open' : ''}`}
     get messages() {return this.cmpData.messages}
-    get info() {return this.cmpData.info}
-    get p1() {return this.cmpData.p1}
-    get p2() {return this.cmpData.p2}
-    get to() {return this.p1 == this.from ? this.p2 : this.p1}
-    get from() {return this.utils.user.uuid}
+    get uuids() {return [].concat(this.cmpData.uuids)}
+    get people() {return [].concat(this.cmpData.people)}
+    get from() {return this.people.find(p => p.uuid == this.utils.user.uuid)}
+    get to() {return this.people.find(p => p.uuid != this.from.uuid)}
     get shouldCmpRender() {return this.isLogged}
     get removeBox() {
         return e => {
@@ -23,13 +22,13 @@ export class Chatbox extends ToggleCmp {
             let message = e.target.value || ''
             message = message.trim()
             this.text.reset()
-            if (message) this.messageTo = {to: this.to, from: this.from, message}
+            if (message) this.uuids.map(uuid => uuid != this.from.uuid ? this.messageTo = {to: uuid, message: message} : false)
         }
     }
     get children() {
         return [
             <div className='ezy-chatbox-title' onClick={this.onToggle}>
-                <span>{this.info.name || this.info.uuid}</span>
+                <span>{this.to.name || this.to.uuid}</span>
                 <Button icon='close' onClick={this.removeBox}/>
             </div>,
             this.added || this.open ? <div className='ezy-chatbox-toggle'>
@@ -43,7 +42,7 @@ export class Chatbox extends ToggleCmp {
     get animation() {return {direction: 'down'}}
     get duration() {return 100}
     renderMessage(m,i) {
-        let cls = `ezy-chatbox-message ${m.from.uuid == this.from ? 'ours' : 'theirs'}`
+        let cls = `ezy-chatbox-message ${m.from.uuid == this.from.uuid ? 'ours' : 'theirs'}`
         return <div key={i} className={cls}>
             {m.message}
         </div>
@@ -54,5 +53,7 @@ export class Chatbox extends ToggleCmp {
             height += jQuery(this).outerHeight()
         })
         jQuery(this.messagesDom).scrollTop(height)
+        jQuery('.ours').prev('.theirs').addClass('round-bottom')
+        jQuery('.theirs').prev('.ours').addClass('round-bottom')
     }
 }
