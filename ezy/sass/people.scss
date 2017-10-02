@@ -26,3 +26,11 @@
         }
     }
 }
+@media screen and (max-width: $mobile-w) {
+    .people {
+        .people-list {
+            position: fixed;width: 100%;background-color: #fff;
+            top: $header-height;left: 0;right: 0;bottom: $footer-height;
+        }
+    }
+}

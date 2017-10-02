@@ -51,18 +51,20 @@
         .content-wrapper {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
         .content-left {
             display: none;
-            position: initial;top: $header-height;bottom: $footer-height;left: 0;width: $content-left-width;
+            height: initial;
+            width: 100%;
         }
         .content-main {
-            position: initial;
             flex: 1;
+            width: 100%;
         }
         .content-right {
-            display: none;
-            position: initial;top: $header-height;bottom: $footer-height;right: 0;width: $content-left-width;
+            height: initial;
+            width: 100%;
         }
     }
 }

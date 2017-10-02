@@ -20,8 +20,10 @@
         @extend .white;
         margin: 0 $mapa/4;
     }
-    .app-search.open input {
-        border-width: 0px;
+    .app-search.open {
+        input {
+            border-width: 0px;
+        }
     }
 }
 @media screen and (max-width: $mobile-w) {
@@ -34,8 +36,24 @@
             padding: 0 $mapa/4.5;
         }
         .app-search.open {
-            position: absolute;
-            right: 0;
+            position: fixed;
+            right: 0;top: 0;bottom: 0;left: 0;
+            background-color: transparent;
+            // width: 100%;
+            // height: $header-height;
+            // display: flex;align-items: center;justify-content: flex-end;
+            .ezy-search {
+                margin-top: $mapa/3.5;
+                display: flex;width: 100%;
+                justify-content: flex-end;
+                .ezy-button {
+                    background-color: #fff;
+                    color: #000;
+                }
+                input {
+                    flex: 1;
+                }
+            }
         }
     }
 }
