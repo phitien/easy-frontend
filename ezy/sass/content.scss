@@ -55,6 +55,20 @@
     }
 }
 
+@media screen and (max-width: $table-w) {
+    .content {
+        .content-wrapper {
+        }
+        .content-left {
+            width: $table-content-left-width;
+        }
+        .content-main {
+        }
+        .content-right {
+            width: $table-content-right-width;
+        }
+    }
+}
 @media screen and (max-width: $mobile-w) {
     .content {
         .content-wrapper {

@@ -20,6 +20,15 @@ const connectFn = function(config, cb) {
             return cuuid != uuid ? data.user : null
         }).filter(c => c)))
     })
+    app.use(`/${config.appname}/inbox`, (req, res, next) => {
+        var token = req.headers[config.authTokenKey]
+        res.setHeader('Content-Type', 'application/json')
+        res.send(JSON.stringify(Array.from(sockets).map(s => {
+            var cuuid = req.headers[config.uuidKey]
+            var [uuid, data] = s
+            return cuuid != uuid ? data.user : null
+        }).filter(c => c)))
+    })
 
     const broadcastConnect = (socket) => socket.emit('connect', {title: 'connection required', message: `Please connect to the ezy system`})
     const userRegister = (socket, user) => {

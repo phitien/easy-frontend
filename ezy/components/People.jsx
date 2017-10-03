@@ -1,6 +1,5 @@
 import React from 'react'
 import {ToggleCmp} from 'ezy/common'
-import {Menu} from './Menu'
 import {Button} from './input'
 
 export class People extends ToggleCmp {

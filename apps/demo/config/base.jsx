@@ -6,7 +6,8 @@ module.exports = exports = {
         applinks: '/static/demo/data/applinks.json',
         table: '/static/demo/data/table.json',
         login: '/static/demo/data/login.json',
-        people: '/demo/people'
+        people: '/demo/people',
+        inbox: '/demo/inbox'
     },
     standardUserData: {
         firstName: null,
