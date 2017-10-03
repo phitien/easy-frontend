@@ -135,7 +135,7 @@ export class PubSubContainer extends BaseContainer {
         this.utils.trigger(showPageIndicator ? 'show_pageIndicator' : 'hide_pageIndicator', showPageIndicator, this)
     }
     set hideModals(hideModals) {
-        hideModals ? this.utils.trigger('hide_modals', hideModals, this) : false
+        this.utils.trigger('hide_modals', hideModals, this)
     }
     login(token, type) {
         if (token) {

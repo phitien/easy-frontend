@@ -19,12 +19,17 @@ body {
         }
     }
     input[type=text],input[type=number],input[type=password],input[type=url],input[type=email] {
-        border: 1px solid $input-bd-color;margin: 0;padding: 0 3px;
+        margin: 0;padding: 0 3px;
+        border: 0px solid $input-bd-color;
         outline: none;
         height: $input-height;
         font-size: $font-size;
         vertical-align: top;
-        box-shadow: 1px 3px 7px rgba(0,0,0,0.3);
+        box-sizing: content-box;
+        box-shadow: $shadow;
+        &:hover {
+            box-shadow: $shadow-hover;
+        }
     }
     table {
         border-spacing: 0;

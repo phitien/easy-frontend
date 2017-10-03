@@ -32,7 +32,7 @@ export class Page extends Cmp {
             <Notifier/>,
             <People/>,
             <UserBox/>,
-            <Help/>,
+            // <Help/>,
         ]},
         {name: 'footerCmps', title: 'Footer components', type: 'Text', value: [
             <AppVersion/>,
@@ -107,8 +107,9 @@ export class Page extends Cmp {
                 this.refresh()
             },
             hide_modals: e => {
+                let [fn] = e.detail
                 this.modals = []
-                this.refresh()
+                this.refresh(typeof fn == 'function' ? fn : null)
             },
             ask_to_remove_modal: e => {
                 let [modal] = e.detail

@@ -9,9 +9,19 @@
     > * {
         margin: 0 $mapa/4;
     }
+    .logo {
+        display: flex;align-items: center;justify-content: center;
+        .logo-image {
+            display: inline-block;
+            height: $line-height;
+            width: $line-height;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
     .app-name {
         h1,h2,h3,h4 {
-            font-size: 18px;
+            font-size: 16px;
             margin: 0;
             padding: 0;
         }
@@ -34,14 +44,16 @@
         .ezy-button {
             margin: 0 0;
             padding: 0 $mapa/4.5;
+            background-color: transparent;
+            &:hover {
+                background-color: transparent;
+                color: #fff;
+            }
         }
         .app-search.open {
             position: fixed;
             right: 0;top: 0;bottom: 0;left: 0;
             background-color: transparent;
-            // width: 100%;
-            // height: $header-height;
-            // display: flex;align-items: center;justify-content: flex-end;
             .ezy-search {
                 margin-top: $mapa/3.5;
                 display: flex;width: 100%;

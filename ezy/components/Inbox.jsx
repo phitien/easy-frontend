@@ -3,6 +3,8 @@ import {RegCmp} from 'ezy/common'
 import {Button} from './input'
 
 export class Inbox extends RegCmp {
+    renderNagativeCmp = () => {return null}
+
     get cmpClassName() {return 'inbox'}
     get shouldCmpRender() {return this.isLogged}
     get children() {

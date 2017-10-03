@@ -2,7 +2,7 @@
     display: inline-flex;align-items: center;justify-content: flex-start;
     height: $button-height;margin: 0;padding: 0 $mapa/4;
     cursor: pointer;border: none;
-    box-shadow: 1px 3px 7px rgba(0,0,0,.3);
+    box-shadow: $shadow;
     color: $button-color;
     background-color: $button-bg-color;
     outline: none;
@@ -19,7 +19,7 @@
         }
     }
     &:hover,&:focus {
-        box-shadow: 1px 5px 7px rgba(0,0,0,.3);
+        box-shadow: $shadow-hover;
         outline: none;
     }
 }

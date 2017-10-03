@@ -25,6 +25,15 @@
         color: $content-main-color;
         background-color: $content-main-bg-color;
         display: flex;flex-direction: column;
+        > div {
+            margin: $mapa/4  0;
+            &:first-child {
+                margin: 0 0 $mapa/4 0;
+            }
+            &:last-child {
+                margin: $mapa/4 0 0 0;
+            }
+        }
     }
     .content-right {
         display: none;

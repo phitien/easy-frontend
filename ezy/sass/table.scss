@@ -4,23 +4,23 @@
     > * {width: 100%;}
     .ezy-table-control {
         display: flex;align-items: center;justify-content: flex-start;
+        margin-bottom: $mapa/3;
         i {cursor: pointer;}
     }
     .ezy-table-page-size {
         display: flex;align-items: center;
         input {
-            width: 30px;
+            width: 33px;
             padding: 0 $mapa/4;
-            border: 1px solid $bd-color;
             margin-right: 3px;
+            text-align: center;
         }
     }
     .ezy-table-pagination {
         display: flex;align-items: center;justify-content: flex-start;
-        .ezy-select {width: 30px;}
+        .ezy-select {width: 45px;}
         input {
             padding: 0 $mapa/4;
-            border: 1px solid $bd-color;
         }
     }
     .ezy-table-header,.ezy-table-body,.ezy-table-footer {

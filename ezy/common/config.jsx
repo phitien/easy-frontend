@@ -42,6 +42,7 @@ export class Config {
             defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
             apiBaseUrl: '',
             cansignup: false,
+            applogo: '/static/images/ezy-default.png',
             api: {},
             standardUserData: {
                 first_name: null,
@@ -59,13 +60,15 @@ export class Config {
                 // clientToken: '71aabf44dba2903aa2174a566021d009',
                 autoLogAppEvents: true,
                 xfbml: true,
-                version: 'v2.10'
+                version: 'v2.10',
+                logginErrorMessage: `Can not login with facebook at this moment!`
             },
             google: {
                 cookiepolicy: 'single_host_origin',
                 scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read',
                 clientid: '79031405463-57jk2oa1f90lh6j25j2f81vicdlv5oju.apps.googleusercontent.com',
-                clientsecret: '5CfFa3pAYG1F-3l0rm6-n6ga'
+                clientsecret: '5CfFa3pAYG1F-3l0rm6-n6ga',
+                logginErrorMessage: `Can not login with google at this moment!`
             }
         }, ...args)
         window.config = this

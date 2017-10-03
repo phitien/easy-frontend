@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form} from './Form'
-import {Text, Password, Button} from './input'
+import {Email, Password, Button} from './input'
 import {A, Div, H1} from './html'
 
 export class SignInSignUpForm extends Form {
@@ -19,7 +19,7 @@ export class SignInSignUpForm extends Form {
             this.title ? <H1 cmpId='signinsignup-form-title'>{this.title}</H1> : null,
             this.facebook ? <Button cmpId='signinsignup-form-facebook' className='signinsignup-form-facebook' onClick={this.fbLogin}><i className='fa fa-facebook'></i> <span>{this.facebook}</span></Button> : null,
             this.google ? <Button cmpId='signinsignup-form-google' className='signinsignup-form-google' onClick={this.ggLogin}><i className='fa fa-google'></i> <span>{this.google}</span></Button> : null,
-            <Text cmpId='signinsignup-form-email' placeholder={this.email}/>,
+            <Email cmpId='signinsignup-form-email' placeholder={this.email}/>,
             <Password cmpId='signinsignup-form-password' placeholder={this.password}/>,
             <Div className='signinsignup-form-buttons'>
                 {this.signin ? <Button cmpId='signinsignup-form-signin' text='Sign In' type='submit'/> : null}
@@ -63,27 +63,35 @@ export class SignInSignUpForm extends Form {
             })
         }
     }
-    ggLogin = e => {}
+    ggLogin = e => {
+        if (typeof gapi == 'undefined')
+            this.hideModals = e => this.lastMessage = {text: this.config.google.logginErrorMessage, type: 'error'}
+    }
     fbLogin = e => {
-        FB.getLoginStatus(res => {
-            const update = res => {
-                let token = res.authResponse.accessToken
-                if (res.authResponse) {
-                    FB.api('/me', {
-                        scope: 'email',
-                        info_fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name',
-                        fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name'
-                    }, profile => {
-                        FB.api('/me/picture?width=60&height=60', res => {
-                            dispatchEvent(new CustomEvent('user_logged_in', {detail: ['facebook', token, this.utils.assign({}, profile, {uuid: `facebook-${profile.id}`, avatar: res.data.url})]}))
-                            this.showPageIndicator = false
+        try {
+            FB.getLoginStatus(res => {
+                const update = res => {
+                    let token = res.authResponse.accessToken
+                    if (res.authResponse) {
+                        FB.api('/me', {
+                            scope: 'email',
+                            info_fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name',
+                            fields: 'id,email,birthday,first_name,gender,hometown,last_name,link,locale,middle_name,name,short_name'
+                        }, profile => {
+                            FB.api('/me/picture?width=60&height=60', res => {
+                                dispatchEvent(new CustomEvent('user_logged_in', {detail: ['facebook', token, this.utils.assign({}, profile, {uuid: `facebook-${profile.id}`, avatar: res.data.url})]}))
+                                this.showPageIndicator = false
+                            })
                         })
-                    })
+                    }
                 }
-            }
-            if (res.authResponse) update(res)
-            else FB.login(res => update)
-        })
+                if (res.authResponse) update(res)
+                else FB.login(res => update)
+            })
+        }
+        catch(e) {
+            this.hideModals = e => this.lastMessage = {text: this.config.facebook.logginErrorMessage, type: 'error'}
+        }
     }
     doSubmit = e => {
         this.utils.request(this.action)

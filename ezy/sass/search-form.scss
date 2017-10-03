@@ -1,3 +1,15 @@
 .search-form {
-    display: flex;align-items: center;
+    display: flex;align-items: center;justify-content: flex-start;
+    > * {
+        margin: 0 $mapa/8;
+        &:first-child {
+            margin: 0 $mapa/8 0 0;
+        }
+        &:last-child {
+            margin: 0 0 0 $mapa/8;
+        }
+    }
+    .ezy-text {
+        flex: 1;
+    }
 }

@@ -51,14 +51,16 @@ export class Application {
             this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
             this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => {
                 setTimeout(e => {
-                    gapi.load('auth2', e => {
-                        gapi.auth2.init(this.config.google)
-                        .then(auth2 => {
-                            cacheAuth2 = auth2
-                            if (typeof cb == 'function') cb({detail: [cacheAuth2]})
-                            else this.utils.trigger('google_loaded', cacheAuth2)
+                    if (typeof gapi != 'undefined') {
+                        gapi.load('auth2', e => {
+                            gapi.auth2.init(this.config.google)
+                            .then(auth2 => {
+                                cacheAuth2 = auth2
+                                if (typeof cb == 'function') cb({detail: [cacheAuth2]})
+                                else this.utils.trigger('google_loaded', cacheAuth2)
+                            })
                         })
-                    })
+                    }
                 }, 500)
             })
         }
@@ -92,17 +94,23 @@ export class Application {
         this.livereload_init()
     }
     render() {
-        if (this.store && this.container) {
-            ReactDOM.render(
-                <Provider store={this.store}>
-                    {this.renderApplication()}
-                </Provider>
-                , document.getElementById(this.container)
-            )
+        try {
+            if (this.store && this.container) {
+                ReactDOM.render(
+                    <Provider store={this.store}>
+                        {this.renderApplication()}
+                    </Provider>
+                    , document.getElementById(this.container)
+                )
+            }
+            else if (!this.store) throw `${this.klass}: No store provided`
+            else if (!this.container) throw `${this.klass}: No container provided`
         }
-        else if (!this.store) throw `${this.klass}: No store provided`
-        else if (!this.container) throw `${this.klass}: No container provided`
+        catch(e) {console.log(e)}
+        this.afterRender()
     }
+    refresh = e => this.render()
+    resize = e => this.refresh()
     dispatch() {
         new Subscriber({
             unload: this.unload,
@@ -114,8 +122,7 @@ export class Application {
             cmp_mounted: this.cmp_mounted,
             cmp_unmounted: this.cmp_unmounted,
         })
-        try {this.render()} catch(e) {console.log(e)}
-        this.afterRender()
+        this.render()
     }
 }
 
