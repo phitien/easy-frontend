@@ -9,14 +9,16 @@ export class Text extends Cmp {
             if (e.key == 'Enter') this.onEnter(e)
         }},
         {section: 'cmp', name: 'onEnter', title: 'onEnter', transform: true, type: 'Text', value: function(e) {}},
+        {section: 'cmp', name: 'onChange', title: 'onChange', transform: true, type: 'Text', value: function(e) {}},
     ])}
     get cmpClassName() {return 'ezy-text'}
     get inputProps() {
         return this.utils.assign({}, this.utils.exclude(this.props, 'value', 'ref', 'type', 'onEnter', 'onKeyPress', 'onChange', 'style', 'cmpId', 'className'))
     }
     get output() {return this.value}
-    get onChange() {return e => {
+    get onInputChange() {return e => {
         this.valueR = e.target.value
+        this.onChange(e)
     }}
     reset = e => {
         this.value = this.input.value = ''
@@ -24,7 +26,8 @@ export class Text extends Cmp {
     focus = e => this.dom.focus()
     blur = e => this.dom.blur()
     render = () => <input type={this.type} ref={e => this.input = e}
-        onChange={this.onChange} {...this.inputProps}
+        {...this.inputProps}
+        onChange={this.onInputChange} 
         onKeyPress={this.onKeyPress}
         id={this.cmpId} className={this.className} style={this.tagStyle}/>
 }

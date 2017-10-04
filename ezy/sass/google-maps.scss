@@ -1,3 +1,33 @@
 .ezy-maps {
-    flex: 1;
+    $ezy-maps-autocomplete-top: 10px;
+    $ezy-maps-autocomplete-right: 53px;
+    $ezy-maps-autocomplete-input-w: 230px;
+    $ezy-maps-info-panel-color: #000;
+    $ezy-maps-info-panel-bg-color: rgba(256,256,256,5);
+    flex: 1;display: flex;flex-direction: column;align-items: center;justify-content: center;
+    position: relative;
+    .ezy-maps-container {
+        flex: 1;width: 100%;
+    }
+    .ezy-autocomplete {
+        position: absolute;z-index: 1;
+        top: $ezy-maps-autocomplete-top;
+        right: $ezy-maps-autocomplete-right;
+        input {width: 230px;}
+    }
+    .ezy-maps-info-panel {
+        position: absolute;z-index: 1;
+        top: $ezy-maps-autocomplete-top + $button-height + $mapa/3;
+        right: $ezy-maps-autocomplete-right;
+        width: $ezy-maps-autocomplete-input-w + 35px;
+        color: $ezy-maps-info-panel-color;
+        background-color: $ezy-maps-info-panel-bg-color;
+        display: flex;flex-direction: column;align-items: flex-start;justify-content: flex-start;
+        .ezy-maps-info-panel-place-icon {
+            width: 100%;min-height: 100px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+    }
 }

@@ -5,6 +5,7 @@ import {Button} from './input'
 
 export class AppLinks extends ToggleCmp {
     get cmpClassName() {return 'app-links'}
+    get selector() {return `#${this.cmpId} .app-links-menu`}
     get children() {
         return [
             <Button icon='menu' onClick={this.onToggle}/>,
@@ -14,5 +15,4 @@ export class AppLinks extends ToggleCmp {
             /></div> : null
         ]
     }
-    get selector() {return `#${this.cmpId} .app-links-menu`}
 }

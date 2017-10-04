@@ -16,6 +16,7 @@ export class People extends ToggleCmp {
         return p => this.lastInbox = {from: this.utils.user.data, to: p, message: null}
     }
     get animation() {return {direction: 'up'}}
+    get selector() {return `#${this.cmpId} .people-list`}
     get children() {
         return [
             <Button icon='people' onClick={this.onToggle}/>,
@@ -28,5 +29,4 @@ export class People extends ToggleCmp {
             </div>
         ]
     }
-    get selector() {return `#${this.cmpId} .people-list`}
 }

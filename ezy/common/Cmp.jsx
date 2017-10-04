@@ -340,6 +340,7 @@ export class FlexCmp extends RegCmp {
 export class ToggleCmp extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
+        {section: 'cmp', name: 'forceOpen', title: 'Force Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
         {section: 'api', name: 'afterShow', transform: true, title: 'After Show', type: 'Text', value: function(e) {}, required: false, desc: null},
         {section: 'api', name: 'afterHide', transform: true, title: 'After Hide', type: 'Text', value: function(e) {}, required: false, desc: null},
@@ -356,8 +357,10 @@ export class ToggleCmp extends FlexCmp {
     }
     get onHide() {
         return e => {
-            this.open = false
-            jQuery(this.selector).hide('slide', this.animation, this.duration)
+            if (!this.forceOpen) {
+                this.open = false
+                jQuery(this.selector).hide('slide', this.animation, this.duration)
+            }
         }
     }
     get onToggle() {
