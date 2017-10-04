@@ -3,4 +3,5 @@
 , {"url": "/table", "title": "Table"}
 , {"url": "/messages", "title": "Messages"}
 , {"url": "/chart", "title": "Chart"}
+, {"url": "/map", "title": "Map"}
 ]

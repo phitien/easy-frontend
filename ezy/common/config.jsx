@@ -64,6 +64,7 @@ export class Config {
                 logginErrorMessage: `Can not login with facebook at this moment!`
             },
             google: {
+                apikey: 'AIzaSyDsOJV9wqYd2fbECyhqNJfeHmNEUgB7-ug',
                 cookiepolicy: 'single_host_origin',
                 scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read',
                 clientid: '79031405463-57jk2oa1f90lh6j25j2f81vicdlv5oju.apps.googleusercontent.com',

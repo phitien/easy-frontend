@@ -6,7 +6,7 @@ export class ChartPage extends Page {
     get pageClassName() {return 'page-barChart'}
     get leftPanel() {
         // return 'LeftPanel'
-   }
+    }
     get mainPanel() {
         return <div className=''>
             <div className='row col-sm-12'>

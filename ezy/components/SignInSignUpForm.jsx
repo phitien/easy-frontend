@@ -30,7 +30,7 @@ export class SignInSignUpForm extends Form {
     get pubsub() {
         return this.utils.assign(super.pubsub, {
             facebook_loaded: this.facebook_loaded,
-            google_loaded: this.google_loaded,
+            google_platform_loaded: this.google_platform_loaded,
         })
     }
     action = this.config.api.login
@@ -41,7 +41,7 @@ export class SignInSignUpForm extends Form {
         this.hideModals = true
     }
     facebook_loaded = e => {}
-    google_loaded = e => {
+    google_platform_loaded = e => {
         let [auth2] = e.detail
         if (typeof auth2 != 'undefined') {
             let element = this.elements['signinsignup-form-google']

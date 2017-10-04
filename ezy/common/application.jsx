@@ -22,61 +22,62 @@ export class Application {
     set container(v) {this.__container = v}
     get store() {return this.__store}
     set store(v) {this.__store = v}
+    get loadingTime() {return this.config.loadingTime || 100}
 
     livereload_init = e => {
-        const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadJs(`//${location.hostname}:${this.config.livereload}/livereload.js?snipver=1`, 'livereload', e => {
-            if (typeof cb == 'function') cb()
-            else this.utils.trigger('livereload_loaded')
-        })
-    }
-    facebook_init = e => {
-        const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadJs('', 'fbAsyncInit', null, `
-            window.fbAsyncInit = function() {
-                FB.init(${JSON.stringify(this.config.facebook)})
-                FB.AppEvents.logPageView()
+        const [cb, t] = e ? e.detail || [] : []
+        this.utils.loadJs('', 'livereload_callback', null, `
+            window.livereload_callback = function() {
+                setTimeout(e => dispatchEvent(new CustomEvent('livereload_loaded')), ${t || this.loadingTime})
             }
         `)
-        this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', e => {
-            setTimeout(e => {
-                if (typeof cb == 'function') cb()
-                else this.utils.trigger('facebook_loaded')
-            }, 500)
-        })
+        this.utils.loadJs(`//${location.hostname}:${this.config.livereload}/livereload.js?snipver=1`, 'livereload', cb || livereload_callback)
     }
-    google_init = e => {
-        const cb = e && e.detail.length ? e.detail[0] : null
-        if (!cacheAuth2) {
-            this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
-            this.utils.loadJs('https://apis.google.com/js/platform.js', 'google-platform', e => {
+    facebook_init = e => {
+        const [cb, t] = e ? e.detail || [] : []
+        this.utils.loadJs('', 'fbAsyncInit', null, `
+            window.fbAsyncInit = function() {
                 setTimeout(e => {
-                    if (typeof gapi != 'undefined') {
-                        gapi.load('auth2', e => {
-                            gapi.auth2.init(this.config.google)
-                            .then(auth2 => {
-                                cacheAuth2 = auth2
-                                if (typeof cb == 'function') cb({detail: [cacheAuth2]})
-                                else this.utils.trigger('google_loaded', cacheAuth2)
-                            })
-                        })
-                    }
-                }, 500)
-            })
-        }
-        else {
-            if (typeof cb == 'function') cb({detail: [cacheAuth2]})
-            else this.utils.trigger('google_loaded', cacheAuth2)
-        }
+                    FB.init(${JSON.stringify(this.config.facebook)})
+                    FB.AppEvents.logPageView()
+                    dispatchEvent(new CustomEvent('facebook_loaded'))
+                }, ${t || this.loadingTime})
+            }
+        `)
+        this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', cb || fbAsyncInit)
+    }
+    google_platform_init = e => {
+        const [cb, t] = e ? e.detail || [] : []
+        this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
+        this.utils.loadJs('', 'google_platform_callback', null, `
+            window.google_platform_callback = function() {
+                setTimeout(e => gapi.load('auth2', e => {
+                    gapi.auth2.init(${JSON.stringify(this.config.google)})
+                    .then(auth2 => {
+                        dispatchEvent(new CustomEvent('google_platform_loaded', auth2))
+                    })
+                }), ${t || this.loadingTime})
+            }
+        `)
+        this.utils.loadJs('https://apis.google.com/js/platform.js?callback=google_platform_loaded', 'google-platform', cb || google_platform_callback)
+    }
+    google_maps_init = e => {
+        const [cb, t] = e ? e.detail || [] : []
+        this.utils.loadJs('', 'google_maps_callback', null, `
+            window.google_maps_callback = function() {
+                setTimeout(e => dispatchEvent(new CustomEvent('google_maps_loaded')), ${t || this.loadingTime})
+            }
+        `)
+        this.utils.loadJs(`//maps.googleapis.com/maps/api/js?key=${this.config.google.apikey}&libraries=places&callback=google_maps_callback`, 'google-maps-api', cb || google_maps_callback)
     }
     socket_init = e => {
-        const cb = e && e.detail.length ? e.detail[0] : null
-        this.utils.loadJs(`/socket.io/socket.io.js`, 'socket-io', e => {
-            setTimeout(e => {
-                if (typeof cb == 'function') cb()
-                else this.utils.trigger('socket_loaded')
-            }, 500)
-        })
+        const [cb, t] = e ? e.detail || [] : []
+        this.utils.loadJs('', 'socket_callback', null, `
+            window.socket_callback = function() {
+                setTimeout(e => dispatchEvent(new CustomEvent('socket_loaded')), ${t || this.loadingTime})
+            }
+        `)
+        this.utils.loadJs(`/socket.io/socket.io.js`, 'socket-io', cb || socket_callback)
     }
     cmp_mounted = e => {
         let [cmp] = e.detail
@@ -89,7 +90,7 @@ export class Application {
     renderApplication() {throw `${this.klass}: No children`}
     afterRender = e => {
         this.facebook_init()
-        this.google_init()
+        this.google_platform_init()
         this.socket_init()
         this.livereload_init()
     }
@@ -117,7 +118,8 @@ export class Application {
             resize: this.resize,
             refresh: this.refresh,
             facebook_init: this.facebook_init,
-            google_init: this.google_init,
+            google_platform_init: this.google_platform_init,
+            google_maps_init: this.google_maps_init,
             socket_init: this.socket_init,
             cmp_mounted: this.cmp_mounted,
             cmp_unmounted: this.cmp_unmounted,
