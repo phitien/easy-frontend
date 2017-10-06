@@ -7,7 +7,7 @@ $primary2: #000;
 
 $color: #000;
 $bg-color: #fff;
-$bd-color: #000;
+$bd-color: #ccc;
 
 $header-color: #fff;
 $header-bg-color: #000;
@@ -43,6 +43,9 @@ $select-options-bd-color: #000;
 $select-options-bg-color: rgba(256,256,256,.95);
 $select-options-bg-color-hover: rgba(0,0,0,.95);
 
+$table-color: #000;
+$table-bg-color: #fff;
+$table-bd-color: $bd-color;
 $table-row-header-color: #fff;
 $table-row-header-bg-color: rgba(0,0,0,.7);
 $table-row-odd-color: #000;

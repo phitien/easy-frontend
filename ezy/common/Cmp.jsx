@@ -177,9 +177,6 @@ export class ApiContainer extends PubSubContainer {
     static autoProps() {return super.autoProps().concat([
         {section: 'api', name: 'apiUrl', title: 'Url', type: 'Text', value: null, required: false, desc: null},
         {section: 'api', name: 'apiParams', title: 'Params', type: 'Text', value: null, required: false, desc: null},
-        {section: 'api', name: 'apiParamsRefine', transform: true, title: 'Params', type: 'Text', value: function(p) {
-            return p
-        }, required: false, desc: null},
         {section: 'api', name: 'apiMethod', title: 'Method', type: 'SelectField', value: 'get', required: false, desc: null, options: ['get', 'post', 'put', 'delete', 'options']},
         {section: 'api', name: 'apiDataField', title: 'Data field', type: 'Text', value: null, required: false, desc: null},
         {section: 'api', name: 'apiFailureMessage', title: 'Failure message', type: 'Text', value: 'Could not load data.', required: false, desc: null},
@@ -205,13 +202,14 @@ export class ApiContainer extends PubSubContainer {
         arr.forEach(k => data = data && data.hasOwnProperty(k) ? data[k] : undefined)
         return data
     }
+    apiRefine(p) {return p}
     apiLoad() {
         if (this.apiCanLoad()) {
             let apiParams = this.apiParams
             if (typeof apiParams == 'string' && this.regCmps.has(apiParams)) apiParams = this.regCmps.get(apiParams).output
             else if (typeof apiParams == 'function') apiParams = apiParams()
             this.utils.request(this.apiUrl, this.apiMethod)
-            .data(this.apiParamsRefine(apiParams))
+            .data(this.props.apiRefine ? this.props.apiRefine(this.apiRefine(apiParams)) : this.apiRefine(apiParams))
             .before(e => {
                 if (this.apiPageIndicator) this.pageIndicator = true
                 else if (this.apiCmpIndicator) this.cmpIndicator = true

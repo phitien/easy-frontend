@@ -3,7 +3,7 @@ import {Cmp} from 'ezy/common'
 import {TableCell} from './TableCell'
 
 export class TableRow extends Cmp {
-    get cmpClassName() {return `ezy-table-row`}
+    get cmpClassName() {return this.owner.rowClassName}
     get owner() {return this.props.owner}
     get cols() {return this.owner.cols}
     get rows() {return this.owner.rows}

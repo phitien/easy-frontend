@@ -1,13 +1,22 @@
 .ezy-table {
+    color: $table-color;
+    background-color: $table-bg-color;
     overflow: hidden;flex: 1;
     display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
     > * {width: 100%;}
+    .ezy-table-wrapper {
+        overflow-y: hidden;
+        overflow-x: auto;
+        flex: 1;display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
+        border: 1px solid $table-bd-color;
+        > * {width: 100%;}
+    }
     .ezy-table-control {
         display: flex;align-items: center;justify-content: flex-start;
         margin-bottom: $mapa/3;
         i {cursor: pointer;}
     }
-    .ezy-table-page-size {
+    .ezy-table-control-page-size {
         display: flex;align-items: center;
         input {
             width: 33px;
@@ -16,7 +25,7 @@
             text-align: center;
         }
     }
-    .ezy-table-pagination {
+    .ezy-table-control-pagination {
         display: flex;align-items: center;justify-content: flex-start;
         .ezy-select {width: 45px;}
         input {
@@ -25,7 +34,10 @@
     }
     .ezy-table-header,.ezy-table-body,.ezy-table-footer {
         width: 100%;
-        table {table-layout: fixed;}
+        table {
+            td {margin: 0;padding: 0;}
+            tr {border-bottom: 1px solid $table-bd-color;}
+        }
     }
     .ezy-table-body {
         flex: 1;overflow: auto;
@@ -44,7 +56,6 @@
                     background-color: $table-row-hover-bg-color;
                 }
             }
-            td {}
             td:hover {
                 color: $table-cell-hover-color;
                 background-color: $table-cell-hover-bg-color;
@@ -60,7 +71,7 @@
             position: relative;
             &:before {
                 content: '';display: block;width: 0;height: 0;
-                position: absolute;top: 0;
+                position: absolute;top: 0;left: 50%;margin-left: -3px;
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
                 border-bottom-color: inherit;
@@ -74,11 +85,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        left: 0 !important;
-        height: 24px;
+        height: 24px;padding: 0 $mapa/6;
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        border-left: 1px solid $table-bd-color;
+    }
+    td:first-child .ezy-table-cell-wrapper {
+        border-left: 1px solid transparent;
     }
     .ui-resizable-w {
         display: none;
@@ -92,9 +106,9 @@
     .ezy-table-cell-title {
         cursor: pointer;width: 100%;
     }
-    .ezy-table-columns-settings {
+    .ezy-table-control-columns-settings {
         position: relative;
-        .ezy-table-columns-settings-list {
+        .ezy-table-control-columns-list {
             color: $table-columns-settings-list-color;
             background-color: $table-columns-settings-list-bg-color;
             position: absolute;

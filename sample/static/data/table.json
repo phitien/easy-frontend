@@ -1,24 +1,35 @@
 {
     "sortby": "field2",
     "sortdir": "asc",
-    "page": 2,
+    "page": 1,
     "total": 200,
     "size": 20,
     "columns": [
-        {"type": "checkbox", "title": "Col1", "show": true},
+        {"type": "checkbox", "title": "Col1", "show": true, "width": 30},
         {"field": "field1", "title": "Col2", "show": true, "resizable": true, "localsort": true},
         {"field": "field2", "title": "Col3", "show": true, "resizable": true, "serversort": true},
-        {"type": "custom", "title": "Col3", "show": true, "resizable": true, "localsort": true, "data": "data('field1') + data('field2')"}
+        {"type": "custom", "title": "Col3", "show": true, "resizable": true, "localsort": true, "flex": 2, "data": "data('field1') + data('field2')"}
     ],
     "rows": [
-        {"field1": "cell1.1", "field2": "cell1.2"},
-        {"field1": "cell2.1", "field2": "cell2.2"},
-        {"field1": "cell3.1", "field2": "cell3.2"},
-        {"field1": "cell4.1", "field2": "cell4.2"},
-        {"field1": "cell5.1", "field2": "cell5.2"},
-        {"field1": "cell6.1", "field2": "cell6.2"},
-        {"field1": "cell7.1", "field2": "cell7.2"},
-        {"field1": "cell8.1", "field2": "cell8.2"},
-        {"field1": "cell8.1", "field2": "cell8.2"}
+        {"field1": "cell01.1", "field2": "cell01.2"},
+        {"field1": "cell02.1", "field2": "cell02.2"},
+        {"field1": "cell03.1", "field2": "cell03.2"},
+        {"field1": "cell04.1", "field2": "cell04.2"},
+        {"field1": "cell05.1", "field2": "cell05.2"},
+        {"field1": "cell06.1", "field2": "cell06.2"},
+        {"field1": "cell07.1", "field2": "cell07.2"},
+        {"field1": "cell08.1", "field2": "cell08.2"},
+        {"field1": "cell09.1", "field2": "cell09.2"},
+        {"field1": "cell10.1", "field2": "cell10.2"},
+        {"field1": "cell11.1", "field2": "cell11.2"},
+        {"field1": "cell12.1", "field2": "cell12.2"},
+        {"field1": "cell13.1", "field2": "cell13.2"},
+        {"field1": "cell14.1", "field2": "cell14.2"},
+        {"field1": "cell15.1", "field2": "cell15.2"},
+        {"field1": "cell16.1", "field2": "cell16.2"},
+        {"field1": "cell17.1", "field2": "cell17.2"},
+        {"field1": "cell18.1", "field2": "cell18.2"},
+        {"field1": "cell19.1", "field2": "cell19.2"},
+        {"field1": "cell20.1", "field2": "cell20.2"}
     ]
 }

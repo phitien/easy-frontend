@@ -8,7 +8,7 @@ export class TableControl extends Cmp {
         {section: 'cmp', name: 'showColumnsSetting', title: 'showColumnsSetting', type: 'Select', value: null, required: false, desc: null, options: [true, false]},
         {section: 'cmp', name: 'columns', title: 'Columns', type: 'Text', value: [], required: false, desc: null},
     ])}
-    get cmpClassName() {return `ezy-table-control`}
+    get cmpClassName() {return this.owner.controlClassName}
     get owner() {return this.props.owner}
     get cols() {return this.owner.cols}
     get allcols() {return this.owner.allcols}
@@ -49,21 +49,21 @@ export class TableControl extends Cmp {
     }
     cmpDidMount() {
         addEventListener('click', e => {
-            if (!e.target.closest('.ezy-table-columns-settings-list')) this.showColumnsSettingR = false
+            if (!e.target.closest(`.${this.cmpClassName}-columns-list`)) this.showColumnsSettingR = false
         }, true)
     }
     renderPageSize() {
-        return <div className='ezy-table-page-size'>
+        return <div className={`${this.cmpClassName}-page-size`}>
             <Number ref={e => this.pageSize = e} step={5} defaultValue={this.owner.pageSize}/> per page
         </div>
     }
     renderPageInfo() {
-        return <div className='ezy-table-page-info'>
-                Total: <span className='ezy-table-page-info-total'>{this.owner.total}</span>
+        return <div className={`${this.cmpClassName}-page-info`}>
+                Total: <span className={`${this.cmpClassName}-page-info-total`}>{this.owner.total}</span>
             </div>
     }
     renderPagination() {
-        return <div className='ezy-table-pagination'>
+        return <div className={`${this.cmpClassName}-pagination`}>
                 <i className='material-icons' onClick={this.goToStart}>first_page</i>
                 <i className='material-icons' onClick={this.goToPrev}>chevron_left</i>
                 <Select ref={e => this.page = e}
@@ -75,10 +75,10 @@ export class TableControl extends Cmp {
             </div>
     }
     renderColumnsSetting() {
-        return <div className='ezy-table-columns-settings'>
+        return <div className={`${this.cmpClassName}-columns-settings`}>
                 <i className='material-icons' onClick={e => this.showColumnsSettingR = true}>settings</i>
                 {!this.showColumnsSetting ? null :
-                <div className='ezy-table-columns-settings-list'>{this.allcols.map((c,i) =>
+                <div className={`${this.cmpClassName}-columns-list`}>{this.allcols.map((c,i) =>
                 <Checkbox key={i} defaultChecked={c.show} label={c.title || c.name || c.field}
                     onChange={v => {
                         c.show = v

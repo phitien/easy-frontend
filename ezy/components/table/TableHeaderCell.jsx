@@ -3,7 +3,7 @@ import {Cmp} from 'ezy/common'
 import {Checkbox} from '../input'
 
 export class TableHeaderCell extends Cmp {
-    get cmpClassName() {return `ezy-table-cell`}
+    get cmpClassName() {return this.owner.cellClassName}
     get owner() {return this.props.owner}
     get cols() {return this.owner.cols}
     get rows() {return this.owner.rows}
