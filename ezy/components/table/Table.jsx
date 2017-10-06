@@ -40,7 +40,13 @@ export class Table extends FlexCmp {
     get rowClassName() {return `${this.cmpClassName}-row`}
     get cellClassName() {return `${this.cmpClassName}-cell`}
     get output() {return {selected: this.rows.filter(r => r.selected)}}
-    get cols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns).filter(c => c && c.show)}
+    get cols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)
+        .filter(c => c && c.show && (c.type != 'group' || (c.children && c.children.length)))}
+    get actualCols() {return this.cols.reduce((rs,c) => {
+        rs = rs.concat(c.type == 'group' ? c.children : c)
+        return rs
+    }, [])}
+    get hasGroup() {return this.cols.find(c => c.type == 'group')}
     get allcols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)}
     get lines() {
         if (!this.cmpData || !this.cmpData.rows || !this.cmpData.rows.length) {
@@ -96,7 +102,7 @@ export class Table extends FlexCmp {
     get onSort() {
         return e => {
             let index = e.target.getAttribute('data-index')
-            let col = this.cols[index]
+            let col = this.actualCols[index]
             this.sortby = col
             this.sortdir = !this.sortdir ? 'asc' : this.sortdir == 'asc' ? 'desc' : ''
             if (col.localsort) this.localsort(true)
@@ -108,18 +114,18 @@ export class Table extends FlexCmp {
     get height() {return this.jDom.innerHeight()}
     get colFlex() {return c => typeof c.width == 'number' && c.width > 0 ? 0 : c.flex && c.flex > 0 && c.flex || 1}
     get colWidth() {return c => typeof c.width == 'number' && c.width > 0 && c.width || 0}
-    get totalFlex() {return this.cols.reduce((rs, c) => rs += this.colFlex(c), 0)}
-    get totalFlexWidth() {return this.cols.reduce((rs, c) => rs -= this.colWidth(c), this.width)}
+    get totalFlex() {return this.actualCols.reduce((rs, c) => rs += this.colFlex(c), 0)}
+    get totalFlexWidth() {return this.actualCols.reduce((rs, c) => rs -= this.colWidth(c), this.width)}
     apiRefine(p) {return this.utils.assign({}, super.apiRefine(p), this.tablecontrol.output, {sortby: this.sortby, sortdir: this.sortdir})}
     apiSuccess = data => {
         this.cmpDataR = data
         if (data.hasOwnProperty('sortdir')) this.sortdirR = data.sortdir
-        if (data.hasOwnProperty('sortby')) this.sortbyR = this.cols.find(c => c.field == data.sortby)
+        if (data.hasOwnProperty('sortby')) this.sortbyR = this.actualCols.find(c => c.field == data.sortby)
     }
     layoutRefine() {
-        let w = this.width, totalF = this.totalFlex, totalFW = this.totalFlexWidth, colL = this.cols.length
+        let w = this.width, totalF = this.totalFlex, totalFW = this.totalFlexWidth, cols = this.actualCols, colL = cols.length
         this.jDom.find(`thead tr:last-child td`).each((i, el) => {
-            let c = this.cols[i], cF = this.colFlex(c), cW = this.colWidth(c) || cF*(totalFW/totalF)
+            let c = cols[i], cF = this.colFlex(c), cW = this.colWidth(c) || cF*(totalFW/totalF)
             let hc = jQuery(el).find(`.${this.cellClassName}-wrapper`)
             hc.css('width', cW)
             this.jDom.find(`tbody tr td:nth-child(${i + 1}) .${this.cellClassName}-wrapper`).css('width', cW)

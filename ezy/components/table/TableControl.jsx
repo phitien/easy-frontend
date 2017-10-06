@@ -11,6 +11,7 @@ export class TableControl extends Cmp {
     get cmpClassName() {return this.owner.controlClassName}
     get owner() {return this.props.owner}
     get cols() {return this.owner.cols}
+    get actualCols() {return this.owner.actualCols}
     get allcols() {return this.owner.allcols}
     get rows() {return this.owner.rows}
     get output() {

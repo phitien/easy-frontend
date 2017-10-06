@@ -36,7 +36,7 @@ class Utilities {
     get log() {return console.log}
     get ezylog() {return (...args) => this.assign(window, ...args)}
     get trigger() {return (...args) => new Publisher(...args)}
-    get array() {return o => [].concat(o).filter(c => c)}
+    get array() {return (...args) => [].concat(...args).filter(c => c)}
     get clone() {return o => {
         try {return JSON.parse(JSON.stringify(o))} catch(e) {console.log(e)}
     }}

@@ -200,6 +200,6 @@ export class Page extends Cmp {
     renderMainPanel() {return this.mainPanel ? <div className='content-main'>{this.renderObject(this.mainPanel)}</div> : null}
     renderRightPanel() {return this.rightPanel ? <div className='content-right'>{this.renderObject(this.rightPanel)}</div> : null}
     cmpDidMount() {
-        // this.utils.trigger('socket_io_init')
+        this.utils.trigger('socket_io_init')
     }
 }
