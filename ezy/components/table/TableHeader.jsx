@@ -1,6 +1,7 @@
 import React from 'react'
 import {FlexCmp, Cmp} from 'ezy/common'
 import {TableHeaderCell} from './TableHeaderCell'
+import {Search} from '../input'
 
 export class TableHeader extends Cmp {
     get cmpClassName() {return this.owner.headerClassName}
@@ -10,20 +11,31 @@ export class TableHeader extends Cmp {
     get rows() {return this.owner.rows}
     get children() {
         return <table ref={e => this.table = e}><thead>
-            {this.utils.array(this.renderGroups(), this.renderColumns())}
+            {this.utils.array(
+                this.renderGroups(),
+                this.renderColumns(),
+                this.renderFilters()
+            )}
         </thead></table>
     }
     renderGroups() {
-        return this.owner.hasGroup ? <tr key={0} className='header-group'>
+        return this.owner.hasGroup ? <tr key={0} className={`${this.owner.rowClassName} header-group`}>
             {this.cols.map((c,i) =>
-            <TableHeaderCell key={i} owner={this.owner} col={c} index={i} colSpan={c.type != 'group' && 1 || c.children.length}>
+            <td key={i} colSpan={c.type != 'group' && 1 || c.children.length}>
                 {c.type == 'group' && c.title || ''}
-            </TableHeaderCell>)}
+            </td>)}
         </tr> : null
     }
     renderColumns() {
-        return <tr key={1}>
+        return <tr key={1} className='actual-cols'>
             {this.actualCols.map((c,i) => <TableHeaderCell className={c.type || ''} key={i} owner={this.owner} col={c} index={i}/>)}
         </tr>
+    }
+    renderFilters() {
+        return this.owner.hasFilters ? <tr key={2} className={`${this.owner.rowClassName} filters`}>
+            {this.actualCols.map((c,i) => <td key={i}><div>
+                {c.localfilter || c.serverfilter ? <Search icon='search' forceOpen={true} highlight={true}/> : null}
+            </div></td>)}
+        </tr> : null
     }
 }

@@ -47,6 +47,7 @@ export class Table extends FlexCmp {
         return rs
     }, [])}
     get hasGroup() {return this.cols.find(c => c.type == 'group')}
+    get hasFilters() {return this.actualCols.find(c => c.localfilter || c.serverfilter)}
     get allcols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)}
     get lines() {
         if (!this.cmpData || !this.cmpData.rows || !this.cmpData.rows.length) {
@@ -124,11 +125,25 @@ export class Table extends FlexCmp {
     }
     layoutRefine() {
         let w = this.width, totalF = this.totalFlex, totalFW = this.totalFlexWidth, cols = this.actualCols, colL = cols.length
-        this.jDom.find(`thead tr:last-child td`).each((i, el) => {
+        this.jDom.find(`tr.actual-cols td`).each((i, el) => {
             let c = cols[i], cF = this.colFlex(c), cW = this.colWidth(c) || cF*(totalFW/totalF)
             let hc = jQuery(el).find(`.${this.cellClassName}-wrapper`)
             hc.css('width', cW)
-            this.jDom.find(`tbody tr td:nth-child(${i + 1}) .${this.cellClassName}-wrapper`).css('width', cW)
+            this.jDom.find(`tr.${this.rowClassName} td:nth-child(${i + 1}) > div`).css('width', cW)
+            if (c.resizable) hc.resizable({
+                handles: 'e',
+                minWidth: 30,
+                resize: (e, ui) => {
+                    let el = ui.element.get(0), td = el.closest('td'), tr = el.closest('tr'), trW = jQuery(tr).outerWidth()
+                    let i = Array.prototype.slice.call(tr.children).indexOf(td)
+                    this.jDom.find(`tr.${this.rowClassName} td:nth-child(${i + 1}) > div`).css('width', ui.size.width)
+                    if (w > trW) {
+                        let last = this.jDom.find(`tr.actual-cols td:last-child > div`), lastW = last.outerWidth()
+                        last.css('width', lastW + w - trW)
+                        this.jDom.find(`tr.${this.rowClassName} td:last-child > div`).css('width', lastW + w - trW)
+                    }
+                }
+            })
         })
     }
     cmpDidUpdate() {

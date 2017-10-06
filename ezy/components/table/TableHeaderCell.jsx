@@ -16,17 +16,13 @@ export class TableHeaderCell extends Cmp {
     get checked() {
         return this.rows.find(r => !r.selected) ? false : true
     }
-    get onSort() {
-        return this.owner.onSort
-    }
     renderCell() {
         if (this.props.colSpan) return null
         if (this.type == 'checkbox') return <Checkbox checked={this.checked} onChange={this.owner.selectAll}
             data-index={this.index} data-subindex={this.subindex}/>
         else if (this.type == 'group') return null
         else if (this.type == 'action') return null
-        else return <div className='ezy-table-cell-title' onClick={this.onSort}
-            data-index={this.index} data-subindex={this.subindex}>
+        else return <div className={`${this.cmpClassName}-name`} onClick={e => this.owner.onSort(e)} data-index={this.index} data-subindex={this.subindex}>
             {this.col.name || this.col.title || this.col.label}
         </div>
     }

@@ -5,31 +5,43 @@
     "total": 200,
     "size": 20,
     "columns": [
-        {"type": "checkbox", "title": "Col1", "show": true, "width": 30},
-        {"field": "field1", "title": "Col2", "show": true, "resizable": true, "localsort": true},
-        {"field": "field2", "title": "Col3", "show": true, "resizable": true, "serversort": true},
-        {"type": "custom", "title": "Col3", "show": true, "resizable": true, "localsort": true, "flex": 2, "data": "data('field1') + data('field2')"}
+        {"type": "checkbox", "show": true, "width": 30},
+        {"field": "field1", "title": "Field 1", "show": true, "resizable": true, "localsort": true, "localfilter": true},
+        {"field": "field2", "title": "Field 2", "show": true, "resizable": true, "serversort": true},
+        {"type": "custom", "title": "Custom Field 1", "show": true, "resizable": true, "flex": 2, "data": "data('field1') + data('field2')"},
+        {"type": "group", "title": "Group 1", "show": true, "children": [
+            {"field": "field3", "title": "Field 3", "show": true, "resizable": true, "localsort": true, "localfilter": true},
+            {"field": "field4", "title": "Field 4", "show": true, "resizable": true, "serversort": true, "serverfilter": true}
+        ]},
+        {"type": "group", "title": "Group 2", "show": true, "children": [
+            {"type": "custom", "title": "Custom Field 2", "show": true, "resizable": true, "localsort": true, "flex": 2, "data": "data('field3') + data('field4')"}
+        ]},
+        {"type": "group", "title": "Empty Group 1", "show": true},
+        {"type": "group", "title": "Empty Group 2", "show": true, "children": []},
+        {"type": "action", "action": "add", "show": true, "width": 30},
+        {"type": "action", "action": "edit", "show": true, "width": 30},
+        {"type": "action", "action": "remove", "show": true, "width": 30}
     ],
     "rows": [
-        {"field1": "cell01.1", "field2": "cell01.2"},
-        {"field1": "cell02.1", "field2": "cell02.2"},
-        {"field1": "cell03.1", "field2": "cell03.2"},
-        {"field1": "cell04.1", "field2": "cell04.2"},
-        {"field1": "cell05.1", "field2": "cell05.2"},
-        {"field1": "cell06.1", "field2": "cell06.2"},
-        {"field1": "cell07.1", "field2": "cell07.2"},
-        {"field1": "cell08.1", "field2": "cell08.2"},
-        {"field1": "cell09.1", "field2": "cell09.2"},
-        {"field1": "cell10.1", "field2": "cell10.2"},
-        {"field1": "cell11.1", "field2": "cell11.2"},
-        {"field1": "cell12.1", "field2": "cell12.2"},
-        {"field1": "cell13.1", "field2": "cell13.2"},
-        {"field1": "cell14.1", "field2": "cell14.2"},
-        {"field1": "cell15.1", "field2": "cell15.2"},
-        {"field1": "cell16.1", "field2": "cell16.2"},
-        {"field1": "cell17.1", "field2": "cell17.2"},
-        {"field1": "cell18.1", "field2": "cell18.2"},
-        {"field1": "cell19.1", "field2": "cell19.2"},
-        {"field1": "cell20.1", "field2": "cell20.2"}
+        {"field1": "cell02.1", "field2": "cell02.2", "field3": "cell02.3", "field4": "cell02.4"},
+        {"field1": "cell01.1", "field2": "cell01.2", "field3": "cell01.3", "field4": "cell01.4"},
+        {"field1": "cell03.1", "field2": "cell03.2", "field3": "cell03.3", "field4": "cell03.4"},
+        {"field1": "cell04.1", "field2": "cell04.2", "field3": "cell04.3", "field4": "cell04.4"},
+        {"field1": "cell05.1", "field2": "cell05.2", "field3": "cell05.3", "field4": "cell05.4"},
+        {"field1": "cell06.1", "field2": "cell06.2", "field3": "cell06.3", "field4": "cell06.4"},
+        {"field1": "cell07.1", "field2": "cell07.2", "field3": "cell07.3", "field4": "cell07.4"},
+        {"field1": "cell08.1", "field2": "cell08.2", "field3": "cell08.3", "field4": "cell08.4"},
+        {"field1": "cell09.1", "field2": "cell09.2", "field3": "cell08.3", "field4": "cell09.4"},
+        {"field1": "cell10.1", "field2": "cell10.2", "field3": "cell10.3", "field4": "cell10.4"},
+        {"field1": "cell11.1", "field2": "cell11.2", "field3": "cell11.3", "field4": "cell11.4"},
+        {"field1": "cell12.1", "field2": "cell12.2", "field3": "cell12.3", "field4": "cell12.4"},
+        {"field1": "cell13.1", "field2": "cell13.2", "field3": "cell13.3", "field4": "cell13.4"},
+        {"field1": "cell14.1", "field2": "cell14.2", "field3": "cell14.3", "field4": "cell14.4"},
+        {"field1": "cell15.1", "field2": "cell15.2", "field3": "cell15.3", "field4": "cell15.4"},
+        {"field1": "cell16.1", "field2": "cell16.2", "field3": "cell16.3", "field4": "cell16.4"},
+        {"field1": "cell17.1", "field2": "cell17.2", "field3": "cell17.3", "field4": "cell17.4"},
+        {"field1": "cell18.1", "field2": "cell18.2", "field3": "cell18.3", "field4": "cell18.4"},
+        {"field1": "cell19.1", "field2": "cell19.2", "field3": "cell19.3", "field4": "cell19.4"},
+        {"field1": "cell20.1", "field2": "cell20.2", "field3": "cell20.3", "field4": "cell20.4"}
     ]
 }

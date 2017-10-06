@@ -27,6 +27,8 @@ body {
         vertical-align: top;
         box-sizing: content-box;
         box-shadow: $shadow;
+        flex: 1;
+        min-width: 30px;
         &:hover {
             box-shadow: $shadow-hover;
         }
