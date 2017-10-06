@@ -10,6 +10,8 @@
         display: flex;flex-direction: column;
         margin-left: $mapa/2;
         border: 1px solid $bd-color;
+        color: $chatbox-color;
+        background-color: $chatbox-bg-color;
         .ezy-chatbox-title {
             height: $chatbox-title-height;
             line-height: $chatbox-title-height;

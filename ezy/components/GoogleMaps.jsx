@@ -2,28 +2,35 @@ import React from 'react'
 import {ToggleCmp, FlexCmp} from 'ezy/common'
 import {Button, Text, Autocomplete} from './input'
 import {Form} from './Form'
+import {Gallery} from './Gallery'
 
 export class GoogleMapsInfoPanel extends ToggleCmp {
+    static dfCmpData() {return {}}
     get cmpClassName() {return `ezy-maps-info-panel`}
     get animation() {return {direction: 'up'}}
-    get selector() {return `#${this.cmpId} > div`}
-    get address() {
-        return this.cmpData.address_components ? [
-            (this.cmpData.address_components[0] && this.cmpData.address_components[0].short_name || ''),
-            (this.cmpData.address_components[1] && this.cmpData.address_components[1].short_name || ''),
-            (this.cmpData.address_components[2] && this.cmpData.address_components[2].short_name || ''),
-        ].join(' ')
-        : null
-    }
+    get selector() {return `#${this.cmpId}`}
+    get icon() {return this.cmpData && this.cmpData.icon}
+    get name() {return this.cmpData && this.cmpData.name}
+    get address_components() {return this.utils.array(this.cmpData && this.cmpData.address_components)}
+    get photos() {return this.utils.array(this.cmpData && this.cmpData.photos)}
+    get adr_address() {return this.cmpData && this.cmpData.adr_address}
     get children() {
         return [
-            <div className='ezy-maps-info-panel-place-icon' style={{
-                backgroundImage: `url(${this.cmpData && this.cmpData.icon || ''})`,
-                display: this.cmpData && this.cmpData.icon ? 'block' : 'none'
-            }}></div>,
-            <div className='ezy-maps-info-panel-place-name'>{this.cmpData && this.cmpData.name || ''}</div>,
-            <div className='ezy-maps-info-panel-place-address'></div>,
+            <Gallery ref={e => this.gallery = e} className='ezy-maps-info-panel-place-photos'/>,
+            <div className='ezy-maps-info-panel-detail'>
+                <div className='ezy-maps-info-panel-place-name'>
+                    <div className='ezy-maps-info-panel-place-icon' style={{
+                        backgroundImage: `url(${this.icon})`,
+                    }}/>
+                    {this.name}
+                </div>
+                <div className='ezy-maps-info-panel-place-address'
+                    dangerouslySetInnerHTML={{__html: this.adr_address}} />
+            </div>
         ]
+    }
+    onShow(e) {
+        if (this.photos.length) super.onShow(e, e => this.gallery.data = this.photos)
     }
 }
 export class GoogleMaps extends ToggleCmp {
@@ -41,19 +48,25 @@ export class GoogleMaps extends ToggleCmp {
     get children() {
         return [
             <div className='ezy-maps-container'></div>,
-            this.search ? <Form ref={e => this.form = e}>
+            this.search ? <Form ref={e => this.form = e} validate={e => false}>
                 <Autocomplete cmpId={`ezy-maps-autocomplete`}
-                    onChange={e => !e.target.value ? this.infoPanelCmp.cmpDataR = {} : null}
+                    highlight={true}
+                    onChange={e => this.infoPanelCmp.onHide()}
                     forceOpen={true}
                     placeholder='Enter a location'
-                    icon='search'/>
+                    icon='search'
+                    />
             </Form> : null,
-            this.search && this.infoPanel ? React.cloneElement(this.infoPanel, {ref: (e => this.infoPanelCmp = e)}) : null
+            this.search && this.infoPanel ? React.cloneElement(this.infoPanel, {
+                ref: (e => this.infoPanelCmp = e),
+                toggleMe: false,
+                afterHide: (e => this.infoPanelCmp.onHide())
+            }) : null
         ]
     }
     get pubsub() {
         return this.utils.assign(super.pubsub, {
-            google_maps_loaded: this.google_maps_loaded,
+            google_maps_api_loaded: this.google_maps_api_loaded,
         })
     }
     get map() {return this.__map = this.__map || new google.maps.Map(jQuery(this.dom).find('.ezy-maps-container').get(0), this.utils.assign({
@@ -71,7 +84,7 @@ export class GoogleMaps extends ToggleCmp {
         this.infowindow.setContent(content)
         this.infowindow.open(this.map)
     }
-    google_maps_loaded = e => {
+    google_maps_api_loaded = e => {
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
@@ -101,15 +114,19 @@ export class GoogleMaps extends ToggleCmp {
                     this.map.setCenter(place.geometry.location)
                     this.map.setZoom(this.detailzoom)
                 }
-                this.marker.setPosition(place.geometry.location)
+                this.marker.setPosition(place.geometry.location, place.name)
                 this.marker.setVisible(true)
-                this.infowindow.open(this.map, this.marker)
+                this.infowindow.open(this.map)
+                // this.infowindow.open(this.map, this.marker)
 
-                if (this.infoPanelCmp) this.infoPanelCmp.cmpDataR = place
+                if (this.infoPanelCmp) {
+                    this.infoPanelCmp.cmpDataR = place
+                    this.infoPanelCmp.onShow()
+                }
             })
         }
     }
     cmpDidMount() {
-        this.utils.trigger('google_maps_init')
+        this.utils.trigger('google_maps_api_init')
     }
 }

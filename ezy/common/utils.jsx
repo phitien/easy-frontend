@@ -34,7 +34,9 @@ class Utilities {
     get config() {return config}
     get history() {return history}
     get log() {return console.log}
+    get ezylog() {return (...args) => this.assign(window, ...args)}
     get trigger() {return (...args) => new Publisher(...args)}
+    get array() {return o => [].concat(o).filter(c => c)}
     get clone() {return o => {
         try {return JSON.parse(JSON.stringify(o))} catch(e) {console.log(e)}
     }}
@@ -132,27 +134,25 @@ class Utilities {
     get delete() {return (url, data) => this.request(url, 'delete', data)}
     get options() {return (url, data) => this.request(url, 'options', data)}
     get upload() {return (url, data) => this.post(url, 'post', data).header('content-type', 'multipart/form-data')}
-    get append() {return (tagName, props, last) => {
-        if (!tagName || !props || !props.id || !document || document.getElementById(props.id))
-            return props.onload ? props.onload() : true
+    get append() {return (tagName, props, head) => {
+        if (document.getElementById(props.id)) return props.onload ? props.onload() : true
         props = Object.keys(props).reduce((rs, k) => {
             if (props[k]) rs[k] = props[k]
             return rs
         }, {})
         let tags = document.getElementsByTagName(tagName),
             el = document.createElement(tagName)
-        last = last && tags.length > 0 ? tags[tags.length - 1] : null
         this.assign(el, props)
-        if (last) last.parentNode.insertBefore(el, last.nextSibling)
+        if (head) document.head.appendChild(el)
         else document.body.appendChild(el)
     }}
     get loadJs() {return (src, id, onload, innerHTML) => {
-        this.append('script', {src, id, onload, innerHTML}, false)
+        this.append('script', {src, id, onload, innerHTML}, true)
     }}
     get loadCss() {return (href, id, onload) =>
-        this.append('link', {id, href, type: 'text/css', rel: 'stylesheet', onload}, false)}
-    get loadMeta() {return (name, content) =>
-        this.append('meta', {id: name, name, content}, true)}
+        this.append('link', {id, href, type: 'text/css', rel: 'stylesheet', onload}, true)}
+    get loadMeta() {return (name, content, onload) =>
+        this.append('meta', {id: name, name, content, onload}, true)}
 }
 
 export const utils = new Utilities()

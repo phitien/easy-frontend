@@ -27,7 +27,7 @@ export class Chatbox extends ToggleCmp {
     }
     get children() {
         return [
-            <div className='ezy-chatbox-title' onClick={this.onToggle}>
+            <div className='ezy-chatbox-title' onClick={e => this.onToggle(e)}>
                 <span>{this.to.name || this.to.uuid}</span>
                 <Button icon='close' onClick={this.removeBox}/>
             </div>,

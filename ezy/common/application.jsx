@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'react-router-redux'
 import {Switch, Route} from 'react-router'
 import {Subscriber, Publisher} from './PubSub'
+import {CssLoader, JsLoader} from './Loader'
 import {history} from './history'
 import {utils} from './utils'
 
@@ -22,62 +23,41 @@ export class Application {
     set container(v) {this.__container = v}
     get store() {return this.__store}
     set store(v) {this.__store = v}
-    get loadingTime() {return this.config.loadingTime || 100}
 
+    slick_init = e => {
+        const [cb, t] = e ? e.detail || [] : []
+        new CssLoader(`/static/slick/slick.css`, 'slick-css', null, t).load()
+        new CssLoader(`/static/slick/slick-theme.css`, 'slick-theme-css', null, t).load()
+        new JsLoader(`/static/slick/slick.min.js`, 'slick-js', cb, t).load()
+    }
     livereload_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        this.utils.loadJs('', 'livereload_callback', null, `
-            window.livereload_callback = function() {
-                setTimeout(e => dispatchEvent(new CustomEvent('livereload_loaded')), ${t || this.loadingTime})
-            }
-        `)
-        this.utils.loadJs(`//${location.hostname}:${this.config.livereload}/livereload.js?snipver=1`, 'livereload', cb || livereload_callback)
+        new JsLoader(
+            `//${location.hostname}:${this.config.livereload}/livereload.js?snipver=1`,
+            'livereload-js', cb, t).load()
     }
-    facebook_init = e => {
+    facebook_sdk_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        this.utils.loadJs('', 'fbAsyncInit', null, `
-            window.fbAsyncInit = function() {
-                setTimeout(e => {
-                    FB.init(${JSON.stringify(this.config.facebook)})
-                    FB.AppEvents.logPageView()
-                    dispatchEvent(new CustomEvent('facebook_loaded'))
-                }, ${t || this.loadingTime})
-            }
-        `)
-        this.utils.loadJs('//connect.facebook.net/en_US/sdk.js', 'facebook-jssdk', cb || fbAsyncInit)
+        new JsLoader(
+            `//connect.facebook.net/en_US/sdk.js`,
+            'facebook-sdk', cb, t).set('callback_name', 'fbAsyncInit').load()
     }
     google_platform_init = e => {
         const [cb, t] = e ? e.detail || [] : []
         this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
-        this.utils.loadJs('', 'google_platform_callback', null, `
-            window.google_platform_callback = function() {
-                setTimeout(e => gapi.load('auth2', e => {
-                    gapi.auth2.init(${JSON.stringify(this.config.google)})
-                    .then(auth2 => {
-                        dispatchEvent(new CustomEvent('google_platform_loaded', auth2))
-                    })
-                }), ${t || this.loadingTime})
-            }
-        `)
-        this.utils.loadJs('https://apis.google.com/js/platform.js?callback=google_platform_loaded', 'google-platform', cb || google_platform_callback)
+        new JsLoader(
+            `//apis.google.com/js/client:platform.js?onload=google_platform_loaded`,
+            'google-platform', cb, t).load()
     }
-    google_maps_init = e => {
+    google_maps_api_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        this.utils.loadJs('', 'google_maps_callback', null, `
-            window.google_maps_callback = function() {
-                setTimeout(e => dispatchEvent(new CustomEvent('google_maps_loaded')), ${t || this.loadingTime})
-            }
-        `)
-        this.utils.loadJs(`//maps.googleapis.com/maps/api/js?key=${this.config.google.apikey}&libraries=places&callback=google_maps_callback`, 'google-maps-api', cb || google_maps_callback)
+        new JsLoader(
+            `//maps.googleapis.com/maps/api/js?key=${this.config.google.apikey}&libraries=places&callback=google_maps_api_callback`,
+            'google-maps-api', cb, t).load()
     }
-    socket_init = e => {
+    socket_io_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        this.utils.loadJs('', 'socket_callback', null, `
-            window.socket_callback = function() {
-                setTimeout(e => dispatchEvent(new CustomEvent('socket_loaded')), ${t || this.loadingTime})
-            }
-        `)
-        this.utils.loadJs(`/socket.io/socket.io.js`, 'socket-io', cb || socket_callback)
+        new JsLoader(`/socket.io/socket.io.js`, 'socket-io', cb, t).load()
     }
     cmp_mounted = e => {
         let [cmp] = e.detail
@@ -89,10 +69,11 @@ export class Application {
     }
     renderApplication() {throw `${this.klass}: No children`}
     afterRender = e => {
-        this.facebook_init()
+        this.facebook_sdk_init()
         this.google_platform_init()
-        this.socket_init()
+        this.socket_io_init()
         this.livereload_init()
+        this.slick_init()
     }
     render() {
         try {
@@ -117,10 +98,11 @@ export class Application {
             unload: this.unload,
             resize: this.resize,
             refresh: this.refresh,
-            facebook_init: this.facebook_init,
+            slick_init: this.slick_init,
+            facebook_sdk_init: this.facebook_sdk_init,
             google_platform_init: this.google_platform_init,
-            google_maps_init: this.google_maps_init,
-            socket_init: this.socket_init,
+            google_maps_api_init: this.google_maps_api_init,
+            socket_io_init: this.socket_io_init,
             cmp_mounted: this.cmp_mounted,
             cmp_unmounted: this.cmp_unmounted,
         })

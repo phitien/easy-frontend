@@ -82,7 +82,7 @@ export class Page extends Cmp {
         return this.utils.assign(super.pubsub, {
             show_pageIndicator: e => this.showIndicator = true,
             hide_pageIndicator: e => this.showIndicator = false,
-            socket_loaded: this.socket_loaded,
+            socket_io_loaded: this.socket_io_loaded,
             add_chatbox: this.add_chatbox,
             remove_chatbox: this.remove_chatbox,
             send_chatbox: this.send_chatbox,
@@ -156,7 +156,7 @@ export class Page extends Cmp {
         let [msg] = e.detail
         this.socket.emit('chat', msg)
     }
-    socket_loaded = e => {
+    socket_io_loaded = e => {
         if (!this.socket) {
             const socket = io.connect(`//${location.host}`, {reconnect: true})
             const showMessage = data => this.lastMessage = {text: typeof data == 'string' ? data : `${data.title ? `${data.title}:` : ''} ${data.message}`, type: 'chat'}
@@ -200,6 +200,6 @@ export class Page extends Cmp {
     renderMainPanel() {return this.mainPanel ? <div className='content-main'>{this.renderObject(this.mainPanel)}</div> : null}
     renderRightPanel() {return this.rightPanel ? <div className='content-right'>{this.renderObject(this.rightPanel)}</div> : null}
     cmpDidMount() {
-        this.utils.trigger('socket_init', null, 500)
+        this.utils.trigger('socket_io_init', null, 500)
     }
 }

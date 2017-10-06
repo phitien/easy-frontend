@@ -13,6 +13,7 @@ export class Search extends ToggleCmp {
         {section: 'cmp', name: 'placeholder', title: 'Placeholder', type: 'Search', value: null},
         {section: 'cmp', name: 'defaultValue', title: 'Default Value', type: null, value: null},
         {section: 'cmp', name: 'onChange', title: 'onChange', transform: true, type: 'Text', value: function(e) {}},
+        {section: 'cmp', name: 'highlight', title: 'Highlight On Focus', type: 'Select', value: false, options: [true, false]},
     ])}
     get cmpClassName() {return 'ezy-search'}
     get output() {return this.text}
@@ -24,9 +25,10 @@ export class Search extends ToggleCmp {
         return [
             this.forceOpen || this.added || this.open ? <Text className='ezy-search-input' ref={e => this.searchText = e}
                 onChange={this.onInputChange}
+                highlight={this.highlight}
                 defaultValue={this.defaultValue}
                 placeholder={this.placeholder}/> : null,
-            <Button icon={this.icon} img={this.img} text={this.text} type={this.type} onClick={this.onToggle}/>,
+            <Button icon={this.icon} img={this.img} text={this.text} type={this.type} onClick={e => this.onToggle(e)}/>,
         ]
     }
 }

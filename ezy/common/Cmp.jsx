@@ -8,11 +8,13 @@ import {regCmps} from './application'
 export class BaseContainer extends React.Component {
     static autoProps() {return [
         {section: 'base', name: 'cmpId', title: 'ID', type: 'Text', value: null, required: true, desc: null},
-        {section: 'base', name: 'cmpData', r: true, title: 'Data', type: 'Text', value: null, required: true, desc: null},
+        {section: 'base', name: 'cmpData', r: true, title: 'Data', type: 'Text', value: this.dfCmpData(), required: true, desc: null},
         {name: '__mounted', title: '__mounted', type: 'Text', value: false, required: true, desc: null},
     ]}
     static utilities = utils
     static configuration = config
+    static dfCmpData() {return null}
+
     canRefresh(n) {return this.constructor.autoProps().find(p => p.name == n).r}
     aPropRefresh(n, v, r) {}
     getAProp(n, t) {
@@ -342,6 +344,7 @@ export class ToggleCmp extends FlexCmp {
         {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'forceOpen', title: 'Force Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
+        {section: 'cmp', name: 'toggleMe', title: 'ToggleMe', type: 'Select', value: true, options: [true, false]},
         {section: 'api', name: 'afterShow', transform: true, title: 'After Show', type: 'Text', value: function(e) {}, required: false, desc: null},
         {section: 'api', name: 'afterHide', transform: true, title: 'After Hide', type: 'Text', value: function(e) {}, required: false, desc: null},
     ])}
@@ -349,44 +352,36 @@ export class ToggleCmp extends FlexCmp {
     get animation() {return {direction: 'left'}}
     get duration() {return 500}
     get outside() {return true}
-    get onShow() {
-        return e => {
+    onToggle(e) {
+        if (!this.added) {
+            this.added = true
             this.open = true
-            jQuery(this.selector).show('slide', this.animation, this.duration)
+            this.refresh(this.onShow)
+        }
+        else {
+            this.open = !this.open
+            this.open ? this.onShow() : this.onHide()
+            this.open ? this.afterShow() : this.afterHide()
         }
     }
-    get onHide() {
-        return e => {
-            if (!this.forceOpen) {
-                this.open = false
-                jQuery(this.selector).hide('slide', this.animation, this.duration)
-            }
-        }
+    onClickOutside(e) {
+        if (this.toggleMe && e.target.closest(this.selector)) this.onHide()
+        else if (!e.target.closest(`#${this.cmpId}`)) this.onHide()
     }
-    get onToggle() {
-        return e => {
-            if (!this.added) {
-                this.added = true
-                this.open = true
-                this.refresh(this.onShow)
-            }
-            else {
-                this.open = !this.open
-                this.open ? this.onShow() : this.onHide()
-                this.open ? this.afterShow() : this.afterHide()
-            }
-        }
+    onShow(e, cb) {
+        this.open = true
+        jQuery.when(jQuery(this.selector).show('slide', this.animation, this.duration, e => cb ? cb() : false))
     }
-    get onClickOutside() {
-        return e => {
-            if (e.target.closest(this.selector)) this.onHide()
-            else if (!e.target.closest(`#${this.cmpId}`)) this.onHide()
+    onHide(e, cb) {
+        if (!this.forceOpen) {
+            this.open = false
+            jQuery.when(jQuery(this.selector).hide('slide', this.animation, this.duration, e => cb ? cb() : false))
         }
     }
     cmpDidMount() {
         if (this.outside) addEventListener('click', e => this.onClickOutside(e), true)
     }
     cmpDidUpdate() {
-        if (this.open) setTimeout(this.onShow, 100)
+        if (this.open) setTimeout(e => this.onShow(e), 100)
     }
 }

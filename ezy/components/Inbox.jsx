@@ -18,7 +18,7 @@ export class Inbox extends ToggleCmp {
     get animation() {return {direction: 'up'}}
     get children() {
         return [
-            <Button icon='message' onClick={this.onToggle}/>,
+            <Button icon='message' onClick={e => this.onToggle(e)}/>,
             <div className='inbox-list'>
             </div>
         ]

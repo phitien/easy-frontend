@@ -19,7 +19,7 @@ export class People extends ToggleCmp {
     get selector() {return `#${this.cmpId} .people-list`}
     get children() {
         return [
-            <Button icon='people' onClick={this.onToggle}/>,
+            <Button icon='people' onClick={e => this.onToggle(e)}/>,
             <div className='people-list'>
                 {this.people.map((p,i) =>
                 <div key={i} className='person' onClick={this.onPersonClick.bind(this, p)}>
