@@ -9,6 +9,9 @@ export class TableHeader extends Cmp {
     get cols() {return this.owner.cols}
     get actualCols() {return this.owner.actualCols}
     get rows() {return this.owner.rows}
+    get output() {
+        return this.filters && this.filters.filter(o => o.e.output) || []
+    }
     get children() {
         return <table ref={e => this.table = e}><thead>
             {this.utils.array(
@@ -32,9 +35,17 @@ export class TableHeader extends Cmp {
         </tr>
     }
     renderFilters() {
+        this.filters = []
         return this.owner.hasFilters ? <tr key={2} className={`${this.owner.rowClassName} filters`}>
             {this.actualCols.map((c,i) => <td key={i}><div>
-                {c.localfilter || c.serverfilter ? <Search icon='search' forceOpen={true} highlight={true}/> : null}
+                {c.localfilter || c.serverfilter ? <Search icon='search' forceOpen={true} highlight={true}
+                    onChange={e => this.owner.localfilter(true)}
+                    ref={e => {
+                        let o = this.filters.find(o => o.c == c)
+                        if (!o) return this.filters.push({c, e})
+                        else return o.e = e
+                    }}
+                    /> : null}
             </div></td>)}
         </tr> : null
     }

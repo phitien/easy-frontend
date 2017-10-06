@@ -7,19 +7,19 @@ import {TableFooter} from './TableFooter'
 
 export class Table extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
-        {section: 'cmp', name: 'showControl', title: 'Show Control', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'controlPos', title: 'Control Position', type: 'Select', value: 'top', required: false, desc: null, options: ['top', 'bottom']},
-        {section: 'cmp', name: 'showPageSize', title: 'Show Page Size', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showPagination', title: 'Show Pagination', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showPageInfo', title: 'Show Page Info', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showColumnsSetting', title: 'Show Columns Setting', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showHeader', title: 'Show Header', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showBody', title: 'Show Body', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'showFooter', title: 'Show Footer', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'columns', title: 'Columns', type: 'Text', value: [], required: false, desc: null},
-        {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, required: false, desc: null, options: [true, false]},
-        {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null, required: false, desc: null},
-        {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', required: false, desc: null, options: ['', 'desc', 'asc']},
+        {section: 'cmp', name: 'showControl', title: 'Show Control', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'controlPos', title: 'Control Position', type: 'Select', value: 'top', options: ['top', 'bottom']},
+        {section: 'cmp', name: 'showPageSize', title: 'Show Page Size', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showPagination', title: 'Show Pagination', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showPageInfo', title: 'Show Page Info', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showColumnsSetting', title: 'Show Columns Setting', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showHeader', title: 'Show Header', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showBody', title: 'Show Body', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'showFooter', title: 'Show Footer', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'columns', title: 'Columns', type: 'Text', value: []},
+        {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null},
+        {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', options: ['', 'desc', 'asc']},
         {section: 'cmp', name: 'localsort', title: 'Local Sort Fn', type: 'Text', value: function(r) {
             if (!this.cmpData.rows) return
             if (!this.sortby) return
@@ -30,7 +30,26 @@ export class Table extends FlexCmp {
                 return this.sortdir == 'asc' ? d1.localeCompare(d2) : d2.localeCompare(d1)
             })
             if (r) this.refresh()
-        }, transform: true, required: false, desc: null},
+        }, transform: true},
+        {section: 'cmp', name: 'localfilter', title: 'Local Filter Fn', type: 'Text', value: function(r) {
+            let rows = this.utils.array(this.cmpData.rows)
+            if (this.tableheader) {
+                let output = this.tableheader.output
+                if (output.length) {
+                    rows.map(r => r.hidden = false)
+                    output.forEach(o => {
+                        let {c, e} = o, v = e.output.toLowerCase()
+                        if (v) rows.forEach(r => {
+                            let d = this.celldata(r, c)
+                            if (!r.hidden && !d.toLowerCase().includes(v)) r.hidden = true
+                        })
+                    })
+                }
+                else rows.map(r => r.hidden = false)
+            }
+            else rows.map(r => r.hidden = false)
+            if (r) this.refresh()
+        }, transform: true},
     ])}
     get cmpClassName() {return `ezy-table`}
     get controlClassName() {return `${this.cmpClassName}-control`}
@@ -58,7 +77,7 @@ export class Table extends FlexCmp {
             this.origin = this.cmpData.rows.map((r,i) => ({index: i, value: r}))
         return this.cmpData.rows
     }
-    get rows() {return this.lines.filter(r => r && !r.hidden)}
+    get rows() {return this.lines.filter(r => !r.hidden)}
     get totalPage() {return this.cmpData ? Math.ceil(this.cmpData.total/(this.cmpData.size || this.cmpData.total)) : 0}
     get pageSize() {return this.cmpData ? this.cmpData.size || 20 : 20}
     get page() {return this.cmpData ? this.cmpData.page || 1 : 1}
@@ -117,7 +136,13 @@ export class Table extends FlexCmp {
     get colWidth() {return c => typeof c.width == 'number' && c.width > 0 && c.width || 0}
     get totalFlex() {return this.actualCols.reduce((rs, c) => rs += this.colFlex(c), 0)}
     get totalFlexWidth() {return this.actualCols.reduce((rs, c) => rs -= this.colWidth(c), this.width)}
-    apiRefine(p) {return this.utils.assign({}, super.apiRefine(p), this.tablecontrol.output, {sortby: this.sortby, sortdir: this.sortdir})}
+    apiRefine(p) {return this.utils.assign({},
+        super.apiRefine(p),
+        this.related && this.related.output || null,
+        this.tableheader.output,
+        this.tablecontrol.output,
+        {sortby: this.sortby, sortdir: this.sortdir}
+    )}
     apiSuccess = data => {
         this.cmpDataR = data
         if (data.hasOwnProperty('sortdir')) this.sortdirR = data.sortdir

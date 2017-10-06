@@ -8,7 +8,7 @@
         {"type": "checkbox", "show": true, "width": 30},
         {"field": "field1", "title": "Field 1", "show": true, "resizable": true, "localsort": true, "localfilter": true},
         {"field": "field2", "title": "Field 2", "show": true, "resizable": true, "serversort": true},
-        {"type": "custom", "title": "Custom Field 1", "show": true, "resizable": true, "flex": 2, "data": "data('field1') + data('field2')"},
+        {"type": "custom", "title": "Custom Field 1", "show": true, "resizable": true, "flex": 2, "localfilter": true, "data": "data('field1') + data('field2')"},
         {"type": "group", "title": "Group 1", "show": true, "children": [
             {"field": "field3", "title": "Field 3", "show": true, "resizable": true, "localsort": true, "localfilter": true},
             {"field": "field4", "title": "Field 4", "show": true, "resizable": true, "serversort": true, "serverfilter": true}

@@ -16,15 +16,13 @@ export class Search extends ToggleCmp {
         {section: 'cmp', name: 'highlight', title: 'Highlight On Focus', type: 'Select', value: false, options: [true, false]},
     ])}
     get cmpClassName() {return 'ezy-search'}
-    get output() {return this.text}
-    get input() {return this.searchText.input}
-    get onInputChange() {return this.onChange}
+    get output() {return this.input.output}
     get animation() {return {direction: 'right'}}
     get selector() {return `#${this.cmpId} .ezy-search-input`}
     get children() {
         return [
-            this.forceOpen || this.added || this.open ? <Text className='ezy-search-input' ref={e => this.searchText = e}
-                onChange={this.onInputChange}
+            this.forceOpen || this.added || this.open ? <Text className='ezy-search-input' ref={e => this.input = e}
+                onChange={this.onChange}
                 highlight={this.highlight}
                 defaultValue={this.defaultValue}
                 placeholder={this.placeholder}/> : null,

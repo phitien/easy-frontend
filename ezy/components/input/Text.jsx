@@ -16,7 +16,7 @@ export class Text extends Cmp {
     get inputProps() {
         return this.utils.assign({}, this.utils.exclude(this.props, 'highlight', 'value', 'ref', 'type', 'onEnter', 'onKeyPress', 'onChange', 'style', 'cmpId', 'className'))
     }
-    get output() {return this.value}
+    get output() {return this.input.value}
     get onInputChange() {return e => {
         this.valueR = e.target.value
         this.onChange(e)
