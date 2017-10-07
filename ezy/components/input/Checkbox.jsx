@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {Cmp} from 'ezy/components/cmp'
 
 export class Checkbox extends Cmp {
     static autoProps() {return super.autoProps().concat([

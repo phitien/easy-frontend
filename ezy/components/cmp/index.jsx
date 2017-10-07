@@ -1,9 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {utils} from './utils'
-import {config} from './config'
-import {Publisher, Subscriber, Unsubscriber} from './PubSub'
-import {regCmps} from './application'
+import {utils, config, regCmps, Publisher, Subscriber, Unsubscriber} from 'ezy/common'
 
 export class BaseContainer extends React.Component {
     static autoProps() {return [
@@ -303,14 +300,6 @@ export class Cmp extends Container {
         return this.renderNagativeCmp()
     }
 }
-export class Loader extends Cmp {
-    get cmpClassName() {return 'loader-overlay'}
-    render() {
-        return <div className={this.className} data-cmpId={this.cmpId}>
-            <div className='loader'></div>
-        </div>
-    }
-}
 export class RegCmp extends Cmp {
     componentDidMount() {
         super.componentDidMount()
@@ -319,6 +308,14 @@ export class RegCmp extends Cmp {
     componentWillUnmount() {
         super.componentWillUnmount()
         this.utils.trigger('cmp_unmounted', this)
+    }
+}
+export class Loader extends RegCmp {
+    get cmpClassName() {return 'loader-overlay'}
+    render() {
+        return <div className={this.className} data-cmpId={this.cmpId}>
+            <div className='loader'></div>
+        </div>
     }
 }
 export class FlexCmp extends RegCmp {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {RegCmp} from 'ezy/common'
+import {RegCmp} from 'ezy/components/cmp'
 import * as inputs from './input'
 
 export class SearchForm extends RegCmp {

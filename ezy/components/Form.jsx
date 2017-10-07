@@ -1,5 +1,5 @@
 import React from 'react'
-import {RegCmp} from 'ezy/common'
+import {RegCmp} from 'ezy/components/cmp'
 
 export class Form extends RegCmp {
     static autoProps() {return super.autoProps().concat([

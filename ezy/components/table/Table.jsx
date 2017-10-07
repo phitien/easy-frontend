@@ -1,5 +1,5 @@
 import React from 'react'
-import {FlexCmp} from 'ezy/common'
+import {FlexCmp} from 'ezy/components/cmp'
 import {TableControl} from './TableControl'
 import {TableHeader} from './TableHeader'
 import {TableBody} from './TableBody'

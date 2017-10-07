@@ -1,5 +1,5 @@
 import React from 'react'
-import {ToggleCmp, FlexCmp} from 'ezy/common'
+import {ToggleCmp, FlexCmp} from 'ezy/components/cmp'
 import {Button, Text, Autocomplete} from './input'
 import {Form} from './Form'
 import {Gallery} from './Gallery'

@@ -1,5 +1,5 @@
 import React from 'react'
-import {FlexCmp} from 'ezy/common'
+import {FlexCmp} from 'ezy/components/cmp'
 
 export class Chart extends FlexCmp {
     static defaultTitle() {return {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from 'ezy/common'
+import {Cmp} from 'ezy/components/cmp'
 
 export class Text extends Cmp {
     static autoProps() {return super.autoProps().concat([

@@ -1,5 +1,5 @@
 import React from 'react'
-import {RegCmp, FlexCmp} from 'ezy/common'
+import {RegCmp, FlexCmp} from 'ezy/components/cmp'
 import {Autocomplete} from './input'
 
 export class Gallery extends RegCmp {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {ToggleCmp} from 'ezy/common'
+import {ToggleCmp} from 'ezy/components/cmp'
 import {Button} from './input'
 
 export class Inbox extends ToggleCmp {

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Cmp} from 'ezy/common'
+import {Cmp} from 'ezy/components/cmp'
 
 export class Menu extends Cmp {
     get cmpClassName() {return ``}

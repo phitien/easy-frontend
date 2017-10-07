@@ -1,5 +1,5 @@
 import React from 'react'
-import {RegCmp} from 'ezy/common'
+import {RegCmp} from 'ezy/components/cmp'
 
 export class AppVersion extends RegCmp {
     get cmpClassName() {return 'version'}
