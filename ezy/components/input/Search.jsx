@@ -16,6 +16,7 @@ export class Search extends ToggleCmp {
         {section: 'cmp', name: 'onChange', title: 'onChange', transform: true, type: 'Textarea', value: function(e) {}},
         {section: 'cmp', name: 'onEnter', title: 'onEnter', transform: true, type: 'Textarea', value: function(e) {}},
     ])}
+    toggleMe = false
     get cmpClassName() {return 'ezy-search'}
     get output() {return this.input.output}
     get animation() {return {direction: 'right'}}
@@ -23,7 +24,10 @@ export class Search extends ToggleCmp {
     get buttonProps() {
         return {
             icon: this.icon, img: this.img, text: this.text, type: this.type,
-            onClick: e => this.onToggle(e),
+            onClick: e => {
+                this.onToggle(e)
+                this.onEnter(e)
+            },
             ref: (e => this.button = e)
         }
     }
@@ -38,7 +42,7 @@ export class Search extends ToggleCmp {
                 className='ezy-search-input'
                 onClick={this.onTextClick}
                 /> : null,
-            <Button {...this.buttonProps} onClick={this.onEnter}/>,
+            <Button {...this.buttonProps}/>,
         ]
     }
 }
