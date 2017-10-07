@@ -4,7 +4,6 @@ import {utils} from 'ezy/common'
 import config from '../config'
 import * as pages from '../pages'
 import {wrap} from './wrapper'
-import {Viewport} from './Viewport'
 
 const onRouteEntered = (...args) => dispatchEvent(new CustomEvent('route_changed', {detail: args}))
 const onRouteChanged = (...args) => dispatchEvent(new CustomEvent('route_entered', {detail: args}))

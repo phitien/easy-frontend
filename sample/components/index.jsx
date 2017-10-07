@@ -8,6 +8,5 @@ export class ToggleComponent extends ToggleCmp {}
 
 export {Application} from './Application'
 export {routes} from './routes'
-export {Viewport} from './Viewport'
 export {wrap} from './wrapper'
 export {xtore} from './xtore'
