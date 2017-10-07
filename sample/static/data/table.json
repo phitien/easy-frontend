@@ -13,9 +13,11 @@
             {"field": "field3", "title": "Field 3", "show": true, "resizable": true, "localsort": true, "localfilter": true},
             {"field": "field4", "title": "Field 4", "show": true, "resizable": true}
         ]},
-        {"type": "group", "title": "Group 2", "show": true, "children": [
-            {"type": "custom", "title": "Custom Field 2", "show": true, "resizable": true, "localsort": true, "flex": 2, "data": "data('field3') + data('field4')"}
-        ]},
+        {"type": "image", "title": "Image", "show": true, "resizable": true, "localsort": true,
+            "url": "`/static/images/ezy-${['default', 'red', 'blue', 'white'].random()}.png?${data('field3')}/${data('field4')}`",
+            "data": "`${data('field3')} - ${data('field4')}`",
+            "style": {"width": "44px", "margin": "3px auto"}
+        },
         {"type": "group", "title": "Empty Group 1", "show": true},
         {"type": "group", "title": "Empty Group 2", "show": true, "children": []},
         {"type": "action", "action": "add", "show": true, "width": 30},

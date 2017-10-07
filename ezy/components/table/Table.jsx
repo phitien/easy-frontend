@@ -113,14 +113,15 @@ export class Table extends FlexCmp {
         ]
     }
     get celldata() {
-        return (r,c) => {
+        return (r,c,f,debug) => {
             let data = function(f) {return r[f]}.bind(this)
-            if (c.data) {
-                let rs
-                eval(`rs = ${c.data}`)
-                return rs || null
+            if (c[f || 'data']) {
+                let rs = ''
+                try {eval(`rs = ${c[f || 'data']}`)} catch(e) {if (debug) this.log(e)}
+                if (debug) this.log(f, c[f || 'data'], rs)
+                return rs
             }
-            else return data(c.field)
+            else return data(c.field) || ''
         }
     }
     get jDom() {return jQuery(this.dom)}

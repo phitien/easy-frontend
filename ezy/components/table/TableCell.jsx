@@ -1,6 +1,7 @@
 import React from 'react'
 import {Cmp} from 'ezy/components/cmp'
 import {Checkbox, Button} from '../input'
+import {Img} from '../html'
 
 export class TableCell extends Cmp {
     get cmpClassName() {return this.owner.cellClassName}
@@ -22,6 +23,11 @@ export class TableCell extends Cmp {
         if (this.type == 'checkbox') return <Checkbox checked={this.selected} onChange={v => this.selected = v} data-index={this.index}/>
         else if (this.type == 'group') return null
         else if (this.type == 'action') return <Button icon={this.col.action} data-index={this.index}/>
+        else if (this.type == 'image') return <Img
+            src={this.owner.celldata(this.row, this.col, 'url')}
+            alt={this.owner.celldata(this.row, this.col)}
+            style={this.col.style || {height: '100%'}}
+            />
         else return this.owner.celldata(this.row, this.col)
     }
     render() {

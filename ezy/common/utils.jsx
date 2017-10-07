@@ -6,6 +6,9 @@ String.prototype.toCamelCase = function(f) {
     str = f ? str != '' ? str.substr(0, 1).toUpperCase() + str.substr(1) : '' : str
     return str
 }
+Array.prototype.random = function() {
+    return this[Math.floor(Math.random()*this.length)]
+}
 
 import assign from 'object-assign'
 import uuid from 'uuid/v1'
