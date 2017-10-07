@@ -17,8 +17,13 @@ export class SignInSignUpForm extends Form {
     get children() {
         return [
             this.title ? <H1 cmpId='signinsignup-form-title'>{this.title}</H1> : null,
-            this.facebook ? <Button cmpId='signinsignup-form-facebook' className='signinsignup-form-facebook' onClick={this.fbLogin}><i className='fa fa-facebook'></i> <span>{this.facebook}</span></Button> : null,
-            this.google ? <Button cmpId='signinsignup-form-google' className='signinsignup-form-google' onClick={this.ggLogin}><i className='fa fa-google'></i> <span>{this.google}</span></Button> : null,
+            this.facebook ? <Button cmpId='signinsignup-form-facebook'
+                iconClassName='fa fa-facebook'
+                className='signinsignup-form-facebook' onClick={this.fbLogin}><span>{this.facebook}</span></Button> : null,
+            this.google ? <Button cmpId='signinsignup-form-google'
+                iconClassName='fa fa-google'
+                className='signinsignup-form-google'
+                onClick={this.ggLogin}><span>{this.google}</span></Button> : null,
             <Email cmpId='signinsignup-form-email' placeholder={this.email}/>,
             <Password cmpId='signinsignup-form-password' placeholder={this.password}/>,
             <Div className='signinsignup-form-buttons'>
