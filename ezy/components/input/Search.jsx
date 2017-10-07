@@ -8,7 +8,6 @@ export class Search extends ToggleCmp {
         {section: 'cmp', name: 'icon', title: 'Icon', type: 'Text', value: null},
         {section: 'cmp', name: 'img', title: 'Img', type: 'Text', value: null},
         {section: 'cmp', name: 'text', title: 'Text', type: 'Text', value: null},
-        {section: 'cmp', name: 'type', title: 'Type', type: 'Select', value: 'button', options: ['button', 'submit']},
         {section: 'cmp', name: 'placeholder', title: 'Placeholder', type: 'Search', value: null},
         {section: 'cmp', name: 'defaultValue', title: 'Default Value', type: null, value: null},
         {section: 'cmp', name: 'highlight', title: 'Highlight On Focus', type: 'Select', value: false, options: [true, false]},
@@ -18,31 +17,33 @@ export class Search extends ToggleCmp {
     ])}
     toggleMe = false
     get cmpClassName() {return 'ezy-search'}
-    get output() {return this.text.output}
-    get input() {return this.text.input}
+    get output() {return this.searchinput.output}
+    get input() {return this.searchinput.input}
     get animation() {return {direction: 'right'}}
-    get selector() {return `#${this.cmpId} .ezy-search-input`}
+    get selector() {return `#${this.cmpId} .${this.cmpClassName}-input`}
     get buttonProps() {
         return {
-            icon: this.icon, img: this.img, text: this.text, type: this.type,
+            icon: this.icon, img: this.img, text: this.text,
+            ref: (e => this.button = e),
             onClick: e => {
                 this.onToggle(e)
                 this.onEnter(e)
             },
-            ref: (e => this.button = e)
+        }
+    }
+    get textProps() {
+        return {
+            ref: (e => this.searchinput = e),
+            className: `${this.cmpClassName}-input`,
+            onClick: this.onTextClick
         }
     }
     get children() {
         return [
-            <Text
-                {...this.utils.exclude(this.props,
-                    'icon', 'img', 'text', 'type', 'onClick', 'onToggleText',
-                    'forceOpen', 'open', 'toggleMe', 'afterShow', 'afterHide', 'api'
-                )}
-                ref={e => this.text = e}
-                className='ezy-search-input'
-                onClick={this.onTextClick}
-                /> : null,
+            <Text {...this.utils.exclude(this.props,
+                'icon', 'img', 'text', 'type', 'onClick', 'onToggleText',
+                'forceOpen', 'open', 'toggleMe', 'afterShow', 'afterHide', 'api'
+            )} {...this.textProps}/>,
             <Button {...this.buttonProps}/>,
         ]
     }

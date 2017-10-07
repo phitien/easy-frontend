@@ -12,7 +12,7 @@ export class Button extends RegCmp {
     ])}
     get cmpClassName() {return 'ezy-button'}
     get output() {return this.text}
-    get label() {return this.renderObject(this.text || this.children)}
+    get label() {return this.text && React.createElement('span', {dangerouslySetInnerHTML: {__html: this.text}}) || this.renderObject(this.children)}
     get image() {return this.img ? <img src={this.img} alt={this.text}/> :
         this.icon || this.iconClassName ? <i className={this.iconClassName || 'material-icons'} title={this.text}>{this.icon}</i> : null}
     render() {

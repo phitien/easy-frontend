@@ -50,7 +50,10 @@ export class TableHeader extends Cmp {
         this.filters = []
         return this.owner.hasFilters ? <tr key={2} className={`${this.owner.rowClassName} filters`}>
             {this.actualCols.map((c,i) => <td key={i}><div>
-                {c.localfilter || c.serverfilter ? <Search icon='search' forceOpen={true} highlight={true}
+                {c.localfilter || c.serverfilter ? <Search
+                    icon='search'
+                    forceOpen={true}
+                    highlight={true}
                     onChange={e => this.owner.localfilter()}
                     onEnter={e => c.serverfilter ? this.owner.severfilter() : false}
                     ref={e => {
