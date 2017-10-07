@@ -9,10 +9,10 @@ export class AppLinks extends ToggleCmp {
     get children() {
         return [
             <Button icon='menu' onClick={e => this.onToggle(e)}/>,
-            this.added || this.open ? <div className='app-links-menu'><Menu
+            <div className='app-links-menu'><Menu
                 root={this.config.apppath}
                 apiUrl={this.config.api.applinks}
-            /></div> : null
+            /></div>
         ]
     }
 }

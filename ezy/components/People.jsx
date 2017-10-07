@@ -6,7 +6,6 @@ export class People extends ToggleCmp {
 
     apiUrl = this.config.api.people
     afterShow = e => this.apiLoad()
-    added = true
     renderNagativeCmp = () => {return null}
 
     get people() {return [].concat(this.cmpData).filter(c => c)}

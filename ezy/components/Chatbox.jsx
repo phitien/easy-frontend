@@ -31,10 +31,10 @@ export class Chatbox extends ToggleCmp {
                 <span>{this.to.name || this.to.uuid}</span>
                 <Button icon='close' onClick={this.removeBox}/>
             </div>,
-            this.added || this.open ? <div className='ezy-chatbox-toggle'>
+            <div className='ezy-chatbox-toggle'>
                 <div ref={e => this.messagesDom = e} className='ezy-chatbox-messages'>{this.messages.filter(m => m).map((m,i) => this.renderMessage(m,i))}</div>
                 <Text ref={e => this.text = e} onEnter={this.sendMessage}/>
-            </div> : null
+            </div>
         ]
     }
     get selector() {return `#${this.cmpId} .ezy-chatbox-toggle`}

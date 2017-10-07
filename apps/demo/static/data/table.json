@@ -6,12 +6,12 @@
     "size": 20,
     "columns": [
         {"type": "checkbox", "show": true, "width": 30},
-        {"field": "field1", "title": "Field 1", "show": true, "resizable": true, "localsort": true, "localfilter": true},
+        {"field": "field1", "title": "Field 1", "show": true, "resizable": true, "localsort": true, "localfilter": true, "serverfilter": true},
         {"field": "field2", "title": "Field 2", "show": true, "resizable": true, "serversort": true},
         {"type": "custom", "title": "Custom Field 1", "show": true, "resizable": true, "flex": 2, "localfilter": true, "data": "data('field1') + data('field2')"},
         {"type": "group", "title": "Group 1", "show": true, "children": [
             {"field": "field3", "title": "Field 3", "show": true, "resizable": true, "localsort": true, "localfilter": true},
-            {"field": "field4", "title": "Field 4", "show": true, "resizable": true, "serversort": true, "serverfilter": true}
+            {"field": "field4", "title": "Field 4", "show": true, "resizable": true}
         ]},
         {"type": "group", "title": "Group 2", "show": true, "children": [
             {"type": "custom", "title": "Custom Field 2", "show": true, "resizable": true, "localsort": true, "flex": 2, "data": "data('field3') + data('field4')"}

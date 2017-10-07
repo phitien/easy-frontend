@@ -5,7 +5,7 @@ import {Page} from '../components/Page'
 export class TablePage extends Page {
     get pageClassName() {return 'page-table'}
     get leftPanel() {
-        return 'LeftPanel'
+        // return 'LeftPanel'
     }
     get mainPanel() {
         return [
@@ -15,7 +15,8 @@ export class TablePage extends Page {
                 <Text cmpId='freetext' defaultValue='freetext' placeholder='Free text'/>
                 <Select cmpId='type' defaultValue='t2' options={['t1','t2','t3']}/>
             </SearchForm>,
-            <Table apiUrl={this.config.api.table} cmpId='table'
+            <Table cmpId='table'
+                apiUrl={this.config.api.table}
                 apiParams='search-form'/>
         ]
     }

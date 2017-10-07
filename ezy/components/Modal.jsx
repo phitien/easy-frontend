@@ -8,15 +8,15 @@ export class Modal extends FlexCmp {
         {name: 'bodyCmps', title: 'Header components', type: 'Text', value: []},
         {name: 'footerCmps', title: 'Footer components', type: 'Text', value: []},
         {name: 'showClose', title: 'Show Close Icon', type: 'Select', value: true, options: [true, false]},
-        {name: 'canClose', title: 'Can Close', transform: true, type: 'Text', value: function() {
+        {name: 'canClose', title: 'Can Close', transform: true, type: 'Textarea', value: function() {
             this.utils.trigger('ask_to_remove_modal', this.cmpData, this)
             return true
         }},
         {name: 'escape', title: 'Press ESC to clode', type: 'Select', value: true, options: [true, false]},
         {name: 'enter', title: 'Press ENTER to clode', type: 'Select', value: true, options: [true, false]},
         {name: 'outside', title: 'Click outside to clode', type: 'Select', value: true, options: [true, false]},
-        {name: 'beforeClose', title: 'Before Close', transform: true, type: 'Text', value: function() {}},
-        {name: 'afterClose', title: 'After Close', transform: true, type: 'Text', value: function() {}},
+        {name: 'beforeClose', title: 'Before Close', transform: true, type: 'Textarea', value: function() {}},
+        {name: 'afterClose', title: 'After Close', transform: true, type: 'Textarea', value: function() {}},
         {name: 'time', title: 'Auto close time', type: 'Text', value: -1},
         {name: 'draggable', title: 'Draggable', type: 'Select', value: true, options: [true, false]},
     ])}

@@ -22,7 +22,7 @@ export class TableHeaderCell extends Cmp {
             data-index={this.index} data-subindex={this.subindex}/>
         else if (this.type == 'group') return null
         else if (this.type == 'action') return null
-        else return <div className={`${this.cmpClassName}-name`} onClick={e => this.owner.onSort(e)} data-index={this.index} data-subindex={this.subindex}>
+        else return <div className={`${this.cmpClassName}-name`} data-index={this.index} data-subindex={this.subindex}>
             {this.col.name || this.col.title || this.col.label}
         </div>
     }
@@ -36,7 +36,8 @@ export class TableHeaderCell extends Cmp {
             this.col.serverfilter && 'serverfilter' || '',
         ].filter(c => c).join(' ')
         return <td className={className} colSpan={this.props.colSpan || 1} data-index={this.index} data-subindex={this.subindex}>
-            <div className={`${this.cmpClassName}-wrapper`} data-index={this.index} data-subindex={this.subindex}>
+            <div className={`${this.cmpClassName}-wrapper`} data-index={this.index} data-subindex={this.subindex}
+                 onClick={e => this.props.onClick(e)}>
                 {this.children || this.renderCell()}
             </div>
         </td>

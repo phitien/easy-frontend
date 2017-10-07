@@ -20,19 +20,23 @@ export class Table extends FlexCmp {
         {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null},
         {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', options: ['', 'desc', 'asc']},
-        {section: 'cmp', name: 'localsort', title: 'Local Sort Fn', type: 'Text', value: function(r) {
-            if (!this.cmpData.rows) return
-            if (!this.sortby) return
+        {section: 'cmp', name: 'localsort', title: 'Local Sort Fn', type: 'Textarea', value: function() {
+            if (!this.cmpData || !this.cmpData.rows.length) return
+            if (!this.sortby) return this.refresh()
             if (!this.sortdir) this.cmpData.rows = this.origin.map(o => o.value)
             else this.cmpData.rows.sort((r1,r2) => {
                 let d1 = this.celldata(r1, this.sortby)
                 let d2 = this.celldata(r2, this.sortby)
                 return this.sortdir == 'asc' ? d1.localeCompare(d2) : d2.localeCompare(d1)
             })
-            if (r) this.refresh()
+            this.refresh()
         }, transform: true},
-        {section: 'cmp', name: 'localfilter', title: 'Local Filter Fn', type: 'Text', value: function(r) {
-            let rows = this.utils.array(this.cmpData.rows)
+        {section: 'cmp', name: 'serversort', title: 'Local Sort Fn', type: 'Textarea', value: function(r) {
+            this.apiLoad()
+        }, transform: true},
+        {section: 'cmp', name: 'localfilter', title: 'Local Filter Fn', type: 'Textarea', value: function() {
+            if (!this.cmpData || !this.cmpData.rows.length) return
+            let rows = this.cmpData.rows
             if (this.tableheader) {
                 let output = this.tableheader.output
                 if (output.length) {
@@ -48,7 +52,10 @@ export class Table extends FlexCmp {
                 else rows.map(r => r.hidden = false)
             }
             else rows.map(r => r.hidden = false)
-            if (r) this.refresh()
+            this.refresh()
+        }, transform: true},
+        {section: 'cmp', name: 'severfilter', title: 'Server Filter Fn', type: 'Textarea', value: function(r) {
+            this.apiLoad()
         }, transform: true},
     ])}
     get cmpClassName() {return `ezy-table`}
@@ -116,19 +123,6 @@ export class Table extends FlexCmp {
             else return data(c.field)
         }
     }
-    get serversort() {
-        return e => this.apiLoad()
-    }
-    get onSort() {
-        return e => {
-            let index = e.target.getAttribute('data-index')
-            let col = this.actualCols[index]
-            this.sortby = col
-            this.sortdir = !this.sortdir ? 'asc' : this.sortdir == 'asc' ? 'desc' : ''
-            if (col.localsort) this.localsort(true)
-            else if (col.serversort) this.serversort()
-        }
-    }
     get jDom() {return jQuery(this.dom)}
     get width() {return this.jDom.innerWidth()}
     get height() {return this.jDom.innerHeight()}
@@ -139,9 +133,12 @@ export class Table extends FlexCmp {
     apiRefine(p) {return this.utils.assign({},
         super.apiRefine(p),
         this.related && this.related.output || null,
-        this.tableheader.output,
+        this.tableheader.output.reduce((rs,o) => {
+            if (o.c.serverfilter && o.c.field && o.e.output) rs[o.c.field] = o.e.output
+            return rs
+        }, {}),
         this.tablecontrol.output,
-        {sortby: this.sortby, sortdir: this.sortdir}
+        {sortby: this.sortby && this.sortby.field || null, sortdir: this.sortdir}
     )}
     apiSuccess = data => {
         this.cmpDataR = data

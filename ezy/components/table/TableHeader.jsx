@@ -21,6 +21,16 @@ export class TableHeader extends Cmp {
             )}
         </thead></table>
     }
+    get onSort() {
+        return (e) => {
+            let index = e.target.getAttribute('data-index')
+            let col = this.actualCols[index]
+            this.owner.sortby = col
+            this.owner.sortdir = !this.owner.sortdir ? 'asc' : this.owner.sortdir == 'asc' ? 'desc' : ''
+            if (col.localsort) this.owner.localsort()
+            else if (col.serversort) this.owner.serversort()
+        }
+    }
     renderGroups() {
         return this.owner.hasGroup ? <tr key={0} className={`${this.owner.rowClassName} header-group`}>
             {this.cols.map((c,i) =>
@@ -31,7 +41,9 @@ export class TableHeader extends Cmp {
     }
     renderColumns() {
         return <tr key={1} className='actual-cols'>
-            {this.actualCols.map((c,i) => <TableHeaderCell className={c.type || ''} key={i} owner={this.owner} col={c} index={i}/>)}
+            {this.actualCols.map((c,i) => <TableHeaderCell
+                onClick={this.onSort}
+                className={c.type || ''} key={i} owner={this.owner} col={c} index={i}/>)}
         </tr>
     }
     renderFilters() {
@@ -39,7 +51,8 @@ export class TableHeader extends Cmp {
         return this.owner.hasFilters ? <tr key={2} className={`${this.owner.rowClassName} filters`}>
             {this.actualCols.map((c,i) => <td key={i}><div>
                 {c.localfilter || c.serverfilter ? <Search icon='search' forceOpen={true} highlight={true}
-                    onChange={e => this.owner.localfilter(true)}
+                    onChange={e => this.owner.localfilter()}
+                    onEnter={e => c.serverfilter ? this.owner.severfilter() : false}
                     ref={e => {
                         let o = this.filters.find(o => o.c == c)
                         if (!o) return this.filters.push({c, e})

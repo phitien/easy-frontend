@@ -341,7 +341,6 @@ export class ToggleCmp extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'open', title: 'Open', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'forceOpen', title: 'Force Open', type: 'Select', value: false, options: [true, false]},
-        {section: 'cmp', name: 'added', title: 'Added', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'toggleMe', title: 'ToggleMe', type: 'Select', value: true, options: [true, false]},
         {section: 'api', name: 'afterShow', transform: true, title: 'After Show', type: 'Text', value: function(e) {}, required: false, desc: null},
         {section: 'api', name: 'afterHide', transform: true, title: 'After Hide', type: 'Text', value: function(e) {}, required: false, desc: null},
@@ -351,16 +350,10 @@ export class ToggleCmp extends FlexCmp {
     get duration() {return 500}
     get outside() {return true}
     onToggle(e) {
-        if (!this.added) {
-            this.added = true
-            this.open = true
-            this.refresh(this.onShow)
-        }
-        else {
-            this.open = !this.open
-            this.open ? this.onShow() : this.onHide()
-            this.open ? this.afterShow() : this.afterHide()
-        }
+        if (this.forceOpen) return
+        this.open = !this.open
+        this.open ? this.onShow() : this.onHide()
+        this.open ? this.afterShow() : this.afterHide()
     }
     onClickOutside(e) {
         if (this.toggleMe && e.target.closest(this.selector)) this.onHide()
@@ -371,15 +364,15 @@ export class ToggleCmp extends FlexCmp {
         jQuery.when(jQuery(this.selector).show('slide', this.animation, this.duration, e => cb ? cb() : false))
     }
     onHide(e, cb) {
-        if (!this.forceOpen) {
-            this.open = false
-            jQuery.when(jQuery(this.selector).hide('slide', this.animation, this.duration, e => cb ? cb() : false))
-        }
+        if (this.forceOpen) return
+        this.open = false
+        jQuery.when(jQuery(this.selector).hide('slide', this.animation, this.duration, e => cb ? cb() : false))
     }
     cmpDidMount() {
-        if (this.outside) addEventListener('click', e => this.onClickOutside(e), true)
+        if (!this.forceOpen && this.outside) addEventListener('click', e => this.onClickOutside(e), true)
     }
     cmpDidUpdate() {
-        if (this.open) setTimeout(e => this.onShow(e), 100)
+        if (this.forceOpen || this.open) this.onShow()
+        else this.onHide()
     }
 }
