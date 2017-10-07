@@ -4,6 +4,7 @@
     "page": 1,
     "total": 200,
     "size": 20,
+    "autocard": true,
     "gridcard": [
         "<div><label>Field 1</label> <span>${data('field1')}</span></div>",
         "<div><label>Field 2</label> <span>${data('field2')}</span></div>",

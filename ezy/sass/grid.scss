@@ -1,6 +1,6 @@
 .ezy-grid {
-    color: $table-color;
-    background-color: $table-bg-color;
+    color: $grid-color;
+    background-color: $grid-bg-color;
     overflow: hidden;flex: 1;
     display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
     > * {width: 100%;}
@@ -8,7 +8,6 @@
         overflow-y: hidden;
         overflow-x: auto;
         flex: 1;display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
-        border: 1px solid $table-bd-color;
     }
     .ezy-grid-control {
         display: flex;align-items: center;justify-content: flex-start;
@@ -37,21 +36,34 @@
     .ezy-grid-filters {
         display: flex;justify-content: space-between;
         align-items: center;
+        margin-bottom: $mapa/2;
+        color: $grid-filters-color;
+        background-color: $grid-filters-bg-color;
     }
     .ezy-grid-body {
         flex: 1;overflow: auto;
         .ezy-grid-card {
+            padding: $mapa/3;
+            display: inline-block;
+            overflow: hidden;
+            .ezy-grid-card-wrapper {
+                padding: $mapa/3;
+                img {
+                    width: 100%;
+                    box-shadow: $shadow;
+                }
+            }
             &:nth-child(odd) {
-                color: $table-row-odd-color;
-                background-color: $table-row-odd-bg-color;
+                color: $grid-card-odd-color;
+                background-color: $grid-card-odd-bg-color;
             }
             &:nth-child(even) {
-                color: $table-row-even-color;
-                background-color: $table-row-even-bg-color;
+                color: $grid-card-even-color;
+                background-color: $grid-card-even-bg-color;
             }
-            &:hover {
-                color: $table-row-hover-color;
-                background-color: $table-row-hover-bg-color;
+            &:hover, &.selected {
+                color: $grid-card-hover-color;
+                background-color: $grid-card-hover-bg-color;
             }
         }
     }

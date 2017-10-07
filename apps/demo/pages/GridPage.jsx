@@ -9,15 +9,10 @@ export class GridPage extends Page {
     }
     get mainPanel() {
         return [
-            <SearchForm cmpId='search-form' onSearch={function() {
-                    this.regCmps.has('grid') ? this.regCmps.get('grid').apiLoad() : false
-                }}>
-                <Text cmpId='freetext' defaultValue='freetext' placeholder='Free text'/>
-                <Select cmpId='type' defaultValue='t2' options={['t1','t2','t3']}/>
-            </SearchForm>,
             <Grid cmpId='grid'
+                size={3}
                 apiUrl={this.config.api.grid}
-                apiParams='search-form'/>
+                />
         ]
     }
     get rightPanel() {

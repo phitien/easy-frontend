@@ -8,10 +8,11 @@ import {StyleLoader} from 'ezy/common'
 export class Grid extends Table {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'size', title: 'Number of cards on a line', type: 'Number', value: 2},
+        {section: 'cmp', name: 'autocard', title: 'Automatically render card', type: 'Select', value: false, options: [true, false]},
         {section: 'cmp', name: 'renderCard', title: 'celldata', type: 'Textarea', value: function(r) {
             let data = function(f) {return r[f]}.bind(this)
-            // let template = this.utils.array(this.cmpData && this.cmpData.gridcard || this.gridcard(r).join('')
-            let template = this.gridcard(r).join('')
+            let template = this.autocard || !this.cmpData || this.cmpData.autocard || !this.cmpData.gridcard || !this.cmpData.gridcard.length
+                ? this.gridcard(r).join('') : this.utils.array(this.cmpData.gridcard) || null
             if (template) {
                 let rs = ''
                 try {eval(`rs = \`${template}\``)} catch(e) {this.log(e)}
@@ -34,10 +35,7 @@ export class Grid extends Table {
     })}
     layoutRefine() {
         new StyleLoader(`
-            #${this.cmpId} {}
-            #${this.cmpId} .${this.bodyClassName} {}
-            #${this.cmpId} .${this.rowClassName} {display: inline-block;overflow: hidden;width: ${100/this.size}%;}
-            #${this.cmpId} img {width: 100%;}
+            #${this.cmpId} .${this.rowClassName} {width: ${100/this.size}%;}
         `, `${this.cmpId}-style`).load()
     }
     cmpDidUpdate() {

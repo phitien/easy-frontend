@@ -44,7 +44,7 @@ export class Application {
     }
     google_platform_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        new MetaLoader('google-signin-client_id', this.config.google.clientid).load()
+        new MetaLoader(this.config.google.clientid, 'google-signin-client_id').load()
         new JsLoader(
             `//apis.google.com/js/client:platform.js?onload=google_platform_loaded`,
             'google-platform', cb, t).load()
