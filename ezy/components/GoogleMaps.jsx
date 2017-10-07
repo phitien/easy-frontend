@@ -33,7 +33,7 @@ export class GoogleMapsInfoPanel extends ToggleCmp {
         if (this.photos.length) super.onShow(e, e => this.gallery.data = this.photos)
     }
 }
-export class GoogleMaps extends ToggleCmp {
+export class GoogleMaps extends FlexCmp {
     static autoProps() {return super.autoProps().concat([
         {name: 'locationFoundText', title: 'Current location', type: 'Text', value: 'Current location'},
         {name: 'noGeoText', title: 'No geolocation', type: 'Text', value: ``},
@@ -48,15 +48,13 @@ export class GoogleMaps extends ToggleCmp {
     get children() {
         return [
             <div className='ezy-maps-container'></div>,
-            this.search ? <Form ref={e => this.form = e} validate={e => false}>
-                <Autocomplete cmpId={`ezy-maps-autocomplete`}
-                    highlight={true}
-                    onChange={e => this.infoPanelCmp.onHide()}
-                    forceOpen={true}
-                    placeholder='Enter a location'
-                    icon='search'
-                    />
-            </Form> : null,
+            this.search ? <Autocomplete ref={e => this.searchinput = e}
+                icon='search'
+                placeholder='Enter a location'
+                highlight={true}
+                forceOpen={true}
+                onChange={e => this.infoPanelCmp.onHide()}
+                /> : null,
             this.search && this.infoPanel ? React.cloneElement(this.infoPanel, {
                 ref: (e => this.infoPanelCmp = e),
                 toggleMe: false,
@@ -73,7 +71,7 @@ export class GoogleMaps extends ToggleCmp {
         center: this.center,
         zoom: this.zoom
     }, this.props))}
-    get autocomplete() {return this.__autocomplete = this.__autocomplete || new google.maps.places.Autocomplete(this.form.elements['ezy-maps-autocomplete'].input)}
+    get autocomplete() {return this.__autocomplete = this.__autocomplete || new google.maps.places.Autocomplete(this.searchinput.input)}
     get infowindow() {return this.__infowindow = this.__infowindow || new google.maps.InfoWindow}
     get marker() {return this.__marker = this.__marker || new google.maps.Marker({
         map: this.map,
@@ -100,30 +98,30 @@ export class GoogleMaps extends ToggleCmp {
             this.setLocation(this.map.getCenter(), this.noGeoText)
         }
         if (this.search) {
-            this.autocomplete.bindTo('bounds', this.map)
-            this.autocomplete.addListener('place_changed', e => {
-                this.infowindow.close()
-                this.marker.setVisible(false)
-                let place = this.autocomplete.getPlace()
-                if (!place.geometry) {
-                    this.lastMessage = `No details available for input: '${place.name}'`
-                    return
-                }
-                if (place.geometry.viewport) this.map.fitBounds(place.geometry.viewport)
-                else {
-                    this.map.setCenter(place.geometry.location)
-                    this.map.setZoom(this.detailzoom)
-                }
-                this.marker.setPosition(place.geometry.location, place.name)
-                this.marker.setVisible(true)
-                this.infowindow.open(this.map)
-                // this.infowindow.open(this.map, this.marker)
-
-                if (this.infoPanelCmp) {
-                    this.infoPanelCmp.cmpDataR = place
-                    this.infoPanelCmp.onShow()
-                }
-            })
+            // this.autocomplete.bindTo('bounds', this.map)
+            // this.autocomplete.addListener('place_changed', e => {
+            //     this.infowindow.close()
+            //     this.marker.setVisible(false)
+            //     let place = this.autocomplete.getPlace()
+            //     if (!place.geometry) {
+            //         this.lastMessage = `No details available for input: '${place.name}'`
+            //         return
+            //     }
+            //     if (place.geometry.viewport) this.map.fitBounds(place.geometry.viewport)
+            //     else {
+            //         this.map.setCenter(place.geometry.location)
+            //         this.map.setZoom(this.detailzoom)
+            //     }
+            //     this.marker.setPosition(place.geometry.location, place.name)
+            //     this.marker.setVisible(true)
+            //     this.infowindow.open(this.map)
+            //     // this.infowindow.open(this.map, this.marker)
+            //
+            //     if (this.infoPanelCmp) {
+            //         this.infoPanelCmp.cmpDataR = place
+            //         this.infoPanelCmp.onShow()
+            //     }
+            // })
         }
     }
     cmpDidMount() {

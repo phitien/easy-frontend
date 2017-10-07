@@ -367,8 +367,6 @@ export class ToggleCmp extends FlexCmp {
     }
     cmpDidMount() {
         if (!this.forceOpen && this.outside) addEventListener('click', e => this.onClickOutside(e), true)
-    }
-    cmpDidUpdate() {
         if (this.forceOpen || this.open) this.onShow()
         else this.onHide()
     }
