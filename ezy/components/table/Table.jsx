@@ -13,6 +13,10 @@ export class Table extends RegCmp {
         {section: 'cmp', name: 'showPagination', title: 'Show Pagination', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'showPageInfo', title: 'Show Page Info', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'showColumnsSetting', title: 'Show Columns Setting', type: 'Select', value: true, options: [true, false]},
+        {section: 'cmp', name: 'controlRenderer', title: 'Control Renderer', type: 'Text', value: TableControl},
+        {section: 'cmp', name: 'headerRenderer', title: 'Header Renderer', type: 'Text', value: TableHeader},
+        {section: 'cmp', name: 'bodyRenderer', title: 'Body Renderer', type: 'Text', value: TableBody},
+        {section: 'cmp', name: 'footerRenderer', title: 'Footer Renderer', type: 'Text', value: TableFooter},
         {section: 'cmp', name: 'showHeader', title: 'Show Header', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'showBody', title: 'Show Body', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'showFooter', title: 'Show Footer', type: 'Select', value: true, options: [true, false]},
@@ -20,6 +24,16 @@ export class Table extends RegCmp {
         {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null},
         {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', options: ['', 'desc', 'asc']},
+        {section: 'cmp', name: 'celldata', title: 'celldata', type: 'Textarea', value: function(r, c, f, template) {
+            let data = function(f) {return r[f]}.bind(this)
+            template = template || c[f || 'data']
+            if (template) {
+                let rs = ''
+                try {eval(`rs = ${template}`)} catch(e) {this.log(e)}
+                return rs
+            }
+            else return data(c.field) || ''
+        }, transform: true},
         {section: 'cmp', name: 'onRowClick', title: 'onRowClick', type: 'Textarea', value: function(e, r, v) {
             r.selected = v !== undefined ? v : !r.selected
             this.refresh()
@@ -99,26 +113,14 @@ export class Table extends RegCmp {
     get total() {return this.cmpData ? this.cmpData.total || this.cmpData.rows.length : 0}
     get children() {
         return [
-            this.showControl && this.controlPos == 'top' ? <TableControl owner={this} ref={e => this.tablecontrol = e}/> : null,
+            this.showControl && this.controlPos == 'top' ? <this.controlRenderer owner={this} ref={e => this.tablecontrol = e}/> : null,
             <div className={`${this.cmpClassName}-wrapper`}>
-                {this.showHeader ? <TableHeader owner={this} ref={e => this.tableheader = e}/> : null}
-                {this.showBody ? <TableBody owner={this} ref={e => this.tablebody = e}/> : null}
-                {this.showFooter ? <TableFooter owner={this} ref={e => this.tablefooter = e}/> : null}
+                {this.showHeader ? <this.headerRenderer owner={this} ref={e => this.tableheader = e}/> : null}
+                {this.showBody ? <this.bodyRenderer owner={this} ref={e => this.tablebody = e}/> : null}
+                {this.showFooter ? <this.footerRenderer owner={this} ref={e => this.tablefooter = e}/> : null}
             </div>,
-            this.showControl && this.controlPos != 'top' ? <TableControl owner={this} ref={e => this.tablecontrol = e}/> : null,
+            this.showControl && this.controlPos != 'top' ? <this.controlRenderer owner={this} ref={e => this.tablecontrol = e}/> : null,
         ]
-    }
-    get celldata() {
-        return (r,c,f,debug) => {
-            let data = function(f) {return r[f]}.bind(this)
-            if (c[f || 'data']) {
-                let rs = ''
-                try {eval(`rs = ${c[f || 'data']}`)} catch(e) {if (debug) this.log(e)}
-                if (debug) this.log(f, c[f || 'data'], rs)
-                return rs
-            }
-            else return data(c.field) || ''
-        }
     }
     get jDom() {return jQuery(this.dom)}
     get width() {return this.jDom.innerWidth()}

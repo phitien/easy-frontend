@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'react-router-redux'
 import {Switch, Route} from 'react-router'
 import {Subscriber, Publisher} from './PubSub'
-import {CssLoader, JsLoader} from './Loader'
+import {CssLoader, JsLoader, MetaLoader} from './Loader'
 import {history} from './history'
 import {utils} from './utils'
 
@@ -44,7 +44,7 @@ export class Application {
     }
     google_platform_init = e => {
         const [cb, t] = e ? e.detail || [] : []
-        this.utils.loadMeta('google-signin-client_id', this.config.google.clientid)
+        new MetaLoader('google-signin-client_id', this.config.google.clientid).load()
         new JsLoader(
             `//apis.google.com/js/client:platform.js?onload=google_platform_loaded`,
             'google-platform', cb, t).load()

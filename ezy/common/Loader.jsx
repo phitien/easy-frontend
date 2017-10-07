@@ -1,9 +1,9 @@
 import {utils} from './utils'
 
 export class Loader {
-    constructor(url, id, cb, t) {
+    constructor(obj, id, cb, t) {
         this.id = id
-        this.url = url
+        this.obj = obj
         this.callback_name = `${(this.id || '').replace(/\W/g, '_')}_callback`
         this.event = `${(this.id || '').replace(/\W/g, '_')}_loaded`
         this.callback = cb
@@ -28,12 +28,24 @@ export class Loader {
 export class JsLoader extends Loader {
     load() {
         super.load()
-        this.utils.loadJs(this.url, this.id, this.callback || window[this.callback_name])
+        this.utils.loadJs(this.obj, this.id, this.callback || window[this.callback_name])
     }
 }
 export class CssLoader extends Loader {
     load() {
         super.load()
-        this.utils.loadCss(this.url, this.id, this.callback || window[this.callback_name])
+        this.utils.loadCss(this.obj, this.id, this.callback || window[this.callback_name])
+    }
+}
+export class StyleLoader extends Loader {
+    load() {
+        super.load()
+        this.utils.loadStyle(this.obj, this.id, this.callback || window[this.callback_name])
+    }
+}
+export class MetaLoader extends Loader {
+    load() {
+        super.load()
+        this.utils.loadMeta(this.obj, this.id, this.callback || window[this.callback_name])
     }
 }

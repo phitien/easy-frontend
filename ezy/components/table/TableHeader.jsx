@@ -1,5 +1,5 @@
 import React from 'react'
-import {FlexCmp, Cmp} from 'ezy/components/cmp'
+import {Cmp} from 'ezy/components/cmp'
 import {TableHeaderCell} from './TableHeaderCell'
 import {Search} from '../input'
 

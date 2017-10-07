@@ -156,6 +156,8 @@ class Utilities {
         this.append('link', {id, href, type: 'text/css', rel: 'stylesheet', onload}, true)}
     get loadMeta() {return (name, content, onload) =>
         this.append('meta', {id: name, name, content, onload}, true)}
+    get loadStyle() {return (style, id, onload) =>
+        this.append('style', {id, innerHTML: style, onload}, true)}
 }
 
 export const utils = new Utilities()
