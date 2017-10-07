@@ -5,6 +5,7 @@ module.exports = exports = {
     api: {
         applinks: '/static/{appname}/data/applinks.json',
         table: '/static/{appname}/data/table.json',
+        grid: '/static/{appname}/data/table.json',
         login: '/static/{appname}/data/login.json',
         people: '/{appname}/people',
         inbox: '/{appname}/inbox'

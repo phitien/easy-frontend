@@ -1,7 +1,7 @@
 export {Menu} from './Menu'
 export {Message} from './Message'
 export {Modal} from './Modal'
-export {TableControl, TableHeader, TableBody, TableFooter, Table, TableCell, TableRow, TableHeaderCell} from './table'
+export {Table, Grid} from './table'
 export {Button, Checkbox, Email, Number, Password, Text, Url, Select} from './input'
 export {Chart, ChartSeries} from './chart'
 
