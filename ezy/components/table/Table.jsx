@@ -155,11 +155,13 @@ export class Table extends RegCmp {
         if (data.hasOwnProperty('sortby')) this.sortbyR = this.actualCols.find(c => c.field == data.sortby)
     }
     layoutRefine() {
-        let w = this.width, totalF = this.totalFlex, totalFW = this.totalFlexWidth, cols = this.actualCols, colL = cols.length
+        let w = this.width, totalF = this.totalFlex,
+            totalFW = this.totalFlexWidth - 18 ,  //Why minus 18 -> scrollbar width
+            cols = this.actualCols, colL = cols.length
         this.jDom.find(`tr.actual-cols td`).each((i, el) => {
             let c = cols[i], cF = this.colFlex(c), cW = this.colWidth(c) || cF*(totalFW/totalF)
             let hc = jQuery(el).find(`.${this.cellClassName}-wrapper`)
-            hc.css('width', cW)
+            hc.css('width', cW )
             this.jDom.find(`tr.${this.rowClassName} td:nth-child(${i + 1}) > div`).css('width', cW)
             if (c.resizable) hc.resizable({
                 handles: 'e',

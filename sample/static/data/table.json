@@ -5,12 +5,6 @@
     "total": 200,
     "size": 20,
     "autocard": true,
-    "slide": [
-        "<div><label>Field 1</label> <span>${data('field1')}</span></div>",
-        "<div><label>Field 2</label> <span>${data('field2')}</span></div>",
-        "<div><label>Field 3</label> <span>${data('field3')}</span></div>",
-        "<div><label>Field 4</label> <span>${data('field4')}</span></div>"
-    ],
     "gridcard": [
         "<div><label>Field 1</label> <span>${data('field1')}</span></div>",
         "<div><label>Field 2</label> <span>${data('field2')}</span></div>",
@@ -30,7 +24,7 @@
             "url": "`/static/images/ezy-${['default', 'red', 'blue', 'white'].random()}.png?${data('field3')}/${data('field4')}`",
             "data": "`${data('field3')} - ${data('field4')}`",
             "style": {"width": "44px", "margin": "3px auto"},
-            "width": 40
+            "width": 55
         },
         {"type": "group", "title": "Empty Group 1", "show": true},
         {"type": "group", "title": "Empty Group 2", "show": true, "children": []},

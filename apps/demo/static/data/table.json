@@ -24,7 +24,7 @@
             "url": "`/static/images/ezy-${['default', 'red', 'blue', 'white'].random()}.png?${data('field3')}/${data('field4')}`",
             "data": "`${data('field3')} - ${data('field4')}`",
             "style": {"width": "44px", "margin": "3px auto"},
-            "width": 40
+            "width": 55
         },
         {"type": "group", "title": "Empty Group 1", "show": true},
         {"type": "group", "title": "Empty Group 2", "show": true, "children": []},

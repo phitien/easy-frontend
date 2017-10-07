@@ -6,7 +6,7 @@
     > * {width: 100%;}
     .ezy-table-wrapper {
         overflow-y: hidden;
-        overflow-x: auto;
+        overflow-x: scroll;
         flex: 1;display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
         border: 1px solid $table-bd-color;
     }
@@ -139,6 +139,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    .ezy-table-cell.checkbox .ezy-table-cell-wrapper,
+    .ezy-table-cell.action .ezy-table-cell-wrapper {
+        padding: 0;display: flex;justify-content: center;align-items: center;
+        .ezy-button {
+            padding: 0 $mapa/6;
+            height: 24px;
+        }
     }
     .ui-resizable-w {
         display: none;
