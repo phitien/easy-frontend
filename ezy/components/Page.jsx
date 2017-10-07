@@ -157,7 +157,7 @@ export class Page extends RegCmp {
         this.socket.emit('chat', msg)
     }
     socket_io_loaded = e => {
-        if (!this.socket) {
+        if (!this.socket && typeof io != 'undefined') {
             const socket = io.connect(`//${location.host}`, {reconnect: true})
             const showMessage = data => this.lastMessage = {text: typeof data == 'string' ? data : `${data.title ? `${data.title}:` : ''} ${data.message}`, type: 'chat'}
             socket.on('connect', e => {
@@ -200,6 +200,6 @@ export class Page extends RegCmp {
     renderMainPanel() {return this.mainPanel ? <div className='content-main'>{this.renderObject(this.mainPanel)}</div> : null}
     renderRightPanel() {return this.rightPanel ? <div className='content-right'>{this.renderObject(this.rightPanel)}</div> : null}
     cmpDidMount() {
-        this.utils.trigger('socket_io_init')
+        this.utils.trigger('socket_io_init', null, 500)
     }
 }

@@ -18,7 +18,7 @@ export class TableHeaderCell extends Cmp {
     }
     renderCell() {
         if (this.props.colSpan) return null
-        if (this.type == 'checkbox') return <Checkbox checked={this.checked} onChange={this.owner.selectAll}
+        if (this.type == 'checkbox') return <Checkbox checked={this.checked} onChange={(e,v) => this.owner.selectAll(e,v)}
             data-index={this.index} data-subindex={this.subindex}/>
         else if (this.type == 'group') return null
         else if (this.type == 'action') return null

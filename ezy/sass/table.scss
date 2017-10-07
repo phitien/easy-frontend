@@ -69,6 +69,10 @@
                     color: $table-row-hover-color;
                     background-color: $table-row-hover-bg-color;
                 }
+                &.selected {
+                    color: $table-row-selected-color;
+                    background-color: $table-row-selected-bg-color;
+                }
             }
             td:hover {
                 color: $table-cell-hover-color;

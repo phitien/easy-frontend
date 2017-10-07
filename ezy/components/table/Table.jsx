@@ -20,6 +20,14 @@ export class Table extends RegCmp {
         {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null},
         {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', options: ['', 'desc', 'asc']},
+        {section: 'cmp', name: 'onRowClick', title: 'onRowClick', type: 'Textarea', value: function(e, r, v) {
+            r.selected = v !== undefined ? v : !r.selected
+            this.refresh()
+        }, transform: true},
+        {section: 'cmp', name: 'selectAll', title: 'selectAll', type: 'Textarea', value: function(e, v) {
+            this.rows.map(r => r.selected = v)
+            this.refresh()
+        }, transform: true},
         {section: 'cmp', name: 'localsort', title: 'Local Sort Fn', type: 'Textarea', value: function() {
             if (!this.cmpData || !this.cmpData.rows.length) return
             if (!this.sortby) return this.refresh()
@@ -89,18 +97,6 @@ export class Table extends RegCmp {
     get pageSize() {return this.cmpData ? this.cmpData.size || 20 : 20}
     get page() {return this.cmpData ? this.cmpData.page || 1 : 1}
     get total() {return this.cmpData ? this.cmpData.total || this.cmpData.rows.length : 0}
-    get selectAll() {
-        return v => {
-            this.rows.map(r => r.selected = v)
-            this.refresh()
-        }
-    }
-    get onRowSelected() {
-        return (row, v) => {
-            row.selected = v
-            this.refresh()
-        }
-    }
     get children() {
         return [
             this.showControl && this.controlPos == 'top' ? <TableControl owner={this} ref={e => this.tablecontrol = e}/> : null,

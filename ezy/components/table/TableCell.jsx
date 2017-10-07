@@ -16,11 +16,8 @@ export class TableCell extends Cmp {
     get data() {return this.col.data}
     get field() {return this.col.field}
     get selected() {return this.row.selected}
-    set selected(v) {
-        this.owner.onRowSelected(this.row, v)
-    }
     renderCell() {
-        if (this.type == 'checkbox') return <Checkbox checked={this.selected} onChange={v => this.selected = v} data-index={this.index}/>
+        if (this.type == 'checkbox') return <Checkbox checked={this.selected} data-index={this.index}/>
         else if (this.type == 'group') return null
         else if (this.type == 'action') return <Button icon={this.col.action} data-index={this.index}/>
         else if (this.type == 'image') return <Img

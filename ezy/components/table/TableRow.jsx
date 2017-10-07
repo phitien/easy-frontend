@@ -11,7 +11,7 @@ export class TableRow extends Cmp {
     get row() {return this.props.row}
     get index() {return this.props.index}
     render() {
-        return <tr className={this.className} data-index={this.index}>
+        return <tr className={`${this.className} ${this.row.selected ? 'selected' : ''}`} data-index={this.index} onClick={e => this.owner.onRowClick(e, this.row)}>
             {this.actualCols.map((c,i) => <TableCell className={c.type || ''} key={i} owner={this.owner} row={this.row} col={c} index={this.index}/>)}
         </tr>
     }

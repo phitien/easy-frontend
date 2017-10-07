@@ -21,7 +21,7 @@ export class Checkbox extends RegCmp {
     get onChange() {
         return e => {
             this.checkedR = !this.checked
-            typeof this.props.onChange == 'function' ? this.props.onChange(this.checked, e) : false
+            typeof this.props.onChange == 'function' ? this.props.onChange(e, this.checked) : false
         }
     }
     get children() {
