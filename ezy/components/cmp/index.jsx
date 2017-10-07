@@ -122,7 +122,7 @@ export class PubSubContainer extends BaseContainer {
         }
     }
     set lastMessage(msg) {
-        this.utils.trigger('add_message', msg, this)
+        this.utils.trigger('add_message', typeof msg == 'string' && {text: msg} || msg, this)
     }
     set lastInbox(msg) {
         this.utils.trigger('add_chatbox', msg, this)

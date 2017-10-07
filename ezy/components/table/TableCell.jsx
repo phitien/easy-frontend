@@ -24,11 +24,12 @@ export class TableCell extends Cmp {
             src={this.owner.celldata(this.row, this.col, 'url')}
             alt={this.owner.celldata(this.row, this.col)}
             style={this.col.style || {height: '100%'}}
+            onClick={e => this.owner.onCellClick(e, this.row, this.col)}
             />
         else return this.owner.celldata(this.row, this.col)
     }
     render() {
-        return <td className={this.className} data-index={this.index}>
+        return <td className={this.className} data-index={this.index} onClick={e => this.owner.onCellClick(e, this.row, this.col)}>
             <div className={`${this.cmpClassName}-wrapper`} data-index={this.index}>
                 {this.renderCell()}
             </div>

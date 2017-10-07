@@ -21,6 +21,7 @@ export class Table extends RegCmp {
         {section: 'cmp', name: 'showBody', title: 'Show Body', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'showFooter', title: 'Show Footer', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'columns', title: 'Columns', type: 'Text', value: []},
+        {section: 'cmp', name: 'handlers', title: 'Handlers', type: 'Text', value: {}},
         {section: 'cmp', name: 'fit', title: 'Fit', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'sortby', title: 'Sort by', type: 'Text', value: null},
         {section: 'cmp', name: 'sortdir', title: 'Sort dir', type: 'Select', value: '', options: ['', 'desc', 'asc']},
@@ -37,6 +38,13 @@ export class Table extends RegCmp {
         {section: 'cmp', name: 'onRowClick', title: 'onRowClick', type: 'Textarea', value: function(e, r, v) {
             r.selected = v !== undefined ? v : !r.selected
             this.refresh()
+        }, transform: true},
+        {section: 'cmp', name: 'onCellClick', title: 'onCellClick', type: 'Textarea', value: function(e, r, c) {
+            if (c.type != 'action') return
+            this.log(this.handlers)
+            if (!this.handlers.hasOwnProperty(c.action)) return
+            if (typeof this.handlers[c.action] != 'function') return
+            this.handlers[c.action](e, r, c)
         }, transform: true},
         {section: 'cmp', name: 'selectAll', title: 'selectAll', type: 'Textarea', value: function(e, v) {
             this.rows.map(r => r.selected = v)

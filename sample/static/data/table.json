@@ -23,13 +23,19 @@
         {"type": "image", "title": "Image", "show": true, "resizable": true, "localsort": true,
             "url": "`/static/images/ezy-${['default', 'red', 'blue', 'white'].random()}.png?${data('field3')}/${data('field4')}`",
             "data": "`${data('field3')} - ${data('field4')}`",
-            "style": {"width": "44px", "margin": "3px auto"}
+            "style": {"width": "44px", "margin": "3px auto"},
+            "width": 40
         },
         {"type": "group", "title": "Empty Group 1", "show": true},
         {"type": "group", "title": "Empty Group 2", "show": true, "children": []},
         {"type": "action", "action": "add", "show": true, "width": 30},
         {"type": "action", "action": "edit", "show": true, "width": 30},
-        {"type": "action", "action": "remove", "show": true, "width": 30}
+        {"type": "action", "action": "update", "show": true, "width": 30},
+        {"type": "action", "action": "refresh", "show": true, "width": 30},
+        {"type": "action", "action": "remove", "show": true, "width": 30},
+        {"type": "action", "action": "delete", "show": true, "width": 30},
+        {"type": "action", "action": "file_upload", "show": true, "width": 30},
+        {"type": "action", "action": "file_download", "show": true, "width": 30}
     ],
     "rows": [
         {"field1": "cell02.1", "field2": "cell02.2", "field3": "cell02.3", "field4": "cell02.4"},

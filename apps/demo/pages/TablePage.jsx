@@ -17,7 +17,18 @@ export class TablePage extends Page {
             </SearchForm>,
             <Table cmpId='table'
                 apiUrl={this.config.api.table}
-                apiParams='search-form'/>
+                apiParams='search-form'
+                handlers={{
+                    add: (e,r,c) => this.lastMessage = c.action,
+                    edit: (e,r,c) => this.lastMessage = c.action,
+                    update: (e,r,c) => this.lastMessage = c.action,
+                    refresh: (e,r,c) => this.lastMessage = c.action,
+                    remove: (e,r,c) => this.lastMessage = c.action,
+                    delete: (e,r,c) => this.lastMessage = c.action,
+                    file_download: (e,r,c) => this.lastMessage = c.action,
+                    file_upload: (e,r,c) => this.lastMessage = c.action,
+                }}
+                />
         ]
     }
     get rightPanel() {
