@@ -1,11 +1,11 @@
 import React from 'react'
-import {FlexCmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 import {TableControl} from './TableControl'
 import {TableHeader} from './TableHeader'
 import {TableBody} from './TableBody'
 import {TableFooter} from './TableFooter'
 
-export class Table extends FlexCmp {
+export class Table extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'showControl', title: 'Show Control', type: 'Select', value: true, options: [true, false]},
         {section: 'cmp', name: 'controlPos', title: 'Control Position', type: 'Select', value: 'top', options: ['top', 'bottom']},

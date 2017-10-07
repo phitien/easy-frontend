@@ -98,30 +98,30 @@ export class GoogleMaps extends FlexCmp {
             this.setLocation(this.map.getCenter(), this.noGeoText)
         }
         if (this.search) {
-            // this.autocomplete.bindTo('bounds', this.map)
-            // this.autocomplete.addListener('place_changed', e => {
-            //     this.infowindow.close()
-            //     this.marker.setVisible(false)
-            //     let place = this.autocomplete.getPlace()
-            //     if (!place.geometry) {
-            //         this.lastMessage = `No details available for input: '${place.name}'`
-            //         return
-            //     }
-            //     if (place.geometry.viewport) this.map.fitBounds(place.geometry.viewport)
-            //     else {
-            //         this.map.setCenter(place.geometry.location)
-            //         this.map.setZoom(this.detailzoom)
-            //     }
-            //     this.marker.setPosition(place.geometry.location, place.name)
-            //     this.marker.setVisible(true)
-            //     this.infowindow.open(this.map)
-            //     // this.infowindow.open(this.map, this.marker)
-            //
-            //     if (this.infoPanelCmp) {
-            //         this.infoPanelCmp.cmpDataR = place
-            //         this.infoPanelCmp.onShow()
-            //     }
-            // })
+            this.autocomplete.bindTo('bounds', this.map)
+            this.autocomplete.addListener('place_changed', e => {
+                this.infowindow.close()
+                this.marker.setVisible(false)
+                let place = this.autocomplete.getPlace()
+                if (!place.geometry) {
+                    this.lastMessage = `No details available for input: '${place.name}'`
+                    return
+                }
+                if (place.geometry.viewport) this.map.fitBounds(place.geometry.viewport)
+                else {
+                    this.map.setCenter(place.geometry.location)
+                    this.map.setZoom(this.detailzoom)
+                }
+                this.marker.setPosition(place.geometry.location, place.name)
+                this.marker.setVisible(true)
+                this.infowindow.open(this.map)
+                // this.infowindow.open(this.map, this.marker)
+
+                if (this.infoPanelCmp) {
+                    this.infoPanelCmp.cmpDataR = place
+                    this.infoPanelCmp.onShow()
+                }
+            })
         }
     }
     cmpDidMount() {

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Button extends Cmp {
+export class Button extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'icon', title: 'Icon', type: 'Text', value: null},
         {section: 'cmp', name: 'img', title: 'Img', type: 'Text', value: null},

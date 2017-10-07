@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Message extends Cmp {
+export class Message extends RegCmp {
     get cmpClassName() {return `message`}
     cmpDidMount() {
         jQuery(this.dom).fadeOut(7000, e => {

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Space extends Cmp {
+export class Space extends RegCmp {
     get cmpClassName() {return 'space'}
     render = () =>
         <div className={this.className}>

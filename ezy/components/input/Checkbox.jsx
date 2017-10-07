@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Checkbox extends Cmp {
+export class Checkbox extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'checked', title: 'Checked', type: 'Select', value: false, required: false, desc: null, options: [true, false]},
         {section: 'cmp', name: 'defaultChecked', title: 'Default Checked', type: 'Select', value: false, required: false, desc: null, options: [true, false]},

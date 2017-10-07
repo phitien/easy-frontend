@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Menu extends Cmp {
+export class Menu extends RegCmp {
     get cmpClassName() {return ``}
     get level() {return this.props.level || 0}
     get getNodeClassName() {

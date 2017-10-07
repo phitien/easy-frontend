@@ -1,7 +1,7 @@
 import React from 'react'
-import {FlexCmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Modal extends FlexCmp {
+export class Modal extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {name: 'title', title: 'Title', type: 'Text', value: null},
         {name: 'headerCmps', title: 'Header components', type: 'Text', value: []},

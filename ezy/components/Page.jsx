@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 import {AppLinks} from './AppLinks'
 import {AppName} from './AppName'
 import {AppSearch} from './AppSearch'
@@ -16,7 +16,7 @@ import {People} from './People'
 import {Modal} from './Modal'
 import {SignInSignUpForm} from './SignInSignUpForm'
 
-export class Page extends Cmp {
+export class Page extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {name: 'messages', title: 'Messages', type: 'Text', value: []},
         {name: 'chatboxes', title: 'Chatboxes', type: 'Text', value: []},

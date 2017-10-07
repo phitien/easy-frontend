@@ -1,7 +1,7 @@
 import React from 'react'
-import {Cmp} from 'ezy/components/cmp'
+import {RegCmp} from 'ezy/components/cmp'
 
-export class Text extends Cmp {
+export class Text extends RegCmp {
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'value', title: 'Value', type: 'Text', value: ''},
         {section: 'cmp', name: 'type', title: 'Type', type: 'Select', value: 'text', options: ['text', 'password', 'number', 'email', 'url']},
