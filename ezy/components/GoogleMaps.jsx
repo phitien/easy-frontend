@@ -98,7 +98,6 @@ export class GoogleMaps extends FlexCmp {
             this.setLocation(this.map.getCenter(), this.noGeoText)
         }
         if (this.search) {
-            console.log(this.searchinput, this.searchinput.input)
             this.autocomplete.bindTo('bounds', this.map)
             this.autocomplete.addListener('place_changed', e => {
                 this.infowindow.close()
