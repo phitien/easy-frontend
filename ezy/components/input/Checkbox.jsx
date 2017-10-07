@@ -24,11 +24,11 @@ export class Checkbox extends RegCmp {
             typeof this.props.onChange == 'function' ? this.props.onChange(e, this.checked) : false
         }
     }
-    get children() {
-        return [
-            this.label && this.labelpos != 'right' ? <label onClick={this.onChange}>{this.label}</label> : null,
-            <i className='material-icons' onClick={this.onChange}>{this.icon}</i>,
-            this.label && this.labelpos == 'right' ? <label onClick={this.onChange}>{this.label}</label> : null,
-        ]
+    render() {
+        return <div className={this.className} id={this.cmpId} onClick={e => this.onChange(e)}>
+            {this.label && this.labelpos != 'right' ? <label>{this.label}</label> : null}
+            <i className='material-icons'>{this.icon}</i>
+            {this.label && this.labelpos == 'right' ? <label>{this.label}</label> : null}
+        </div>
     }
 }

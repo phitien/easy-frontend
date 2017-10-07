@@ -103,7 +103,13 @@ export class Table extends RegCmp {
     }, [])}
     get hasGroup() {return this.cols.find(c => c.type == 'group')}
     get hasFilters() {return this.actualCols.find(c => c.localfilter || c.serverfilter)}
-    get allcols() {return [].concat((this.cmpData ? this.cmpData.columns : null) || this.columns)}
+    get allcols() {
+        let cols = []
+        this.utils.array(this.cmpData && this.cmpData.columns || this.columns).map(c =>
+            c.type != 'group' ? cols.push(c) : this.utils.array(c.children).map(sc => cols.push(sc))
+        )
+        return cols
+    }
     get lines() {
         if (!this.cmpData || !this.cmpData.rows || !this.cmpData.rows.length) {
             this.origin = []

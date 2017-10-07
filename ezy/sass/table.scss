@@ -152,10 +152,14 @@
     .ezy-table-control-columns-settings {
         position: relative;
         .ezy-table-control-columns-list {
+            box-shadow: $shadow;
             color: $table-columns-settings-list-color;
             background-color: $table-columns-settings-list-bg-color;
             position: absolute;
             width: $table-columns-settings-list-width;
+            height: $table-columns-settings-list-height;
+            overflow-x: hidden;
+            overflow-y: auto;
             right: 0;
             z-index: 1;
             .ezy-checkbox {

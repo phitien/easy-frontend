@@ -80,8 +80,9 @@ export class TableControl extends Cmp {
                 <i className='material-icons' onClick={e => this.showColumnsSettingR = true}>settings</i>
                 {!this.showColumnsSetting ? null :
                 <div className={`${this.cmpClassName}-columns-list`}>{this.allcols.map((c,i) =>
-                <Checkbox key={i} defaultChecked={c.show} label={c.title || c.name || c.field}
-                    onChange={v => {
+                <Checkbox key={i} defaultChecked={c.show}
+                    label={c.title || c.name || c.field || c.action || c.type}
+                    onChange={(e,v) => {
                         c.show = v
                         this.owner.refresh()
                     }}/>)}</div>}

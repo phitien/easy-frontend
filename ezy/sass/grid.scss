@@ -71,4 +71,28 @@
             }
         }
     }
+    .ezy-grid-control-columns-settings {
+        position: relative;
+        .ezy-grid-control-columns-list {
+            box-shadow: $shadow;
+            color: $grid-columns-settings-list-color;
+            background-color: $grid-columns-settings-list-bg-color;
+            position: absolute;
+            width: $grid-columns-settings-list-width;
+            height: $grid-columns-settings-list-height;
+            overflow-x: hidden;
+            overflow-y: auto;
+            right: 0;
+            z-index: 1;
+            .ezy-checkbox {
+                cursor: pointer;
+                padding: $mapa/4 $mapa/2;
+                label {display: block;flex: 1;height: 100%;}
+                &:hover {
+                    color: $grid-columns-settings-item-color;
+                    background-color: $grid-columns-settings-item-bg-color;
+                }
+            }
+        }
+    }
 }
