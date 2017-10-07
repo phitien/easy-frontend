@@ -18,7 +18,8 @@ export class Search extends ToggleCmp {
     ])}
     toggleMe = false
     get cmpClassName() {return 'ezy-search'}
-    get output() {return this.input.output}
+    get output() {return this.text.output}
+    get input() {return this.text.input}
     get animation() {return {direction: 'right'}}
     get selector() {return `#${this.cmpId} .ezy-search-input`}
     get buttonProps() {
@@ -38,7 +39,7 @@ export class Search extends ToggleCmp {
                     'icon', 'img', 'text', 'type', 'onClick', 'onToggleText',
                     'forceOpen', 'open', 'toggleMe', 'afterShow', 'afterHide', 'api'
                 )}
-                ref={e => this.input = e}
+                ref={e => this.text = e}
                 className='ezy-search-input'
                 onClick={this.onTextClick}
                 /> : null,

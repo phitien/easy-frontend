@@ -14,5 +14,7 @@ export const routes = [
 , {path: `${config.apppath}/messages`, component: wrap(pages.MessagesPage)}
 , {path: `${config.apppath}/chart`, component: wrap(pages.ChartPage)}
 , {path: `${config.apppath}/map`, component: wrap(pages.MapPage)}
+, {path: `${config.apppath}/slider`, component: wrap(pages.SliderPage)}
+, {path: `${config.apppath}/grid`, component: wrap(pages.GridPage)}
 /**NEWPAGE**/
 ].map((r,i) => <Route key={i} exact {...r}/>)

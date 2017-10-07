@@ -4,4 +4,6 @@
 , {"url": "/messages", "title": "Messages"}
 , {"url": "/chart", "title": "Chart"}
 , {"url": "/map", "title": "Map"}
+, {"url": "/slider", "title": "Slider"}
+, {"url": "/grid", "title": "Grid"}
 ]
