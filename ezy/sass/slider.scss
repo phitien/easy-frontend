@@ -1,34 +1,111 @@
 .ezy-slider {
+    color: $slider-color;
+    background-color: $slider-bg-color;
+    overflow: hidden;flex: 1;
+    display: flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
     height: 150px;
     width: 100%;
     display: block;
-    overflow: auto;
-    .ezy-slider-photos {
-        height: 100%;
-        width: 100%;
-        .ezy-slider-image {
-            height: 100%;
-            display: inline-flex;align-items: flex-start;justify-content: flex-start;flex-direction: column;
-            .ezy-slider-image-photo {
-                width: 100%;
-                flex: 1;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            .ezy-slider-image-attrs {
-                width: 100%;
-                line-height: $line-height;
-                padding: 0 $mapa/4;
-            }
-        }
+    overflow: visible;
+    .slick-prev:before, .slick-next:before {
+        font-size: 24px;
+        color: rgba(0,0,0,.5);
     }
     .slick-arrow {z-index: 1;}
-    .slick-prev {left: 0;}
-    .slick-next {right: 0;}
     .slick-list {
         height: 100%;
     }
     .slick-track {
         height: 100%;
+    }
+    > * {width: 100%;}
+    .ezy-slider-wrapper {
+        overflow: visible;
+    }
+    .ezy-slider-control {
+        display: flex;align-items: center;justify-content: flex-start;
+        margin-bottom: $mapa/3;
+        i {cursor: pointer;}
+    }
+    .ezy-slider-control-page-size {
+        display: flex;align-items: center;
+        input {
+            width: 33px;
+            padding: 0 $mapa/4;
+            margin-right: 3px;
+            text-align: center;
+        }
+    }
+    .ezy-slider-control-pagination {
+        display: flex;align-items: center;justify-content: flex-start;
+        .ezy-select {width: 45px;}
+        input {
+            padding: 0 $mapa/4;
+        }
+    }
+    .ezy-slider-header {
+        width: 100%;
+    }
+    .ezy-slider-filters {
+        display: flex;justify-content: space-between;
+        align-items: center;
+        margin-bottom: $mapa/2;
+        color: $slider-filters-color;
+        background-color: $slider-filters-bg-color;
+    }
+    .ezy-slider-body {
+        overflow: visible;
+        .ezy-slider-card {
+            padding: $mapa/3;
+            display: inline-block;
+            overflow: auto;
+            .ezy-slider-card-wrapper {
+                padding: $mapa/3;
+                img {
+                    width: 100%;
+                    box-shadow: $shadow;
+                }
+                label {font-weight: 600;}
+            }
+            .ezy-slider-card-actions {
+                padding: $mapa/3;
+            }
+            &:nth-child(odd) {
+                color: $slider-card-odd-color;
+                background-color: $slider-card-odd-bg-color;
+            }
+            &:nth-child(even) {
+                color: $slider-card-even-color;
+                background-color: $slider-card-even-bg-color;
+            }
+            &:hover, &.selected {
+                color: $slider-card-hover-color;
+                background-color: $slider-card-hover-bg-color;
+            }
+        }
+    }
+    .ezy-slider-control-columns-settings {
+        position: relative;
+        .ezy-slider-control-columns-list {
+            box-shadow: $shadow;
+            color: $slider-columns-settings-list-color;
+            background-color: $slider-columns-settings-list-bg-color;
+            position: absolute;
+            width: $slider-columns-settings-list-width;
+            height: $slider-columns-settings-list-height;
+            overflow-x: hidden;
+            overflow-y: auto;
+            right: 0;
+            z-index: 1;
+            .ezy-checkbox {
+                cursor: pointer;
+                padding: $mapa/4 $mapa/2;
+                label {display: block;flex: 1;height: 100%;}
+                &:hover {
+                    color: $slider-columns-settings-item-color;
+                    background-color: $slider-columns-settings-item-bg-color;
+                }
+            }
+        }
     }
 }

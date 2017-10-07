@@ -4,27 +4,27 @@ import {Autocomplete} from './input'
 
 export class Slider extends RegCmp {
     get cmpClassName() {return `ezy-slider`}
-    get data() {return this.utils.array(this.cmpData || this.props.children)}
+    get data() {return this.utils.array(this.cmpData && this.cmpData.rows || this.cmpData || this.props.children)}
     set data(v) {
         this.cmpData = v
         this.refresh(e => this.init())
     }
     get children() {
-        return <div ref={e => this.photos = e } className='ezy-slider-photos'>
-            {this.data.map((c,i) => <SliderImage key={i} cmpData={c}/>)}
+        return <div ref={e => this.slides = e } className={`${this.cmpClassName}-slides`}>
+            {this.data.map((c,i) => <Slide owner={this} key={i} cmpData={c}/>)}
         </div>
     }
     init() {
-        let photos = jQuery(this.photos)
-        if (this.slick) photos.slick('unslick')
-        if (this.data.length) this.slick = photos.slick()
+        let slides = jQuery(this.slides)
+        if (this.slick) slides.slick('unslick')
+        if (this.data.length) this.slick = slides.slick()
     }
     cmpDidUpdate(prevProps, prevState) {
         this.init()
     }
 }
 
-export class SliderImage extends RegCmp {
+export class Slide extends RegCmp {
     static dfCmpData() {return {
         getUrl: (...args) => null,
         html_attributions: []
@@ -34,11 +34,12 @@ export class SliderImage extends RegCmp {
         {name: 'maxHeight', title: 'maxHeight', type: 'Number', value: 150},
     ])}
     get cmpClassName() {return `ezy-slider-image`}
-    get slider() {return this.dom.closest('.ezy-slider')}
+    get owner() {return this.props.owner}
+    get slider() {return this.owner.dom}
     get children() {
         return [
-            <div ref={e => this.image = e} className='ezy-slider-image-photo'/>,
-            <div ref={e => this.attrs = e} className='ezy-slider-image-attrs'/>
+            <div ref={e => this.image = e} className={`${this.cmpClassName}-photo`}/>,
+            <div ref={e => this.attrs = e} className={`${this.cmpClassName}-attrs`}/>
         ]
     }
     cmpDidUpdate(prevProps, prevState) {

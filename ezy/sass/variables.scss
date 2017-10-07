@@ -32,9 +32,19 @@ $grid-line-height: $button-height;
 $grid-columns-settings-list-width: $content-left-width;
 $grid-columns-settings-list-height: 300px;
 
+$slider-line-height: $button-height;
+$slider-columns-settings-list-width: $content-left-width;
+$slider-columns-settings-list-height: 300px;
+
 $chatbox-height: 280px;
 $chatbox-width: 120px;
 $chatbox-full-width: 240px;
 $chatbox-title-height: 33px;
 
 $people-list-width: 180px;
+
+$ezy-maps-autocomplete-top: 10px;
+$ezy-maps-autocomplete-right: 10px;
+$ezy-maps-autocomplete-input-w: 265px;
+$ezy-maps-info-panel-color: #000;
+$ezy-maps-info-panel-bg-color: rgba(256,256,256,5);

@@ -145,11 +145,11 @@ export class Table extends RegCmp {
     apiRefine(p) {return this.utils.assign({},
         super.apiRefine(p),
         this.related && this.related.output || null,
-        this.tableheader.output.reduce((rs,o) => {
+        this.tableheader && this.tableheader.output.reduce((rs,o) => {
             if (o.c.serverfilter && o.c.field && o.e.output) rs[o.c.field] = o.e.output
             return rs
         }, {}),
-        this.tablecontrol.output,
+        this.tablecontrol && this.tablecontrol.output,
         {sortby: this.sortby && this.sortby.field || null, sortdir: this.sortdir}
     )}
     apiSuccess = data => {

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Slider} from 'ezy/components'
 import {Page} from '../components/Page'
 
 export class SliderPage extends Page {
@@ -7,7 +8,12 @@ export class SliderPage extends Page {
         return 'LeftPanel'
     }
     get mainPanel() {
-        return 'SliderPage'
+        return [
+            <Slider cmpId='slider'
+                apiUrl={this.config.api.slider}
+                />
+
+        ]
     }
     get rightPanel() {
         return 'RightPanel'

@@ -5,6 +5,12 @@
     "total": 200,
     "size": 20,
     "autocard": true,
+    "slide": [
+        "<div><label>Field 1</label> <span>${data('field1')}</span></div>",
+        "<div><label>Field 2</label> <span>${data('field2')}</span></div>",
+        "<div><label>Field 3</label> <span>${data('field3')}</span></div>",
+        "<div><label>Field 4</label> <span>${data('field4')}</span></div>"
+    ],
     "gridcard": [
         "<div><label>Field 1</label> <span>${data('field1')}</span></div>",
         "<div><label>Field 2</label> <span>${data('field2')}</span></div>",

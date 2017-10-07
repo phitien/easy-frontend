@@ -68,14 +68,17 @@ export class Application {
         this.regCmps.delete(cmp.cmpId)
     }
     renderApplication() {throw `${this.klass}: No children`}
+    beforeRender = e => {
+    }
     afterRender = e => {
         this.facebook_sdk_init()
         this.google_platform_init()
+        this.slick_init()
         this.socket_io_init()
         this.livereload_init()
-        this.slick_init()
     }
     render() {
+        this.beforeRender()
         try {
             if (this.store && this.container) {
                 ReactDOM.render(

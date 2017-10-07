@@ -1,5 +1,5 @@
 import React from 'react'
-import {SearchForm, Grid, Select, Text} from 'ezy/components'
+import {Grid} from 'ezy/components'
 import {Page} from '../components/Page'
 
 export class GridPage extends Page {

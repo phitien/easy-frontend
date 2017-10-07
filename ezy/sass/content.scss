@@ -19,7 +19,7 @@
         background-color: $content-left-bg-color;
     }
     .content-main {
-        overflow: auto;
+        overflow: visible;
         height: 100%;
         flex: 1;
         color: $content-main-color;

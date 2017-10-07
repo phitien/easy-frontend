@@ -1,9 +1,4 @@
 .ezy-maps {
-    $ezy-maps-autocomplete-top: 10px;
-    $ezy-maps-autocomplete-right: 53px;
-    $ezy-maps-autocomplete-input-w: 200px;
-    $ezy-maps-info-panel-color: #000;
-    $ezy-maps-info-panel-bg-color: rgba(256,256,256,5);
     flex: 1;display: flex;flex-direction: column;align-items: center;justify-content: center;
     position: relative;
     .ezy-maps-container {
@@ -30,29 +25,15 @@
         color: $ezy-maps-info-panel-color;
         background-color: $ezy-maps-info-panel-bg-color;
         > * {width: 100%;}
-        .ezy-maps-info-panel-photos {
-            flex: 1;
-        }
-        .ezy-maps-info-panel-detail {
-            .ezy-maps-info-panel-place-name {
-                font-weight: 600;
-                padding: $mapa/6;
-                display: flex;align-items: flex-end;justify-content: flex-start;
-                .ezy-maps-info-panel-place-icon {
-                    display: inline-block;
-                    display: none;
-                    height: $icon-height;
-                    width: $icon-height;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: contain;
-                    box-shadow: $shadow;
-                    margin: 0 $mapa/2 0 0;
+        .ezy-maps-info-panel-slider {
+            .ezy-slider-card {
+                padding: 0;
+                .ezy-slider-card-wrapper {
+                    padding: 0;
                 }
-            }
-            .ezy-maps-info-panel-place-address {
-                padding: $mapa/6;
-                font-style: italic;
+                .ezy-slider-card-actions {
+                    padding: 0;
+                }
             }
         }
         &.open {

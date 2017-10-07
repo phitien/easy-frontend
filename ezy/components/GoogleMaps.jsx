@@ -2,7 +2,7 @@ import React from 'react'
 import {ToggleCmp, FlexCmp} from 'ezy/components/cmp'
 import {Button, Text, Autocomplete} from './input'
 import {Form} from './Form'
-import {Gallery} from './Gallery'
+import {Slider} from './table'
 
 export class GoogleMapsInfoPanel extends ToggleCmp {
     static dfCmpData() {return {}}
@@ -14,9 +14,23 @@ export class GoogleMapsInfoPanel extends ToggleCmp {
     get address_components() {return this.utils.array(this.cmpData && this.cmpData.address_components)}
     get photos() {return this.utils.array(this.cmpData && this.cmpData.photos)}
     get adr_address() {return this.cmpData && this.cmpData.adr_address}
+    get width() {return jQuery(this.dom).width()}
+    get height() {return jQuery(this.dom).height()}
     get children() {
         return [
-            <Gallery ref={e => this.gallery = e} className='ezy-maps-info-panel-place-photos'/>,
+            <Slider ref={e => this.slider = e} className={`${this.cmpClassName}-slider`}
+                {...{
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: false,
+                    autoplay: false,
+                    autocard: false,
+                    renderCard: r => [
+                        `<div class='${this.cmpClassName}-image'>${r.html_attributions.join()}</div>`,
+                        `<img src='${r.getUrl({maxWidth: 100, maxHeight: 100})}'>`
+                    ].join('')
+                }}
+                />,
             <div className='ezy-maps-info-panel-detail'>
                 <div className='ezy-maps-info-panel-place-name'>
                     <div className='ezy-maps-info-panel-place-icon' style={{
@@ -30,7 +44,7 @@ export class GoogleMapsInfoPanel extends ToggleCmp {
         ]
     }
     onShow(e) {
-        if (this.photos.length) super.onShow(e, e => this.gallery.data = this.photos)
+        if (this.photos.length) super.onShow(e, e => this.slider.cmpDataR = {rows: this.photos})
     }
 }
 export class GoogleMaps extends FlexCmp {
