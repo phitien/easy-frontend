@@ -41,7 +41,6 @@ export class Table extends RegCmp {
         }, transform: true},
         {section: 'cmp', name: 'onCellClick', title: 'onCellClick', type: 'Textarea', value: function(e, r, c) {
             if (c.type != 'action') return
-            this.log(this.handlers)
             if (!this.handlers.hasOwnProperty(c.action)) return
             if (typeof this.handlers[c.action] != 'function') return
             this.handlers[c.action](e, r, c)

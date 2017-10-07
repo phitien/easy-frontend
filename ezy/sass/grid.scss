@@ -52,6 +52,10 @@
                     width: 100%;
                     box-shadow: $shadow;
                 }
+                label {font-weight: 600;}
+            }
+            .ezy-grid-card-actions {
+                padding: $mapa/3;
             }
             &:nth-child(odd) {
                 color: $grid-card-odd-color;
