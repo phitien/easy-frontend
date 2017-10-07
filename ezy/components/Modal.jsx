@@ -36,7 +36,7 @@ export class Modal extends RegCmp {
     onClose = e => this.canClose()
     cmpDidMount() {
         jQuery(`.modal-content`).draggable({handle: '.modal-title'})
-        if (this.time > 0) jQuery(this.dom).fadeOut(this.time, this.onClose)
+        if (this.time > 0) this.jDom.fadeOut(this.time, this.onClose)
         if (this.outside) addEventListener('click', e => !e.target.closest(`#${this.cmpId} .modal-content`) ? this.onClose() : false, true)
         addEventListener('keydown', e => {
             (this.escape && e.key == 'Escape' || this.enter && e.key == 'Enter') ? this.onClose() : false

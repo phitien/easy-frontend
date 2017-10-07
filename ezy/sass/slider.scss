@@ -108,4 +108,13 @@
             }
         }
     }
+    &.ezy-slider-buttons-outside {}
+    &.ezy-slider-buttons-inside {
+        .slick-prev {
+            left: -1px;
+        }
+        .slick-next {
+            right: 3px;
+        }
+    }
 }

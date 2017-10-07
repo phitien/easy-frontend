@@ -16,8 +16,8 @@ export class Chart extends FlexCmp {
     		data: [].concat(this.cmpData)
     	}))
     	this.chart.render()
-        jQuery(this.dom).height(this.chart.height)
-        jQuery(this.dom).width(this.chart.width)
+        this.jDom.height(this.chart.height)
+        this.jDom.width(this.chart.width)
     }
     cmpDidUpdate(prevProps, prevState) {
 

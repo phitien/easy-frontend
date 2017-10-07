@@ -135,9 +135,6 @@ export class Table extends RegCmp {
             this.showControl && this.controlPos != 'top' ? <this.controlRenderer owner={this} ref={e => this.tablecontrol = e}/> : null,
         ]
     }
-    get jDom() {return jQuery(this.dom)}
-    get width() {return this.jDom.innerWidth()}
-    get height() {return this.jDom.innerHeight()}
     get colFlex() {return c => typeof c.width == 'number' && c.width > 0 ? 0 : c.flex && c.flex > 0 && c.flex || 1}
     get colWidth() {return c => typeof c.width == 'number' && c.width > 0 && c.width || 0}
     get totalFlex() {return this.actualCols.reduce((rs, c) => rs += this.colFlex(c), 0)}

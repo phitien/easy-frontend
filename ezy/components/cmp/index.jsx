@@ -85,6 +85,9 @@ export class BaseContainer extends React.Component {
     }
     get klass() {return this.props.klass || this.constructor.name}
     get dom() {try {return ReactDOM.findDOMNode(this)} catch(e) {}}
+    get jDom() {return jQuery(`#${this.cmpId}`)}
+    get width() {return this.jDom.width()}
+    get height() {return this.jDom.height()}
     get uuid() {return this.state.__uuid}
     get utils() {return utils}
     get user() {return this.utils.user}

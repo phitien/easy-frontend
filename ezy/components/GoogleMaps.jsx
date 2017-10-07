@@ -14,12 +14,11 @@ export class GoogleMapsInfoPanel extends ToggleCmp {
     get address_components() {return this.utils.array(this.cmpData && this.cmpData.address_components)}
     get photos() {return this.utils.array(this.cmpData && this.cmpData.photos)}
     get adr_address() {return this.cmpData && this.cmpData.adr_address}
-    get width() {return jQuery(this.dom).width()}
-    get height() {return jQuery(this.dom).height()}
     get children() {
         return [
             <Slider ref={e => this.slider = e} className={`${this.cmpClassName}-slider`}
                 {...{
+                    buttonsPosition: 'inside',
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     dots: false,
@@ -27,7 +26,7 @@ export class GoogleMapsInfoPanel extends ToggleCmp {
                     autocard: false,
                     renderCard: r => [
                         `<div class='${this.cmpClassName}-image'>${r.html_attributions.join()}</div>`,
-                        `<img src='${r.getUrl({maxWidth: 100, maxHeight: 100})}'>`
+                        `<img src='${r.getUrl({maxWidth: this.width, maxHeight: this.height})}'>`
                     ].join('')
                 }}
                 />,
@@ -81,7 +80,7 @@ export class GoogleMaps extends FlexCmp {
             google_maps_api_loaded: this.google_maps_api_loaded,
         })
     }
-    get map() {return this.__map = this.__map || new google.maps.Map(jQuery(this.dom).find('.ezy-maps-container').get(0), this.utils.assign({
+    get map() {return this.__map = this.__map || new google.maps.Map(this.jDom.find('.ezy-maps-container').get(0), this.utils.assign({
         center: this.center,
         zoom: this.zoom
     }, this.props))}

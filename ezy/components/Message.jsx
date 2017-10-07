@@ -4,7 +4,7 @@ import {RegCmp} from 'ezy/components/cmp'
 export class Message extends RegCmp {
     get cmpClassName() {return `message`}
     cmpDidMount() {
-        jQuery(this.dom).fadeOut(7000, e => {
+        this.jDom.fadeOut(7000, e => {
             this.utils.trigger('remove_message', this.cmpData, this)
         })
     }
