@@ -3,13 +3,13 @@ module.exports = exports = {
     defaultListData: {items: [], page: {next: null, prev: null, current: 0, total: 0, size: 20}, sortby: null, sortdir: 'desc'},
     apiBaseUrl: '',
     api: {
-        applinks: '/static/demo/data/applinks.json',
-        table: '/static/demo/data/table.json',
-        grid: '/static/demo/data/table.json',
-        slider: '/static/demo/data/table.json',
-        login: '/static/demo/data/login.json',
+        applinks: '/ezy/static/demo/data/applinks.json',
+        table: '/ezy/static/demo/data/table.json',
+        grid: '/ezy/static/demo/data/table.json',
+        slider: '/ezy/static/demo/data/table.json',
+        login: '/ezy/static/demo/data/login.json',
         people: '/demo/people',
-        inbox: '/demo/inbox'
+        inbox: '/demo/inbox',
     },
     standardUserData: {
         firstName: null,
