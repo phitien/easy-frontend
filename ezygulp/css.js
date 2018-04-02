@@ -10,7 +10,8 @@ const cssFn = function(config, cb) {
         .pipe(sass({
             outputStyle: 'compressed',
             includePaths: ['.', './node_modules', config.app_home, `${config.app_home}/node_modules`, config.ezy_home, `${config.ezy_home}/node_modules`]
-        }).on('error', sass.logError))
+        })
+        .on('error', sass.logError))
         .pipe(autoprefixer())
         .pipe(concat(`${config.appname}.css`))
         .pipe(config.debug ? sourcemaps.write('./') : config.noop())
