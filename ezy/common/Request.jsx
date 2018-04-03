@@ -40,6 +40,7 @@ export class Request {
         }
         return this
     }
+    normalizeUrl = url => config.baseurl && url.indexOf('/static') == 0 ? `${config.baseurl}${url}` : url
     buildUrl = (url, query) => url.indexOf('?') >= 0 ? `${url}&${query}` : `${url}?${query}`
     buildQuery = (json) => json ? Object.keys(json).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(json[k] ? json[k] : '')}`).join('&') : ''
 
@@ -68,7 +69,10 @@ export class Request {
         return this
     }
     exec = (sync) => {
-        if (this.__options.url) return sync ? this.sync() : this.async()
+        if (this.__options.url) {
+          this.__options.url = this.normalizeUrl(this.__options.url)
+          return sync ? this.sync() : this.async()
+        }
     }
     async = () => {
         this.__dispatch(undefined, ...this.__before)

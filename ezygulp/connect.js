@@ -11,6 +11,11 @@ const connectFn = function(config, cb) {
     const sockets = new Map()
     const app = express()
 
+    if (config.baseurl) {
+      app.use(`/static`, express.static(`${config.public_profile()}/static`))
+      app.use(`${config.baseurl}/static`, express.static(`${config.public_profile()}/static`))
+    }
+
     app.use(`/${config.appname}/people`, (req, res, next) => {
         var token = req.headers[config.authTokenKey]
         res.setHeader('Content-Type', 'application/json')

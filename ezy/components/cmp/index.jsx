@@ -76,6 +76,7 @@ export class BaseContainer extends React.Component {
     }
     componentDidMount() {
         this.__mounted = true
+        if (this.dom) this.dom.ezy = this
     }
     componentWillUnmount() {
         this.__mounted = false

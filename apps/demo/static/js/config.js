@@ -1,6 +1,6 @@
 let configuration = {
   api: {
-      applinks: '/ezy/static/demo/data/applinks.json',
+      applinks: '/static/demo/data/applinks.json',
       table: '/ezy/static/demo/data/table.json',
       grid: '/ezy/static/demo/data/table.json',
       slider: '/ezy/static/demo/data/table.json',

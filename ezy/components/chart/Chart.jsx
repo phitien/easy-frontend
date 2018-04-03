@@ -3,7 +3,7 @@ import {FlexCmp} from 'ezy/components/cmp'
 
 export class Chart extends FlexCmp {
     static defaultTitle() {return {
-        text: 'Chart'
+        text: ''
     }}
     static autoProps() {return super.autoProps().concat([
         {section: 'cmp', name: 'title', title: 'Title', type: 'Text', value: this.defaultTitle(), required: false, desc: null},
@@ -16,10 +16,11 @@ export class Chart extends FlexCmp {
     		data: [].concat(this.cmpData)
     	}))
     	this.chart.render()
-        this.jDom.height(this.chart.height)
-        this.jDom.width(this.chart.width)
+      this.jDom.height(this.chart.height)
+      this.jDom.width(this.chart.width)
     }
-    cmpDidUpdate(prevProps, prevState) {
-
+    update(data) {
+      this.chart.options.data = data
+      this.chart.render()
     }
 }
